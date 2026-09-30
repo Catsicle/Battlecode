@@ -1,0 +1,123 @@
+{
+  "summary": {
+    "candidate": "Split",
+    "bots_tested": [
+      "Ally"
+    ],
+    "maps": [
+      "maps/slithery_fight.map"
+    ],
+    "seeds": [
+      0
+    ],
+    "counts": {
+      "games": 2,
+      "wins": 2,
+      "losses": 0,
+      "draws": 0,
+      "errors": 0,
+      "dry_runs": 0
+    },
+    "win_rate": 1.0,
+    "decisive_win_rate": 1.0,
+    "average_rounds": 500.0,
+    "min_rounds": 500,
+    "max_rounds": 500,
+    "wins_against": [
+      "Ally"
+    ],
+    "losses_against": [],
+    "by_opponent": {
+      "Ally": {
+        "games": 2,
+        "wins": 2,
+        "losses": 0,
+        "draws": 0,
+        "errors": 0
+      }
+    },
+    "by_side": {
+      "A": {
+        "games": 1,
+        "wins": 1,
+        "losses": 0,
+        "draws": 0,
+        "errors": 0
+      },
+      "B": {
+        "games": 1,
+        "wins": 1,
+        "losses": 0,
+        "draws": 0,
+        "errors": 0
+      }
+    },
+    "death_causes_seen": {}
+  },
+  "games": [
+    {
+      "candidate": "Split",
+      "opponent": "Ally",
+      "map": "maps/slithery_fight.map",
+      "seed": 0,
+      "candidate_team": "A",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/slithery_fight.map",
+        "Split",
+        "Ally",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/split/replays/0001-Split-vs-Ally-seed-0.replay"
+      ],
+      "status": "win",
+      "winner": "A",
+      "rounds": 500,
+      "reason": "on length",
+      "returncode": 0,
+      "duration_seconds": 36.98115,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/split/replays/0001-Split-vs-Ally-seed-0.replay"
+    },
+    {
+      "candidate": "Split",
+      "opponent": "Ally",
+      "map": "maps/slithery_fight.map",
+      "seed": 0,
+      "candidate_team": "B",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/slithery_fight.map",
+        "Ally",
+        "Split",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/split/replays/0002-Split-vs-Ally-seed-0.replay"
+      ],
+      "status": "win",
+      "winner": "B",
+      "rounds": 500,
+      "reason": "on length",
+      "returncode": 0,
+      "duration_seconds": 36.231257,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/split/replays/0002-Split-vs-Ally-seed-0.replay"
+    }
+  ]
+}

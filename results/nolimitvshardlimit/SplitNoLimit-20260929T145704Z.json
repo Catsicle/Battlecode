@@ -1,0 +1,255 @@
+{
+  "summary": {
+    "candidate": "SplitNoLimit",
+    "bots_tested": [
+      "SplitHardLimit"
+    ],
+    "maps": [
+      "maps/trauma.map",
+      "maps/arena.map",
+      "maps/trophy.map"
+    ],
+    "seeds": [
+      0
+    ],
+    "counts": {
+      "games": 6,
+      "wins": 3,
+      "losses": 3,
+      "draws": 0,
+      "errors": 0,
+      "dry_runs": 0
+    },
+    "win_rate": 0.5,
+    "decisive_win_rate": 0.5,
+    "average_rounds": 479.6666666666667,
+    "min_rounds": 427,
+    "max_rounds": 500,
+    "wins_against": [
+      "SplitHardLimit"
+    ],
+    "losses_against": [
+      "SplitHardLimit"
+    ],
+    "by_opponent": {
+      "SplitHardLimit": {
+        "games": 6,
+        "wins": 3,
+        "losses": 3,
+        "draws": 0,
+        "errors": 0
+      }
+    },
+    "by_side": {
+      "A": {
+        "games": 3,
+        "wins": 1,
+        "losses": 2,
+        "draws": 0,
+        "errors": 0
+      },
+      "B": {
+        "games": 3,
+        "wins": 2,
+        "losses": 1,
+        "draws": 0,
+        "errors": 0
+      }
+    },
+    "death_causes_seen": {}
+  },
+  "games": [
+    {
+      "candidate": "SplitNoLimit",
+      "opponent": "SplitHardLimit",
+      "map": "maps/trauma.map",
+      "seed": 0,
+      "candidate_team": "A",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/trauma.map",
+        "SplitNoLimit",
+        "SplitHardLimit",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0001-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+      ],
+      "status": "loss",
+      "winner": "B",
+      "rounds": 500,
+      "reason": "on length",
+      "returncode": 0,
+      "duration_seconds": 6.629005,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0001-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+    },
+    {
+      "candidate": "SplitNoLimit",
+      "opponent": "SplitHardLimit",
+      "map": "maps/trauma.map",
+      "seed": 0,
+      "candidate_team": "B",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/trauma.map",
+        "SplitHardLimit",
+        "SplitNoLimit",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0002-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+      ],
+      "status": "win",
+      "winner": "B",
+      "rounds": 500,
+      "reason": "on length",
+      "returncode": 0,
+      "duration_seconds": 6.65334,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0002-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+    },
+    {
+      "candidate": "SplitNoLimit",
+      "opponent": "SplitHardLimit",
+      "map": "maps/arena.map",
+      "seed": 0,
+      "candidate_team": "A",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/arena.map",
+        "SplitNoLimit",
+        "SplitHardLimit",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0003-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+      ],
+      "status": "win",
+      "winner": "A",
+      "rounds": 500,
+      "reason": "on length",
+      "returncode": 0,
+      "duration_seconds": 5.862647,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0003-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+    },
+    {
+      "candidate": "SplitNoLimit",
+      "opponent": "SplitHardLimit",
+      "map": "maps/arena.map",
+      "seed": 0,
+      "candidate_team": "B",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/arena.map",
+        "SplitHardLimit",
+        "SplitNoLimit",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0004-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+      ],
+      "status": "loss",
+      "winner": "A",
+      "rounds": 427,
+      "reason": "by elimination",
+      "returncode": 0,
+      "duration_seconds": 7.226383,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0004-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+    },
+    {
+      "candidate": "SplitNoLimit",
+      "opponent": "SplitHardLimit",
+      "map": "maps/trophy.map",
+      "seed": 0,
+      "candidate_team": "A",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/trophy.map",
+        "SplitNoLimit",
+        "SplitHardLimit",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0005-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+      ],
+      "status": "loss",
+      "winner": "B",
+      "rounds": 451,
+      "reason": "by elimination",
+      "returncode": 0,
+      "duration_seconds": 13.721583,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0005-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+    },
+    {
+      "candidate": "SplitNoLimit",
+      "opponent": "SplitHardLimit",
+      "map": "maps/trophy.map",
+      "seed": 0,
+      "candidate_team": "B",
+      "command": [
+        "/home/catsicle/.local/bin/unswbc",
+        "run",
+        "maps/trophy.map",
+        "SplitHardLimit",
+        "SplitNoLimit",
+        "--seed",
+        "0",
+        "--no-logs",
+        "--no-indicator",
+        "--no-draw",
+        "--output",
+        "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0006-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+      ],
+      "status": "win",
+      "winner": "B",
+      "rounds": 500,
+      "reason": "on length",
+      "returncode": 0,
+      "duration_seconds": 26.835342,
+      "points": {},
+      "deaths": [],
+      "stdout": "",
+      "stderr": "",
+      "replay": "/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0006-SplitNoLimit-vs-SplitHardLimit-seed-0.replay"
+    }
+  ]
+}

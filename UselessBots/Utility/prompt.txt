@@ -1,0 +1,34 @@
+From helper.hpp use get_tiles() to build efficient bitboard structure for kelp location, own body, enemy body, ally_body, enemy_head, enemy_body, portal, obstacles(Everything except portal) [ Use this to check if move is possible]
+Use bit manipulation to change player location state (The game obeys snake logic)
+Implement efficient bit functions to calculate utility scores
+
+For Utility Function:
+LIVE_PEARL / (every_live_pearl_distance) 
++ DEAD_PEARL / (every_dead_pearl_distance)
++ KELP / (every_kelp_distance)
++ (number_of_own_body_cells_in_3*3_radius)/8 * OWN_BODY 
++ ENEMY_HEAD / (every_enemy_head_distance)  
++ ENEMY_BODY/(every_enemy_body_cell_distance) 
++ (every_portal_distance)/14 * PORTAL
++ ALLY_HEAD / (every_ally_head_distance)
++ ALLY_BODY / (every_ally_body_distance)
+ALL DISTANCE IS MANHATTAN DISTANCE
+
+GameTree Function -> Start from initial state. It branches on basis of move (North, East, West, South) -> Evaluates each state using provided utility function -> If no move is possible score of that state is neg Inf -> if size > max_size split -> Enemy and allys are assumed to be stationary
+To Find distance use Manhattan distance
+Finally return move, and split in appropriate format
+
+Use these macros:
+#define LIVE_PEARL 1
+#define DEAD_PEARL 0
+#define KELP -1 //Divide by distance?
+#define OWN_BODY -0.5 // Multiply by number of nearby body in 3x3
+#define ENEMY_HEAD = -5  // Divide by distance
+#define ENEMY_BODY KELP // Divide by distance
+#define PORTAL 0
+#define ALLY_HEAD ENEMY_BODY //Divide by distance
+#define ALLY_BODY ENEMY_BODY // Divide by distance 
+// USE Manhattan Distance
+#define NEG_SCORE -INFINITY
+#define POS_SCORE INFINITY
+#define DEPTH 12

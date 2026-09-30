@@ -1,0 +1,19 @@
+candidate,opponent,map,seed,candidate_team,status,winner,rounds,reason,returncode,duration_seconds,replay
+PortalNoLimit,PortalHardLimit,maps/trauma.map,0,A,loss,B,500,on length,0,6.008199,/home/catsicle/Battlecode/results/Portal/replays/0001-PortalNoLimit-vs-PortalHardLimit-seed-0.replay
+PortalNoLimit,PortalHardLimit,maps/trauma.map,0,B,win,B,500,on length,0,3.346922,/home/catsicle/Battlecode/results/Portal/replays/0002-PortalNoLimit-vs-PortalHardLimit-seed-0.replay
+PortalNoLimit,PortalHardLimit,maps/arena.map,0,A,win,A,500,on length,0,4.184077,/home/catsicle/Battlecode/results/Portal/replays/0003-PortalNoLimit-vs-PortalHardLimit-seed-0.replay
+PortalNoLimit,PortalHardLimit,maps/arena.map,0,B,loss,A,427,by elimination,0,4.832474,/home/catsicle/Battlecode/results/Portal/replays/0004-PortalNoLimit-vs-PortalHardLimit-seed-0.replay
+PortalNoLimit,PortalHardLimit,maps/trophy.map,0,A,win,A,500,on length,0,13.253521,/home/catsicle/Battlecode/results/Portal/replays/0005-PortalNoLimit-vs-PortalHardLimit-seed-0.replay
+PortalNoLimit,PortalHardLimit,maps/trophy.map,0,B,win,B,500,on length,0,15.85982,/home/catsicle/Battlecode/results/Portal/replays/0006-PortalNoLimit-vs-PortalHardLimit-seed-0.replay
+PortalNoLimit,SplitHardLimit,maps/trauma.map,0,A,loss,B,500,on length,0,3.900218,/home/catsicle/Battlecode/results/Portal/replays/0007-PortalNoLimit-vs-SplitHardLimit-seed-0.replay
+PortalNoLimit,SplitHardLimit,maps/trauma.map,0,B,win,B,500,on length,0,3.135374,/home/catsicle/Battlecode/results/Portal/replays/0008-PortalNoLimit-vs-SplitHardLimit-seed-0.replay
+PortalNoLimit,SplitHardLimit,maps/arena.map,0,A,win,A,500,on length,0,4.152058,/home/catsicle/Battlecode/results/Portal/replays/0009-PortalNoLimit-vs-SplitHardLimit-seed-0.replay
+PortalNoLimit,SplitHardLimit,maps/arena.map,0,B,loss,A,427,by elimination,0,4.806305,/home/catsicle/Battlecode/results/Portal/replays/0010-PortalNoLimit-vs-SplitHardLimit-seed-0.replay
+PortalNoLimit,SplitHardLimit,maps/trophy.map,0,A,win,A,500,on length,0,13.650337,/home/catsicle/Battlecode/results/Portal/replays/0011-PortalNoLimit-vs-SplitHardLimit-seed-0.replay
+PortalNoLimit,SplitHardLimit,maps/trophy.map,0,B,win,B,500,on length,0,12.097883,/home/catsicle/Battlecode/results/Portal/replays/0012-PortalNoLimit-vs-SplitHardLimit-seed-0.replay
+PortalNoLimit,SplitNoLimit,maps/trauma.map,0,A,loss,B,500,on length,0,2.926142,/home/catsicle/Battlecode/results/Portal/replays/0013-PortalNoLimit-vs-SplitNoLimit-seed-0.replay
+PortalNoLimit,SplitNoLimit,maps/trauma.map,0,B,win,B,500,on length,0,3.359392,/home/catsicle/Battlecode/results/Portal/replays/0014-PortalNoLimit-vs-SplitNoLimit-seed-0.replay
+PortalNoLimit,SplitNoLimit,maps/arena.map,0,A,win,A,500,on length,0,1.671619,/home/catsicle/Battlecode/results/Portal/replays/0015-PortalNoLimit-vs-SplitNoLimit-seed-0.replay
+PortalNoLimit,SplitNoLimit,maps/arena.map,0,B,loss,A,500,on length,0,1.664681,/home/catsicle/Battlecode/results/Portal/replays/0016-PortalNoLimit-vs-SplitNoLimit-seed-0.replay
+PortalNoLimit,SplitNoLimit,maps/trophy.map,0,A,win,A,500,on length,0,7.399555,/home/catsicle/Battlecode/results/Portal/replays/0017-PortalNoLimit-vs-SplitNoLimit-seed-0.replay
+PortalNoLimit,SplitNoLimit,maps/trophy.map,0,B,win,B,500,on length,0,6.063372,/home/catsicle/Battlecode/results/Portal/replays/0018-PortalNoLimit-vs-SplitNoLimit-seed-0.replay

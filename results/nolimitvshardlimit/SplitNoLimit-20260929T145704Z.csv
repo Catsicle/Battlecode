@@ -1,0 +1,7 @@
+candidate,opponent,map,seed,candidate_team,status,winner,rounds,reason,returncode,duration_seconds,replay
+SplitNoLimit,SplitHardLimit,maps/trauma.map,0,A,loss,B,500,on length,0,6.629005,/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0001-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/trauma.map,0,B,win,B,500,on length,0,6.65334,/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0002-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/arena.map,0,A,win,A,500,on length,0,5.862647,/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0003-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/arena.map,0,B,loss,A,427,by elimination,0,7.226383,/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0004-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/trophy.map,0,A,loss,B,451,by elimination,0,13.721583,/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0005-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/trophy.map,0,B,win,B,500,on length,0,26.835342,/home/catsicle/Battlecode/results/nolimitvshardlimit/replays/0006-SplitNoLimit-vs-SplitHardLimit-seed-0.replay

@@ -1,0 +1,25 @@
+candidate,opponent,map,seed,candidate_team,status,winner,rounds,reason,returncode,duration_seconds,replay
+Random,PortalHardLimit,maps/trauma.map,0,A,loss,B,500,on length,0,7.97826,/home/catsicle/Battlecode/results/random/replays/0001-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/trauma.map,0,B,win,B,500,on length,0,4.444909,/home/catsicle/Battlecode/results/random/replays/0002-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/trauma.map,0,A,loss,B,500,on length,0,4.488191,/home/catsicle/Battlecode/results/random/replays/0003-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/trauma.map,0,B,win,B,500,on length,0,4.835768,/home/catsicle/Battlecode/results/random/replays/0004-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/trauma.map,0,A,loss,B,110,by elimination,0,1.371528,/home/catsicle/Battlecode/results/random/replays/0005-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/trauma.map,0,B,win,B,500,on length,0,3.722958,/home/catsicle/Battlecode/results/random/replays/0006-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/slithery_fight.map,0,A,win,A,500,on length,0,22.910441,/home/catsicle/Battlecode/results/random/replays/0007-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/slithery_fight.map,0,B,loss,A,500,on length,0,29.168228,/home/catsicle/Battlecode/results/random/replays/0008-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/slithery_fight.map,0,A,win,A,500,on length,0,31.091488,/home/catsicle/Battlecode/results/random/replays/0009-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/slithery_fight.map,0,B,loss,A,500,on length,0,27.038632,/home/catsicle/Battlecode/results/random/replays/0010-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/slithery_fight.map,0,A,win,A,500,on length,0,27.261616,/home/catsicle/Battlecode/results/random/replays/0011-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalHardLimit,maps/slithery_fight.map,0,B,win,B,500,on length,0,33.005849,/home/catsicle/Battlecode/results/random/replays/0012-Random-vs-PortalHardLimit-seed-0.replay
+Random,PortalNoLimit,maps/trauma.map,0,A,loss,B,500,on length,0,7.057855,/home/catsicle/Battlecode/results/random/replays/0013-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/trauma.map,0,B,win,B,500,on length,0,9.436198,/home/catsicle/Battlecode/results/random/replays/0014-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/trauma.map,0,A,loss,B,500,on length,0,7.352704,/home/catsicle/Battlecode/results/random/replays/0015-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/trauma.map,0,B,win,B,500,on length,0,7.896467,/home/catsicle/Battlecode/results/random/replays/0016-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/trauma.map,0,A,loss,B,500,on length,0,8.971143,/home/catsicle/Battlecode/results/random/replays/0017-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/trauma.map,0,B,win,B,500,on length,0,8.9858,/home/catsicle/Battlecode/results/random/replays/0018-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/slithery_fight.map,0,A,loss,B,500,on length,0,33.079498,/home/catsicle/Battlecode/results/random/replays/0019-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/slithery_fight.map,0,B,loss,A,500,on length,0,29.920358,/home/catsicle/Battlecode/results/random/replays/0020-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/slithery_fight.map,0,A,loss,B,500,on length,0,25.607567,/home/catsicle/Battlecode/results/random/replays/0021-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/slithery_fight.map,0,B,loss,A,500,on length,0,16.985005,/home/catsicle/Battlecode/results/random/replays/0022-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/slithery_fight.map,0,A,loss,B,500,on length,0,24.857652,/home/catsicle/Battlecode/results/random/replays/0023-Random-vs-PortalNoLimit-seed-0.replay
+Random,PortalNoLimit,maps/slithery_fight.map,0,B,loss,A,500,on length,0,28.686078,/home/catsicle/Battlecode/results/random/replays/0024-Random-vs-PortalNoLimit-seed-0.replay
