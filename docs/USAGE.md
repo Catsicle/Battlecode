@@ -1,5 +1,7 @@
 # Usage
 
+For the complete command-by-command reference, see [COMMANDS.md](COMMANDS.md).
+
 ## Setup
 
 ```powershell
