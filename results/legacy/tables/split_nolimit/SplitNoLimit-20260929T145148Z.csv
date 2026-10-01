@@ -1,0 +1,7 @@
+candidate,opponent,map,seed,candidate_team,status,winner,rounds,reason,returncode,duration_seconds,replay
+SplitNoLimit,Ally,maps/slithery_fight.map,0,A,win,A,500,on length,0,14.519147,/home/catsicle/Battlecode/results/split_nolimit/replays/0001-SplitNoLimit-vs-Ally-seed-0.replay
+SplitNoLimit,Ally,maps/slithery_fight.map,0,B,win,B,500,on length,0,24.497285,/home/catsicle/Battlecode/results/split_nolimit/replays/0002-SplitNoLimit-vs-Ally-seed-0.replay
+SplitNoLimit,Split,maps/slithery_fight.map,0,A,win,A,500,on length,0,11.918061,/home/catsicle/Battlecode/results/split_nolimit/replays/0003-SplitNoLimit-vs-Split-seed-0.replay
+SplitNoLimit,Split,maps/slithery_fight.map,0,B,win,B,500,on length,0,23.739531,/home/catsicle/Battlecode/results/split_nolimit/replays/0004-SplitNoLimit-vs-Split-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/slithery_fight.map,0,A,win,A,500,on length,0,14.476151,/home/catsicle/Battlecode/results/split_nolimit/replays/0005-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
+SplitNoLimit,SplitHardLimit,maps/slithery_fight.map,0,B,win,B,500,on length,0,12.700806,/home/catsicle/Battlecode/results/split_nolimit/replays/0006-SplitNoLimit-vs-SplitHardLimit-seed-0.replay
