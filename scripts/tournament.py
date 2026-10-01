@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from bc.cli import main
+from bctool.cli import main
 
 
 def _compat(argv: list[str]) -> list[str]:

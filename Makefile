@@ -1,17 +1,17 @@
 test:
-	python -m pytest -q
+	uv run pytest -q
 
 smoke:
-	python -m bc smoke
+	uv run bctool smoke
 
 quick:
-	python -m bc quick
+	uv run bctool quick
 
 full:
-	python -m bc full --games $(GAMES)
+	uv run bctool full --games $(GAMES)
 
 leaderboard:
-	python -m bc elo
+	uv run bctool elo
 
 report:
-	python -m bc report results/latest
+	uv run bctool report results/latest

@@ -3,12 +3,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "tools"))
 
-from bc.deaths import classify
-from bc.gitinfo import bot_hash
-from bc.loops import detect_loop
-from bc.parse import parse_deaths, parse_game_output, parse_points
-from bc.registry import discover, select
-from bc.stats import elo_diff, wilson
+from bctool.deaths import classify
+from bctool.gitinfo import bot_hash
+from bctool.loops import detect_loop
+from bctool.parse import parse_deaths, parse_game_output, parse_points
+from bctool.registry import discover, select
+from bctool.stats import elo_diff, wilson
 
 
 def test_runner_parsers():
