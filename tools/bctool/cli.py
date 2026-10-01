@@ -47,7 +47,7 @@ def _run(args: argparse.Namespace, tier: str | None = None) -> int:
     if args.games:
         total_per_repeat = max(1, len(opponents) * len(maps) * len(seeds) * 2)
         args.repeats = max(1, (args.games + total_per_repeat - 1) // total_per_repeat)
-    run_dir = run(root, candidate, opponents, maps, seeds, args.repeats, args.jobs, args.sandbox, args.timeout, Path(args.out).resolve() if args.out else None, args.runner, args.keep_output, args.keep_replays, args.dry_run, Path(args.resume) if args.resume else None)
+    run_dir = run(root, candidate, opponents, maps, seeds, args.repeats, args.jobs, args.sandbox, args.timeout, Path(args.out).resolve() if args.out else None, args.runner, args.keep_output, args.keep_replays, args.dry_run, Path(args.resume) if args.resume else None, args.verbose)
     write_report(run_dir)
     write_elo(root)
     print(f"Report: {run_dir / 'report.md'}")
@@ -75,6 +75,7 @@ def parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--keep-output", action="store_true")
     run_parser.add_argument("--keep-replays", action="store_true")
     run_parser.add_argument("--dry-run", action="store_true")
+    run_parser.add_argument("--verbose", action="store_true", help="stream unswbc round output while games run")
     run_parser.set_defaults(func=_run)
     for name, maps, games, opponents, seeds in (
         ("smoke", "maps/train/arena.map", 2, "Random", [0]),
@@ -95,6 +96,7 @@ def parser() -> argparse.ArgumentParser:
         tier_parser.add_argument("--keep-output", action="store_true")
         tier_parser.add_argument("--keep-replays", action="store_true")
         tier_parser.add_argument("--dry-run", action="store_true")
+        tier_parser.add_argument("--verbose", action="store_true", help="stream unswbc round output while games run")
         tier_parser.set_defaults(func=_run, repeats=1, resume=None)
     report_parser = sub.add_parser("report")
     report_parser.add_argument("run", type=Path)

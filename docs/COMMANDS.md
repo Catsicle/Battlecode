@@ -166,6 +166,42 @@ Games use a thread pool because the work is subprocess-bound. `--jobs 1` is
 useful when debugging a specific failure. The timeout is per game, in seconds.
 Timeouts are recorded as `error`, not as bot losses.
 
+### Show live round output
+
+By default, `bctool` captures `unswbc` output and prints only one completed-game
+summary line. Add `--verbose` to stream the runner's round progress while each
+game is running:
+
+```powershell
+uv run bctool run `
+  --candidate active `
+  --opponents Length `
+  --maps maps/train/arena.map `
+  --seeds 0 `
+  --jobs 1 `
+  --verbose
+```
+
+Output is prefixed with the game index, for example:
+
+```text
+[game 1] running round 51/500 -- last: 2ms  eta: 1.2s  dragons: 1 vs 1
+```
+
+Use `--jobs 1` while watching one matchup so output is not interleaved with
+other games. The same flag works with the presets:
+
+```powershell
+uv run bctool smoke --verbose
+uv run bctool quick --verbose --jobs 1
+```
+
+For direct runner output without the analytics wrapper, use:
+
+```powershell
+uv run unswbc run maps/train/arena.map src bots/baselines/Length --seed 0 --sandbox -v
+```
+
 ### Sandbox mode
 
 Sandbox is enabled by default for `run`, `smoke`, `quick`, and `full`:
