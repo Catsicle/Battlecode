@@ -10,8 +10,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .deaths import classify_events
+from .deaths import classify_events, load_rules
 from .gitinfo import bot_hash, dirty, git_sha, python_stamp, runner_version
+from .metrics import analyze_replay, unavailable_metrics
 from .parse import parse_deaths, parse_game_output, parse_points
 from .registry import Bot, discover, select
 from .replay import load, unavailable
@@ -40,11 +41,17 @@ def _command(runner: str, map_path: str, candidate: Bot, opponent: Bot, side: st
     return command
 
 
-def _metrics(points: dict, replay_data: dict) -> dict[str, Any]:
-    metrics = {key: unavailable("replay schema is not verified") for key in ("longest_dragon_end", "dragons_end", "pearls_collected", "pearls_total", "no_legal_move_turns", "stuck_loop_turns", "loops_count", "loops", "loop_len_mean", "loop_len_max")}
+def _metrics(points: dict, replay_data: dict, rules: dict[str, Any] | None = None) -> dict[str, Any]:
+    metrics = analyze_replay(replay_data["data"], rules) if replay_data.get("available") else {"teams": {"A": unavailable_metrics(), "B": unavailable_metrics()}, "curves": {}, "unclassified_death_causes": []}
     metrics["cpu"] = points
-    if replay_data.get("available"):
-        metrics["replay"] = "loaded but no versioned metric adapter is configured"
+    for team in "AB":
+        team_points = points.get(team, {})
+        metrics["teams"].setdefault(team, {})["cpu_p50_M"] = team_points.get("p50_M")
+        metrics["teams"][team]["cpu_p99_M"] = team_points.get("p99_M")
+        metrics["teams"][team]["cpu_mean_M"] = team_points.get("mean_M")
+        metrics["teams"][team]["cpu_max_M"] = team_points.get("max_M")
+    if not replay_data.get("available"):
+        metrics["replay"] = replay_data.get("reason", "replay unavailable")
     return metrics
 
 
@@ -73,9 +80,11 @@ def run_one(root: Path, run_dir: Path, candidate: Bot, opponent: Bot, item: dict
             status, winner, rounds, reason, returncode = "error", None, None, f"timeout after {timeout} seconds", -1
         except FileNotFoundError as exc:
             status, winner, rounds, reason, returncode = "error", None, None, f"runner not found: {exc.filename}", -1
+    death_rules = load_rules(rules)
     deaths = parse_deaths(stdout + "\n" + stderr)
     replay_info = load(replay_path if replay_path.exists() else None)
-    row = {"index": index, "candidate": candidate.id, "opponent": opponent.id, "map": item["map"], "seed": item["seed"], "candidate_team": item["candidate_team"], "status": status, "winner": winner, "rounds": rounds, "end_reason": reason, "returncode": returncode, "duration_seconds": round(time.monotonic() - started, 4), "points": parse_points(stdout + "\n" + stderr), "deaths": classify_events(deaths), "metrics": _metrics(parse_points(stdout + "\n" + stderr), replay_info), "command": command, "stdout": stdout if keep_output else "", "stderr": stderr if keep_output else "", "replay": str(replay_path.relative_to(run_dir)) if keep_replays and replay_path.exists() else None, "git_sha": git_sha(root), "dirty": dirty(root), "bot_hash": {candidate.id: candidate.hash, opponent.id: opponent.hash}, "python": python_stamp(), "unswbc_version": runner_version(runner)}
+    points = parse_points(stdout + "\n" + stderr)
+    row = {"index": index, "candidate": candidate.id, "opponent": opponent.id, "map": item["map"], "seed": item["seed"], "candidate_team": item["candidate_team"], "status": status, "winner": winner, "rounds": rounds, "end_reason": reason, "returncode": returncode, "duration_seconds": round(time.monotonic() - started, 4), "points": points, "deaths": classify_events(deaths, death_rules), "metrics": _metrics(points, replay_info, death_rules), "command": command, "stdout": stdout if keep_output else "", "stderr": stderr if keep_output else "", "replay": str(replay_path.relative_to(run_dir)) if keep_replays and replay_path.exists() else None, "git_sha": git_sha(root), "dirty": dirty(root), "bot_hash": {candidate.id: candidate.hash, opponent.id: opponent.hash}, "python": python_stamp(), "unswbc_version": runner_version(runner)}
     if not keep_replays and replay_path.exists():
         replay_path.unlink()
     return row

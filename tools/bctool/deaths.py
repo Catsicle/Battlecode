@@ -5,8 +5,8 @@ from pathlib import Path
 
 
 DEFAULT_RULES = {
-    "suicide": [r"hit self", r"hit wall", r"no valid action", r"timeout", r"crash", r"kelp"],
-    "deliberate_attack": [r"head to head", r"other body"],
+    "suicide": [r"hit itself", r"hit self", r"hit a wall", r"hit wall", r"no valid action", r"timeout", r"crash", r"kelp"],
+    "deliberate_attack": [r"head-to-head", r"head to head", r"hit another dragon", r"other body"],
     "other": [r"starv", r"environment"],
 }
 

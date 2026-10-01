@@ -6,8 +6,10 @@ sys.path.insert(0, str(Path(__file__).parents[1] / "tools"))
 from bctool.deaths import classify
 from bctool.gitinfo import bot_hash
 from bctool.loops import detect_loop
+from bctool.metrics import analyze_replay
 from bctool.parse import parse_deaths, parse_game_output, parse_points
 from bctool.registry import discover, select
+from bctool.replay import load
 from bctool.stats import elo_diff, wilson
 
 
@@ -48,3 +50,17 @@ def test_registry_and_hash_invariance(tmp_path):
     assert bot_hash(bot) == first
     (bot / "main.py").write_bytes(b"print(2)\n")
     assert bot_hash(bot) != first
+
+
+def test_real_replay_metrics_fixture():
+    replay = load(Path(__file__).parent / "fixtures" / "discovery.replay")
+    assert replay["available"]
+    data = replay["data"]
+    metrics = analyze_replay(data)
+    assert data["format_version"] == 2
+    assert data["bot_a"] == "src"
+    assert len(data["events"]) > 30_000
+    assert metrics["teams"]["A"]["longest_dragon_end"] == 5
+    assert metrics["teams"]["B"]["longest_dragon_end"] == 6
+    assert metrics["teams"]["A"]["pearls_collected"] > 0
+    assert len(metrics["curves"]["A"]["longest_len"]) == 500

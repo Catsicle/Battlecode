@@ -36,10 +36,12 @@ uncertainty of decisive win rate; more games narrow the interval. Draws are not
 silently counted as wins. The current ELO command is an online K=32 cross-check;
 round-robin coverage is needed before comparing disconnected groups.
 
-Replay-derived length, pearl, loop, and legal-move metrics are `null` with a reason
-until the installed `unswbc` replay schema is verified. Unknown death causes remain
-`unclassified`. The default attack rules are intentionally conservative because a
-cause string alone cannot prove intent.
+Replay-derived length, pearl, loop, legal-move, death, and curve metrics are decoded
+from the packed Cap'n Proto replay format emitted by `unswbc 1.2.2`. Unsupported or
+future replay versions remain `null` with a reason. Pearl totals are explicitly
+labelled as observed pearl-appearance events, including death drops. Unknown death
+causes remain `unclassified`; attack rules are configurable in
+`config/death_rules.toml`.
 
 ## Commands
 

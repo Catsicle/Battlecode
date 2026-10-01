@@ -1,4 +1,4 @@
 [rules]
-suicide = ["(?i)hit self", "(?i)hit wall", "(?i)no valid action", "(?i)timeout", "(?i)crash", "(?i)kelp"]
-deliberate_attack = ["(?i)head to head", "(?i)other body"]
+suicide = ["(?i)hit itself", "(?i)hit self", "(?i)hit a wall", "(?i)hit wall", "(?i)no valid action", "(?i)timeout", "(?i)crash", "(?i)kelp"]
+deliberate_attack = ["(?i)head[- ]to[- ]head", "(?i)hit another dragon", "(?i)other body"]
 other = ["(?i)starv", "(?i)environment"]
