@@ -3,7 +3,7 @@
 import sys
 
 from scripts.tournament import _compat
-from tools.bc.cli import main
+from bctool.cli import main
 
 
 if __name__ == "__main__":

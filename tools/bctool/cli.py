@@ -9,7 +9,7 @@ from pathlib import Path
 from .elo import write as write_elo
 from .gates import evaluate
 from .registry import discover, select
-from .report import write as write_report
+from .report import rows, write as write_report
 from .runner import run
 from .snapshot import create
 
@@ -51,11 +51,11 @@ def _run(args: argparse.Namespace, tier: str | None = None) -> int:
     write_report(run_dir)
     write_elo(root)
     print(f"Report: {run_dir / 'report.md'}")
-    return 1 if any(item["status"] == "error" for item in __import__("bc.report", fromlist=["rows"]).rows(run_dir)) else 0
+    return 1 if any(item["status"] == "error" for item in rows(run_dir)) else 0
 
 
 def parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="bc")
+    p = argparse.ArgumentParser(prog="bctool")
     sub = p.add_subparsers(dest="command", required=True)
     list_parser = sub.add_parser("list")
     list_parser.set_defaults(func=lambda args: (print("\n".join(bot.id for bot in discover(_root()))) or 0))
@@ -76,13 +76,17 @@ def parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--keep-replays", action="store_true")
     run_parser.add_argument("--dry-run", action="store_true")
     run_parser.set_defaults(func=_run)
-    for name, maps, games in (("smoke", "train", 2), ("quick", "train", 40), ("full", "train", 400)):
+    for name, maps, games, opponents, seeds in (
+        ("smoke", "maps/train/arena.map", 2, "Random", [0]),
+        ("quick", "train", 40, "baselines,opponents", [0, 1, 2, 3, 4]),
+        ("full", "train", 400, "baselines,opponents", [0, 1, 2, 3, 4]),
+    ):
         tier_parser = sub.add_parser(name)
         tier_parser.add_argument("--games", type=int, default=games)
         tier_parser.add_argument("--candidate", default="active")
-        tier_parser.add_argument("--opponents", default="baselines,opponents")
+        tier_parser.add_argument("--opponents", default=opponents)
         tier_parser.add_argument("--maps", default=maps)
-        tier_parser.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2, 3, 4])
+        tier_parser.add_argument("--seeds", nargs="+", type=int, default=seeds)
         tier_parser.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) - 1))
         tier_parser.add_argument("--sandbox", action=argparse.BooleanOptionalAction, default=True)
         tier_parser.add_argument("--timeout", type=float, default=120)
@@ -91,7 +95,7 @@ def parser() -> argparse.ArgumentParser:
         tier_parser.add_argument("--keep-output", action="store_true")
         tier_parser.add_argument("--keep-replays", action="store_true")
         tier_parser.add_argument("--dry-run", action="store_true")
-        tier_parser.set_defaults(func=_run)
+        tier_parser.set_defaults(func=_run, repeats=1, resume=None)
     report_parser = sub.add_parser("report")
     report_parser.add_argument("run", type=Path)
     report_parser.set_defaults(func=lambda args: (print(write_report(args.run)) or 0))

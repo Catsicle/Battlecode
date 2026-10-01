@@ -71,6 +71,8 @@ def run_one(root: Path, run_dir: Path, candidate: Bot, opponent: Bot, item: dict
         except subprocess.TimeoutExpired as exc:
             stdout, stderr = _decode(exc.stdout), _decode(exc.stderr)
             status, winner, rounds, reason, returncode = "error", None, None, f"timeout after {timeout} seconds", -1
+        except FileNotFoundError as exc:
+            status, winner, rounds, reason, returncode = "error", None, None, f"runner not found: {exc.filename}", -1
     deaths = parse_deaths(stdout + "\n" + stderr)
     replay_info = load(replay_path if replay_path.exists() else None)
     row = {"index": index, "candidate": candidate.id, "opponent": opponent.id, "map": item["map"], "seed": item["seed"], "candidate_team": item["candidate_team"], "status": status, "winner": winner, "rounds": rounds, "end_reason": reason, "returncode": returncode, "duration_seconds": round(time.monotonic() - started, 4), "points": parse_points(stdout + "\n" + stderr), "deaths": classify_events(deaths), "metrics": _metrics(parse_points(stdout + "\n" + stderr), replay_info), "command": command, "stdout": stdout if keep_output else "", "stderr": stderr if keep_output else "", "replay": str(replay_path.relative_to(run_dir)) if keep_replays and replay_path.exists() else None, "git_sha": git_sha(root), "dirty": dirty(root), "bot_hash": {candidate.id: candidate.hash, opponent.id: opponent.hash}, "python": python_stamp(), "unswbc_version": runner_version(runner)}

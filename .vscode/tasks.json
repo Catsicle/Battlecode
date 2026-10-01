@@ -1,6 +1,7 @@
 {
   "version": "2.0.0",
   "tasks": [
+    { "label": "Battlecode: uv sync", "type": "shell", "command": "uv sync", "problemMatcher": [] },
     { "label": "Battlecode: test", "type": "shell", "command": "uv run pytest -q", "problemMatcher": [] },
     { "label": "Battlecode: smoke", "type": "shell", "command": "uv run bctool smoke", "problemMatcher": [] },
     { "label": "Battlecode: quick", "type": "shell", "command": "uv run bctool quick", "problemMatcher": [] },

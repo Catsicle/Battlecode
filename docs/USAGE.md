@@ -11,6 +11,9 @@ uv run bctool smoke
 Install `unswbc` separately and confirm `unswbc --help` works before running real
 games. The CLI uses `--sandbox` by default for tiers so CPU gates are meaningful.
 
+If `uv` is not found, install it from [docs.astral.sh/uv](https://docs.astral.sh/uv/).
+If the environment is stale after changing dependencies, run `uv sync` again.
+
 ## Daily loop
 
 Edit `src/`, run `uv run bctool smoke`, then `uv run bctool quick`. Read the report
@@ -50,4 +53,11 @@ cause string alone cannot prove intent.
 | `uv run bctool elo` | rebuild the leaderboard |
 | `uv run bctool snapshot NAME` | archive the active bot |
 | `uv run bctool replay-cmd RUN INDEX` | print a reproduction command |
+
+## Troubleshooting
+
+- **uv not found:** install uv from [docs.astral.sh/uv](https://docs.astral.sh/uv/), then reopen the terminal.
+- **Stale environment:** run `uv sync`.
+- **Runner not found:** install or expose `unswbc` on `PATH`; it is invoked directly by the tool.
+- **CPU not measured:** rerun with sandbox enabled; CPU gates intentionally fail for unsandboxed runs.
 

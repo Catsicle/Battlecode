@@ -15,3 +15,10 @@ proves the safe translation-unit boundary.
 
 Existing replays are binary and the matching parser is unavailable. Replay-derived
 fields are therefore null with a reason rather than guessed.
+
+## 2026-10-01: bctool and uv
+
+The package is named `bctool` instead of `bc` because `bc` conflicts with the
+Unix calculator command. Project installation and execution use `uv`; editable
+installation makes `bctool` importable from the repository and removes the need
+for `PYTHONPATH` or `sys.path` hacks in wrapper scripts.

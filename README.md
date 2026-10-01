@@ -7,3 +7,6 @@ under `results/runs/`.
 
 Start with [docs/USAGE.md](docs/USAGE.md). Discovery constraints and unavailable
 replay metrics are recorded in [docs/DISCOVERY.md](docs/DISCOVERY.md).
+
+Set up the project with `uv sync`, then use `uv run bctool ...` from the
+repository or any subfolder.
