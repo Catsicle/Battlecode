@@ -1,0 +1,19 @@
+[defaults]
+jobs = 0
+sandbox = true
+timeout_seconds = 120
+seeds = [0, 1, 2, 3, 4]
+games_per_matchup = 1
+
+[maps]
+train = "maps/train/*.map"
+holdout = "maps/holdout/*.map"
+
+[opponents]
+quick = ["baselines", "opponents"]
+full = ["baselines", "opponents", "history"]
+
+[gates]
+max_errors = 0
+max_cpu_points_M = 50
+warn_cpu_p99_M = 30

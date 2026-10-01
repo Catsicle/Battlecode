@@ -1,0 +1,4 @@
+[rules]
+suicide = ["(?i)hit self", "(?i)hit wall", "(?i)no valid action", "(?i)timeout", "(?i)crash", "(?i)kelp"]
+deliberate_attack = ["(?i)head to head", "(?i)other body"]
+other = ["(?i)starv", "(?i)environment"]

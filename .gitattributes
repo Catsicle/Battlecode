@@ -1,0 +1,8 @@
+* text=auto
+*.cpp text
+*.hpp text
+*.h text
+*.c text
+*.py text
+*.md text
+*.toml text

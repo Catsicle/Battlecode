@@ -1,0 +1,12 @@
+results/
+!results/.gitkeep
+.stage/
+.unswbc-build/
+**/.unswbc-build/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.zip
+*.wasm
+build/
+.venv/

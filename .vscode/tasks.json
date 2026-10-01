@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Battlecode: test", "type": "shell", "command": "python -m pytest -q", "problemMatcher": [] },
+    { "label": "Battlecode: smoke", "type": "shell", "command": "python -m bc smoke", "problemMatcher": [] },
+    { "label": "Battlecode: quick", "type": "shell", "command": "python -m bc quick", "problemMatcher": [] },
+    { "label": "Battlecode: full", "type": "shell", "command": "python -m bc full --games ${input:games}", "problemMatcher": [] }
+  ],
+  "inputs": [{ "id": "games", "type": "promptString", "description": "Number of games", "default": "400" }]
+}
