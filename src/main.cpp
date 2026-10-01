@@ -402,9 +402,6 @@ int main() {
         debug_body_state(ct, board, state);
         debug_root_candidates(ct, board, state);
     #endif
-        auto const [width, height] = game.get_map_size();
-        int const max_size = std::max(std::min(width, height) / 4, 5);
-
         bool has_legal_move = false;
         for (Direction direction : Direction::get_direction_list()) {
             SnakeState next = state;
@@ -414,10 +411,17 @@ int main() {
             }
         }
 
-        if ((!has_legal_move || ct.get_length() > max_size) && ct.can_split(2))
-            ct.do_split(2);
+        Direction chosen = Direction::NORTH;
+        if (has_legal_move)
+            chosen = choose_move(board, state, ct);
+
+        int const tail_split_size = ct.get_length() - 2;
+        bool const chosen_enters_portal = has_legal_move &&
+            (board.portal_edges[direction_index(chosen)] & cell_bit(state.head_cell)) != 0;
+        if ((!has_legal_move || chosen_enters_portal) && ct.can_split(tail_split_size))
+            ct.do_split(tail_split_size);
         else
-            ct.make_move(choose_move(board, state, ct));
+            ct.make_move(chosen);
         unswbc::end_turn();
     }
 }
