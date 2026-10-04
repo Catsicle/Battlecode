@@ -2,11 +2,11 @@
 name = "battlecode-tools"
 version = "0.1.0"
 description = "Reproducible UNSW Battlecode tournament and analytics tooling"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
   "matplotlib>=3.8",
   "rich>=13",
-  "tomli>=2; python_version < '3.11'",
+  "unswbc>=1.2.9",
 ]
 
 [dependency-groups]
