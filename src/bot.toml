@@ -1,3 +1,28 @@
 [project]
 language = "c++"
-include = [ "*.cpp", "*.hpp", "*.cc", "*.hh", "*.c", "*.h" ]
+include = [
+    "main.cpp",
+    "helper.hpp",
+    "config.hpp",
+    "core/types.hpp",
+    "core/memory.hpp",
+    "core/memory.cpp",
+    "core/log.hpp",
+    "comms/msg.hpp",
+    "comms/comms.hpp",
+    "comms/comms.cpp",
+    "nav/grid.hpp",
+    "nav/grid.cpp",
+    "nav/bfs.cpp",
+    "nav/astar.cpp",
+    "nav/flee.cpp",
+    "nav/wander.cpp",
+    "roles/role.hpp",
+    "roles/explorer.cpp",
+    "roles/killer.cpp",
+    "roles/feeder.cpp",
+    "roles/bodyguard.cpp",
+    "roles/queen.cpp",
+    "roles/stub.cpp",
+    "roles/registry.cpp"
+]
