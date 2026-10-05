@@ -1,4 +1,5 @@
 #include "bodyguard_sim/sim.hpp"
+#include "bodyguard_sim/trace.hpp"
 
 #include <array>
 #include <cstdlib>
@@ -10,6 +11,7 @@ using bodyguard_sim::Cell;
 using bodyguard_sim::TurnAction;
 using bodyguard_sim::DeathReason;
 using bodyguard_sim::Direction;
+using bodyguard_sim::TraceScript;
 using bodyguard_sim::World;
 
 namespace {
@@ -203,6 +205,31 @@ void test_sonar() {
     require(world.inbox(1).count == 1 && world.inbox(1).messages[0] == 999, "sonar crosses portal");
 }
 
+void test_deterministic_trace_batch() {
+    for (std::uint32_t seed = 0; seed < 50; ++seed) {
+        World first;
+        World second;
+        first.initialize(11, 7);
+        second.initialize(11, 7);
+        first.add_dragon(0, first.cell_at(1, 1), 'A');
+        second.add_dragon(0, second.cell_at(1, 1), 'A');
+        first.add_dragon(1, first.cell_at(9, 5), 'B');
+        second.add_dragon(1, second.cell_at(9, 5), 'B');
+        TraceScript script{seed, 24};
+        for (int round = 0; round < script.rounds; ++round) {
+            std::array<TurnAction, bodyguard_sim::MAX_DRAGONS> first_actions{};
+            std::array<TurnAction, bodyguard_sim::MAX_DRAGONS> second_actions{};
+            first_actions[0] = script.action(round, 0);
+            first_actions[1] = script.action(round, 1);
+            second_actions[0] = script.action(round, 0);
+            second_actions[1] = script.action(round, 1);
+            first.run_round(first_actions);
+            second.run_round(second_actions);
+            require(first.state_hash() == second.state_hash(), "deterministic trace diverged");
+        }
+    }
+}
+
 } // namespace
 
 void run_filter(std::string_view filter) {
@@ -218,13 +245,15 @@ void run_filter(std::string_view filter) {
         test_splitting_and_death_drops();
     if (filter == "all" || filter == "sonar")
         test_sonar();
+    if (filter == "all" || filter == "trace")
+        test_deterministic_trace_batch();
 }
 
 int main(int argc, char** argv) {
     std::string_view filter = "all";
     if (argc == 3 && std::string_view(argv[1]) == "--filter")
         filter = argv[2];
-    if (filter != "all" && filter != "movement" && filter != "collisions" && filter != "splitting" && filter != "sonar") {
+    if (filter != "all" && filter != "movement" && filter != "collisions" && filter != "splitting" && filter != "sonar" && filter != "trace") {
         std::cerr << "unknown simulator filter\n";
         return 2;
     }

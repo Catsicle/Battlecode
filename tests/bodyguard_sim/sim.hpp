@@ -220,6 +220,26 @@ class World {
     bool has_pearl(Cell position) const { return pearls_.test(static_cast<std::size_t>(position)); }
     const Inbox& inbox(int dragon_id) const { return inbox_[dragon_id]; }
     const Echoes& echoes(int dragon_id) const { return echoes_[dragon_id]; }
+
+    std::uint64_t state_hash() const {
+        std::uint64_t hash = 1469598103934665603ULL;
+        auto add = [&hash](std::uint64_t value) {
+            hash ^= value;
+            hash *= 1099511628211ULL;
+        };
+        add(static_cast<std::uint64_t>(width_));
+        add(static_cast<std::uint64_t>(height_));
+        for (Cell position = 0; position < width_ * height_; ++position)
+            add(has_pearl(position) ? 1U : 0U);
+        for (int dragon_id = 0; dragon_id < next_id_; ++dragon_id) {
+            const Dragon& dragon = dragons_[dragon_id];
+            add(dragon.alive ? 1U : 0U);
+            add(static_cast<std::uint64_t>(dragon.length));
+            for (int index = 0; index < dragon.length; ++index)
+                add(static_cast<std::uint64_t>(dragon.body[index]));
+        }
+        return hash;
+    }
     DeathReason last_death = DeathReason::None;
 
     void add_dragon(int dragon_id, const std::array<Cell, MAX_CELLS>& body, int length, char team = 'A') {

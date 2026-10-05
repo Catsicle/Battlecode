@@ -106,10 +106,12 @@ Use the simulator fixtures before engine runs when developing cycle validators:
 /tmp/battlecode-cmake/bodyguard-sim-tests --filter movement
 /tmp/battlecode-cmake/bodyguard-sim-tests --filter splitting
 /tmp/battlecode-cmake/bodyguard-sim-tests --filter sonar
+/tmp/battlecode-cmake/bodyguard-sim-tests --filter trace
 ```
 
-The `movement`, `collisions`, `splitting`, and `sonar` filters are active in the
-current slice.
+The `movement`, `collisions`, `splitting`, `sonar`, and `trace` filters are
+active in the current slice. The `trace` filter runs 50 deterministic offline
+scripts; it does not replace the required simulator-versus-engine comparison.
 
 The simulator is deterministic. A failing trace must include the seed, initial
 world, action script, and first differing state. Engine comparison fixtures are
