@@ -81,9 +81,10 @@ compare the new run with the previous one.
 
 ### Bodyguard simulator tests
 
-Phase 2 adds the offline simulator under `src/bodyguard/sim/` and its focused
-tests under `tests/bodyguard_sim/`. These tests run without `unswbc` and cover
-movement, portals, pearls, splitting, collisions, deaths, and sonar traces.
+Phase 2 adds the offline simulator and its focused tests entirely under
+`tests/bodyguard_sim/`. The simulator is test infrastructure, not bot runtime
+code, and runs without `unswbc`. It covers movement, portals, pearls,
+splitting, collisions, deaths, and sonar traces.
 
 After the simulator target is implemented, build and run it with:
 
