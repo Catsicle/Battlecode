@@ -1,0 +1,81 @@
+loaded c/c++ vs c/c++
+without --sandbox the seed repeats the pearls but not the bots' own random numbers
+seed 0x0000000000000002
+running round 2/500 --  last: 22ms  eta: 11.2s  dragons: 3 vs 3
+round 10: bot 4 (team A) died: hit itself
+round 22: bot 3 (team B) died: hit itself
+round 30: bot 6 (team B) died: hit a wall
+round 37: bot 2 (team A) died: hit itself
+round 40: bot 5 (team B) died: hit itself
+running round 51/500 --  last: 11ms  eta: 7.8s  dragons: 1 vs 4
+round 59: bot 7 (team B) died: hit itself
+round 63: bot 10 (team B) died: hit itself
+round 68: bot 11 (team B) died: hit itself
+round 69: bot 12 (team B) died: hit itself
+round 74: bot 13 (team B) died: hit itself
+round 86: bot 14 (team B) died: hit itself
+round 98: bot 8 (team B) died: hit itself
+running round 101/500 --  last: 31ms  eta: 6.8s  dragons: 1 vs 4
+round 101: bot 16 (team B) died: hit itself
+round 119: bot 1 (team B) died: hit itself
+round 123: bot 9 (team B) died: hit a wall
+round 138: bot 17 (team B) died: hit itself
+running round 151/500 --  last: 6ms  eta: 5.6s  dragons: 1 vs 2
+round 184: bot 19 (team B) died: hit itself
+round 198: bot 15 (team B) died: hit itself
+running round 201/500 --  last: 8ms  eta: 4.2s  dragons: 1 vs 3
+round 209: bot 21 (team B) died: hit itself
+round 223: bot 22 (team B) died: hit itself
+running round 251/500 --  last: 16ms  eta: 3.2s  dragons: 1 vs 4
+round 275: bot 24 (team B) died: hit itself
+round 280: bot 18 (team B) died: hit itself
+round 280: bot 23 (team B) died: hit itself
+round 285: bot 25 (team B) died: hit itself
+running round 301/500 --  last: 9ms  eta: 2.6s  dragons: 1 vs 4
+round 304: bot 27 (team B) died: hit itself
+round 320: bot 20 (team B) died: hit a wall
+round 320: bot 29 (team B) died: hit itself
+round 337: bot 31 (team B) died: hit a wall
+round 347: bot 35 (team B) died: hit itself
+running round 351/500 --  last: 17ms  eta: 2.2s  dragons: 1 vs 8
+round 352: bot 30 (team B) died: hit itself
+round 370: bot 40 (team B) died: hit itself
+round 376: bot 34 (team B) died: hit itself
+round 378: bot 37 (team B) died: hit itself
+round 382: bot 28 (team B) died: hit itself
+round 382: bot 41 (team B) died: hit itself
+round 386: bot 32 (team B) died: hit itself
+round 390: bot 44 (team B) died: hit itself
+round 396: bot 43 (team B) died: hit itself
+round 397: bot 42 (team B) died: hit itself
+round 399: bot 48 (team B) died: hit itself
+running round 401/500 --  last: 39ms  eta: 1.8s  dragons: 1 vs 10
+round 405: bot 50 (team B) died: hit itself
+round 406: bot 26 (team B) died: hit another dragon
+round 410: bot 49 (team B) died: lost a head-to-head
+round 410: bot 38 (team B) died: lost a head-to-head
+round 412: bot 47 (team B) died: hit itself
+round 419: bot 52 (team B) died: hit itself
+round 427: bot 33 (team B) died: hit a wall
+round 438: bot 39 (team B) died: hit itself
+round 439: bot 53 (team B) died: lost a head-to-head
+round 439: bot 57 (team B) died: lost a head-to-head
+running round 451/500 --  last: 22ms  eta: 1.0s  dragons: 1 vs 9
+round 450: bot 58 (team B) died: hit another dragon
+round 452: bot 59 (team B) died: hit itself
+round 454: bot 60 (team B) died: lost a head-to-head
+round 454: bot 55 (team B) died: lost a head-to-head
+round 456: bot 54 (team B) died: hit a wall
+round 462: bot 51 (team B) died: hit itself
+round 464: bot 56 (team B) died: lost a head-to-head
+round 464: bot 61 (team B) died: lost a head-to-head
+round 470: bot 62 (team B) died: hit itself
+round 478: bot 66 (team B) died: hit itself
+round 488: bot 64 (team B) died: hit itself
+round 492: bot 36 (team B) died: hit itself
+round 492: bot 63 (team B) died: hit itself
+round 497: bot 45 (team B) died: hit itself
+round 499: bot 71 (team B) died: hit itself
+round 499: bot 72 (team B) died: hit a wall
+team A wins after 500 rounds (longer queen, 3 to 0) (10.7s)
+wrote replay: tests/fixtures/phase0-portals-a.replay

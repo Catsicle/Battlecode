@@ -1,0 +1,19 @@
+loaded c/c++ vs c/c++
+without --sandbox the seed repeats the pearls but not the bots' own random numbers
+seed 0x0000000000000003
+running round 2/500 --  last: 19ms  eta: 9.8s  dragons: 3 vs 3
+round 16: bot 3 (team B) died: hit a wall
+round 18: bot 0 (team A) died: hit itself
+round 18: bot 5 (team B) died: hit itself
+round 24: bot 7 (team A) died: hit itself
+round 27: bot 1 (team B) died: hit a wall
+round 37: bot 9 (team A) died: hit itself
+round 46: bot 2 (team A) died: hit itself
+round 49: bot 4 (team A) died: hit itself
+running round 51/500 --  last: 9ms  eta: 4.0s  dragons: 1 vs 2
+round 57: bot 8 (team B) died: hit a wall
+round 59: bot 10 (team A) died: hit itself
+round 73: bot 6 (team B) died: hit itself
+round 80: bot 12 (team A) died: hit itself
+team B wins after 81 rounds (by elimination) (0.6s)
+wrote replay: tests/fixtures/phase0-portals-b.replay
