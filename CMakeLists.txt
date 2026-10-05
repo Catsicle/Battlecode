@@ -21,3 +21,8 @@ add_executable(bot
 	src/roles/registry.cpp
 )
 target_include_directories(bot PRIVATE src)
+
+add_executable(bodyguard-sim-tests
+	tests/bodyguard_sim/main.cpp
+)
+target_include_directories(bodyguard-sim-tests PRIVATE src tests)

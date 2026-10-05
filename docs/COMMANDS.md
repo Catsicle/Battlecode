@@ -83,8 +83,9 @@ compare the new run with the previous one.
 
 Phase 2 adds the offline simulator and its focused tests entirely under
 `tests/bodyguard_sim/`. The simulator is test infrastructure, not bot runtime
-code, and runs without `unswbc`. It covers movement, portals, pearls,
-splitting, collisions, deaths, and sonar traces.
+code, and runs without `unswbc`. The initial suite covers movement, portals,
+pearls, and collisions; splitting, deaths, and sonar suites are added as their
+rules are implemented.
 
 After the simulator target is implemented, build and run it with:
 
@@ -106,6 +107,9 @@ Use the simulator fixtures before engine runs when developing cycle validators:
 /tmp/battlecode-cmake/bodyguard-sim-tests --filter splitting
 /tmp/battlecode-cmake/bodyguard-sim-tests --filter sonar
 ```
+
+The `movement` and `collisions` filters are active in the current slice.
+`splitting` and `sonar` currently report that their suites are pending.
 
 The simulator is deterministic. A failing trace must include the seed, initial
 world, action script, and first differing state. Engine comparison fixtures are
