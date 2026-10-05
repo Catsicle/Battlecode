@@ -23,16 +23,25 @@ using Cell = int;
 
 enum class Direction : std::uint8_t { North, East, South, West };
 enum class DeathReason : std::uint8_t { None, Wall, Self, OtherBody, HeadToHead, NoValidAction };
+enum class SonarHit : std::uint8_t { Kelp, Ally, AllyHead, Enemy, EnemyHead };
 
 struct Action {
     std::array<Direction, MAX_STEPS> steps{};
     std::size_t count = 0;
+    std::array<std::uint64_t, 4> sonar_messages{};
+    std::array<bool, 4> sonar_set{};
 
     bool push(Direction direction) {
         if (count == steps.size())
             return false;
         steps[count++] = direction;
         return true;
+    }
+
+    void send_sonar(Direction direction, std::uint64_t message) {
+        int index = static_cast<int>(direction);
+        sonar_messages[index] = message;
+        sonar_set[index] = true;
     }
 };
 
@@ -49,8 +58,21 @@ struct TurnAction {
 
 struct Dragon {
     bool alive = false;
+    char team = 'A';
     int length = 0;
+    Direction facing = Direction::East;
     std::array<Cell, MAX_CELLS> body{};
+};
+
+struct Inbox {
+    std::array<std::uint64_t, 4> messages{};
+    std::size_t count = 0;
+};
+
+struct Echoes {
+    std::array<int, 5> counts{};
+
+    int count(SonarHit hit) const { return counts[static_cast<int>(hit)]; }
 };
 
 struct PortalExit {
@@ -69,6 +91,9 @@ class World {
     bot::bodyguard::core::FixedBitset<MAX_CELLS> pearls_;
     std::array<int, MAX_CELLS> occupant_{};
     std::array<Dragon, MAX_DRAGONS> dragons_{};
+    std::array<Inbox, MAX_DRAGONS> inbox_{};
+    std::array<Inbox, MAX_DRAGONS> next_round_inbox_{};
+    std::array<Echoes, MAX_DRAGONS> echoes_{};
     int next_id_ = 0;
 
     static std::pair<int, int> offset(Direction direction) {
@@ -119,6 +144,55 @@ class World {
         }
     }
 
+    static Direction opposite(Direction direction) {
+        switch (direction) {
+        case Direction::North: return Direction::South;
+        case Direction::East: return Direction::West;
+        case Direction::South: return Direction::North;
+        case Direction::West: return Direction::East;
+        }
+        return Direction::North;
+    }
+
+    static int direction_index(Direction direction) { return static_cast<int>(direction); }
+
+    void enqueue(Inbox& inbox, std::uint64_t message) {
+        if (inbox.count < inbox.messages.size())
+            inbox.messages[inbox.count++] = message;
+    }
+
+    void cast_sonar(int sender_id, Direction direction, std::uint64_t message) {
+        const Dragon& sender = dragons_[sender_id];
+        Cell origin = sender.body[0];
+        Direction ray_direction = direction;
+        if (direction == opposite(sender.facing) && sender.length > 1) {
+            origin = sender.body[sender.length - 1];
+            ray_direction = direction;
+        }
+        for (int distance = 0; distance < width_ + height_; ++distance) {
+            if ((kelp_[origin] & edge_bit(ray_direction)) != 0) {
+                ++echoes_[sender_id].counts[static_cast<int>(SonarHit::Kelp)];
+                return;
+            }
+            PortalExit exit = portal(origin, ray_direction);
+            Cell destination = exit.present ? next_cell(exit.cell, exit.direction) : next_cell(origin, ray_direction);
+            int target_id = occupant_[destination];
+            if (target_id >= 0) {
+                const Dragon& target = dragons_[target_id];
+                bool ally = target.team == sender.team;
+                SonarHit hit = ally ? (target.body[0] == destination ? SonarHit::AllyHead : SonarHit::Ally)
+                                    : (target.body[0] == destination ? SonarHit::EnemyHead : SonarHit::Enemy);
+                ++echoes_[sender_id].counts[static_cast<int>(hit)];
+                if (target_id > sender_id)
+                    enqueue(inbox_[target_id], message);
+                else
+                    enqueue(next_round_inbox_[target_id], message);
+                return;
+            }
+            origin = destination;
+        }
+    }
+
   public:
     void initialize(int width, int height) {
         width_ = width;
@@ -130,6 +204,9 @@ class World {
         pearls_.clear();
         occupant_.fill(-1);
         dragons_.fill({});
+        inbox_.fill({});
+        next_round_inbox_.fill({});
+        echoes_.fill({});
         next_id_ = 0;
     }
 
@@ -141,10 +218,13 @@ class World {
     bool alive(int dragon_id) const { return dragons_[dragon_id].alive; }
     int next_unused_id() const { return next_id_; }
     bool has_pearl(Cell position) const { return pearls_.test(static_cast<std::size_t>(position)); }
+    const Inbox& inbox(int dragon_id) const { return inbox_[dragon_id]; }
+    const Echoes& echoes(int dragon_id) const { return echoes_[dragon_id]; }
     DeathReason last_death = DeathReason::None;
 
-    void add_dragon(int dragon_id, const std::array<Cell, MAX_CELLS>& body, int length) {
+    void add_dragon(int dragon_id, const std::array<Cell, MAX_CELLS>& body, int length, char team = 'A') {
         dragons_[dragon_id].alive = true;
+        dragons_[dragon_id].team = team;
         dragons_[dragon_id].length = length;
         dragons_[dragon_id].body = body;
         if (dragon_id >= next_id_)
@@ -152,10 +232,10 @@ class World {
         rebuild_occupancy();
     }
 
-    void add_dragon(int dragon_id, Cell head_position) {
+    void add_dragon(int dragon_id, Cell head_position, char team = 'A') {
         std::array<Cell, MAX_CELLS> body{};
         body[0] = head_position;
-        add_dragon(dragon_id, body, 1);
+        add_dragon(dragon_id, body, 1, team);
     }
 
     void set_kelp(Cell position, Direction direction, bool enabled = true) {
@@ -232,6 +312,7 @@ class World {
             for (int index = new_length - 1; index > 0; --index)
                 dragon.body[index] = dragon.body[index - 1];
             dragon.body[0] = destination;
+            dragon.facing = direction;
             if (ate)
                 pearls_.reset(static_cast<std::size_t>(destination));
             if (paid)
@@ -262,6 +343,10 @@ class World {
 
     void run_round(const std::array<TurnAction, MAX_DRAGONS>& actions) {
         tick_pearls();
+        inbox_.fill({});
+        for (int dragon_id = 0; dragon_id < MAX_DRAGONS; ++dragon_id)
+            inbox_[dragon_id] = next_round_inbox_[dragon_id];
+        next_round_inbox_.fill({});
         for (int dragon_id = 0; dragon_id < next_id_; ++dragon_id) {
             if (!dragons_[dragon_id].alive)
                 continue;
@@ -272,6 +357,13 @@ class World {
                 move(dragon_id, action.movement);
             else
                 kill(dragon_id, DeathReason::NoValidAction);
+            if (!dragons_[dragon_id].alive)
+                continue;
+            for (Direction direction : {Direction::North, Direction::East, Direction::South, Direction::West}) {
+                int index = direction_index(direction);
+                if (action.kind == ActionKind::Move && action.movement.sonar_set[index])
+                    cast_sonar(dragon_id, direction, action.movement.sonar_messages[index]);
+            }
         }
     }
 

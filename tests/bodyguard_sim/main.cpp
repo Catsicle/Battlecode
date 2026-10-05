@@ -144,6 +144,65 @@ void test_splitting_and_death_drops() {
     require(world.alive(1) && world.head(1) == world.cell_at(7, 0), "split child should act later in the same round");
 }
 
+void test_sonar() {
+    World world;
+    world.initialize(8, 3);
+    world.add_dragon(0, world.cell_at(0, 1), 'A');
+    world.add_dragon(1, world.cell_at(3, 0), 'A');
+    std::array<TurnAction, bodyguard_sim::MAX_DRAGONS> actions{};
+    Action sender_action;
+    sender_action.push(Direction::North);
+    sender_action.send_sonar(Direction::East, 123);
+    actions[0] = TurnAction::move(sender_action);
+    Action receiver_action;
+    receiver_action.push(Direction::North);
+    actions[1] = TurnAction::move(receiver_action);
+    world.run_round(actions);
+    require(world.inbox(1).count == 1 && world.inbox(1).messages[0] == 123, "higher ID receives sonar this round");
+    require(world.echoes(0).count(bodyguard_sim::SonarHit::AllyHead) == 1, "ally head echo");
+
+    world.initialize(8, 3);
+    world.add_dragon(0, world.cell_at(3, 1), 'A');
+    world.add_dragon(1, world.cell_at(0, 1), 'B');
+    actions = {};
+    Action enemy_sender;
+    enemy_sender.push(Direction::East);
+    enemy_sender.send_sonar(Direction::East, 456);
+    actions[1] = TurnAction::move(enemy_sender);
+    Action enemy_target;
+    enemy_target.push(Direction::East);
+    actions[0] = TurnAction::move(enemy_target);
+    world.run_round(actions);
+    require(world.inbox(0).count == 0, "lower ID waits for next round");
+    require(world.echoes(1).count(bodyguard_sim::SonarHit::EnemyHead) == 1, "enemy head echo");
+    world.run_round(actions);
+    require(world.inbox(0).count == 1 && world.inbox(0).messages[0] == 456, "lower ID receives sonar next round");
+
+    world.initialize(8, 3);
+    world.add_dragon(0, world.cell_at(0, 1));
+    world.set_kelp(world.cell_at(0, 0), Direction::East);
+    actions = {};
+    Action kelp_sender;
+    kelp_sender.push(Direction::North);
+    kelp_sender.send_sonar(Direction::East, 789);
+    actions[0] = TurnAction::move(kelp_sender);
+    world.run_round(actions);
+    require(world.echoes(0).count(bodyguard_sim::SonarHit::Kelp) == 1, "kelp stops sonar");
+
+    world.initialize(8, 3);
+    world.add_dragon(0, world.cell_at(0, 1));
+    world.add_dragon(1, world.cell_at(5, 0));
+    world.set_portal(world.cell_at(0, 0), Direction::East, world.cell_at(4, 0), Direction::East);
+    actions = {};
+    Action portal_sender;
+    portal_sender.push(Direction::North);
+    portal_sender.send_sonar(Direction::East, 999);
+    actions[0] = TurnAction::move(portal_sender);
+    actions[1] = TurnAction::move(receiver_action);
+    world.run_round(actions);
+    require(world.inbox(1).count == 1 && world.inbox(1).messages[0] == 999, "sonar crosses portal");
+}
+
 } // namespace
 
 void run_filter(std::string_view filter) {
@@ -157,6 +216,8 @@ void run_filter(std::string_view filter) {
         test_head_to_head();
     if (filter == "all" || filter == "splitting")
         test_splitting_and_death_drops();
+    if (filter == "all" || filter == "sonar")
+        test_sonar();
 }
 
 int main(int argc, char** argv) {
@@ -166,10 +227,6 @@ int main(int argc, char** argv) {
     if (filter != "all" && filter != "movement" && filter != "collisions" && filter != "splitting" && filter != "sonar") {
         std::cerr << "unknown simulator filter\n";
         return 2;
-    }
-    if (filter == "sonar") {
-        std::cout << "no tests implemented for " << filter << " yet\n";
-        return 0;
     }
     run_filter(filter);
     std::cout << "bodyguard simulator tests passed\n";
