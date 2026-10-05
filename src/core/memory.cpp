@@ -22,6 +22,9 @@ void Memory::initialize(int map_width, int map_height) {
     occupancy.assign(cells, {});
     pearl.assign(cells, false);
     own_body.clear();
+    previous_head = {};
+    has_previous_head = false;
+    previous_move_ate = false;
 }
 
 void Memory::update(const unswbc::Controller& controller, int round) {
