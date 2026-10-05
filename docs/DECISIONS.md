@@ -7,9 +7,29 @@
 
 ## 2026-10-01: defer C++ split
 
-The runner is unavailable, so multiple-source compilation could not be tested.
-`main.cpp` remains unchanged; a header-only split is deferred until a real build
-proves the safe translation-unit boundary.
+The active bot now uses multiple C++ translation units listed explicitly in
+`src/bot.toml`. The native CMake target and the runner both compile the modular
+layout successfully, so the earlier header-only split constraint is no longer
+applicable to `src/`.
+
+## 2026-10-05: conservative occupancy age
+
+Observed occupancy retains its last-observed round rather than being cleared
+after two rounds. Clearing stale cells made the current fallback navigator treat
+uncertain locations as free and caused both fixed-seed smoke games to lose.
+The age is retained for a future safety layer to interpret conservatively.
+
+## 2026-10-05: visible portal exits
+
+`portal_exit_known` is set only when both endpoints with the same portal ID are
+visible during one map update. A single observed endpoint is insufficient to
+select a portal route because its exit geometry remains unknown.
+
+## 2026-10-05: modular build validation
+
+The active source set was validated with CMake and `unswbc 1.2.9`. Python tests
+and two sandbox smoke games on the arena map also passed after the memory
+changes.
 
 ## 2026-10-01: binary replays
 
