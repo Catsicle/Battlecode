@@ -28,6 +28,12 @@ void Memory::initialize(int map_width, int map_height) {
 }
 
 void Memory::update(const unswbc::Controller& controller, int round) {
+    struct PortalEndpoint {
+        int cell;
+        int direction;
+        int id;
+    };
+    std::vector<PortalEndpoint> visible_portals;
     Vec2 current_head = controller.get_position();
     if (has_previous_head && current_head != previous_head) {
         int cell = index(current_head);
@@ -76,6 +82,17 @@ void Memory::update(const unswbc::Controller& controller, int round) {
                 kelp[cell] |= static_cast<std::uint8_t>(1U << d);
             if (edge.get_edge_type() == unswbc::EdgeType::PORTAL)
                 portal_id[cell][d] = static_cast<std::int16_t>(edge.get_portal_id());
+            if (edge.get_edge_type() == unswbc::EdgeType::PORTAL)
+                visible_portals.push_back({cell, d, edge.get_portal_id()});
+        }
+    }
+
+    for (const PortalEndpoint& endpoint : visible_portals) {
+        for (const PortalEndpoint& candidate : visible_portals) {
+            if (candidate.id == endpoint.id && (candidate.cell != endpoint.cell || candidate.direction != endpoint.direction)) {
+                portal_exit_known[endpoint.cell][endpoint.direction] = true;
+                break;
+            }
         }
     }
 }
