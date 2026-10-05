@@ -105,7 +105,7 @@ Defines interfaces:
 `generator.cpp` (`generate_rectangle`): Produces minimal 4-cell rectangle anchored at pocket (`[pocket, p+1, p+w, p+w+1]`). Even length, simple, respects `w,h >= 4` and `2(w+h)-4 <= cap`. Placeholder minimal version; full prefix-sum logic deferred.
 
 `m2a.hpp`: Implements full spec functions separately:
-- `Grid` adapter (`usable`, `plain`, `W`, `H`).
+- `Grid` adapter in `types.hpp` refactored to use memory queries (`get_cell`/`get_edge`). Redundant `seen`/`neighbor` removed.
 - `buildRuns(const Grid&, runE&, runS&)`: Exact double-backward loop from spec (`k` from `2*W-1` to `0`; wrap `k >= W ? k-W : k`; update `runE`; cap at `W`). `runS` uses same pattern with `plain(x,y,1)` over columns (`2*H-1` loop, cap `H`).
 - `emitBoxes()`: Anchor loop (`y0` `0..H-1`, `x0` `0..W-1`); calculates `mw = min(runE[y0][x0], W-1)`, `mh = min(runS[y0][x0], H-1)`; inner loops `h=4..mh`, `w=4..mw`; conditions: `2(w+h)-4 > cap` break; `runE[yb][x0] < w` continue; `runS[y0][xr] < h` continue (with wrap `xr`, `yb`). Emits `Box{x0,y0,w,h}`.
 - `interiorUnseen()`: Placeholder (`interior > 0 ? true : false`). Full version requires doubled-torus prefix sum of unseen counts (`rectSum(x0+1, y0+1, w-2, h-2)`).

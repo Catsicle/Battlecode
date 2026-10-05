@@ -48,3 +48,55 @@ Sets `my_team` from `controller.get_team()`, updates `seen`, `occupancy`, `pearl
   - `1` = pearl present
 
 Team classification uses `memory.my_team` (set in `update`).
+
+## Moved query functions (normal, non-inline)
+
+### `mapview_width(const Memory&)` → `int`
+- Input: `Memory` adapter (`memory`)
+- Output: `memory.width`
+
+### `mapview_height(const Memory&)` → `int`
+- Input: `Memory`
+- Output: `memory.height`
+
+### `mapview_cells(const Memory&)` → `int`
+- Input: `Memory`
+- Output: `memory.cells` (`width * height`)
+
+### `mapview_valid(const Memory&, int cell)` → `bool`
+- Input: `Memory`, `cell` index
+- Output: `true` if `cell >= 0 && cell < memory.cells`
+
+### `query_known(const Memory&, int cell)` → `bool`
+- Input: `Memory`, `cell`
+- Output: `memory.known(cell)`
+
+### `query_frontier(const Memory&, int cell)` → `bool`
+- Input: `Memory`, `cell`
+- Output: `memory.is_frontier(cell)`
+
+### `query_seen(const Memory&, int cell)` → `bool`
+- Input: `Memory`, `cell`
+- Output: `valid(cell) ? memory.seen[cell] : false`
+
+### `query_edge_known(const Memory&, int cell, int direction)` → `bool`
+- Input: `Memory`, `cell`, `direction` (`0=N,1=E,2=S,3=W`)
+- Output: `valid(cell) ? memory.edge_known(cell, direction) : false`
+
+### `query_last_seen_round(const Memory&, int cell)` → `int`
+- Input: `Memory`, `cell`
+- Output: `valid(cell) ? memory.last_seen_round[cell] : -1`
+
+### `query_has_pearl(const Memory&, int cell)` → `bool`
+- Input: `Memory`, `cell`
+- Output: `valid(cell) ? memory.pearl[cell] : false`
+
+### `query_pearl_spawn_round(const Memory&, int cell)` → `int`
+- Input: `Memory`, `cell`
+- Output: `valid(cell) ? memory.pearl_spawn_round[cell] : std::numeric_limits<int>::max()`
+
+### `query_never_spawns(const Memory&, int cell)` → `bool`
+- Input: `Memory`, `cell`
+- Output: `valid(cell) ? memory.never_spawns[cell] : false`
+
+All declared in `queries.hpp`, defined in `queries.cpp`; call them instead of `map_view.hpp` members.

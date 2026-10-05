@@ -4,7 +4,7 @@
 - `src/core/memory.hpp` (struct definition, adapter interface)
 - `src/core/memory.cpp` (update logic, pearl tracking, portal pairing, occupancy)
 - `src/bodyguard/core/types.hpp` (Cell, Position, Direction; added Cycle/CycleCandidate)
-- Related usages: `sim.hpp` (World/Dragon state), `torus.hpp` (neighbor/index), `map_view.hpp` (7×7 window adapter)
+- Related usages: `sim.hpp`, `torus.hpp`, `map_view.hpp` (adapter reduced; queries moved to `src/core/memory/queries.cpp`/`.hpp`)
 
 ---
 
@@ -79,7 +79,7 @@ Implemented query functions (`get_cell`, `get_edge`) using `Memory` adapter (`my
 
 ## 6. Unimplemented / Partial
 
-- `Memory` does not contain a `Grid` adapter directly; `Grid` is a standalone struct in `m2a.hpp`. Integration requires wiring `Memory.known()` → `Grid.usable()` and `Memory.edge_known()` / `Memory.kelp[]` → `Grid.plain()`.
+- `Grid` adapter in `types.hpp` uses memory queries (`get_cell`/`get_edge`) for `usable`/`plain`. No `m2a.cpp` exists.
 - No `map_store` persistence module separate from `Memory`; `sim.hpp` duplicates some fields (`occupant_`, `dragons_`).
 - `initial_moves` / `previous_head` tracking is partial: only updates when `has_previous_head` true; no handling for first turn or split child initialization.
 - `portal_exit_known` only pairs visible endpoints; does not handle hidden endpoints (matches `PROMPT.MD` rule: simulate portals only when paired endpoint visible).

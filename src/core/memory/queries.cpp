@@ -83,4 +83,19 @@ std::pair<std::optional<int>, std::optional<int>> get_edge(const Memory& memory,
     return {std::optional<int>(first), std::optional<int>(second)};
 }
 
+// Moved from map_view.hpp
+int mapview_width(const Memory& memory) { return memory.width; }
+int mapview_height(const Memory& memory) { return memory.height; }
+int mapview_cells(const Memory& memory) { return memory.cells; }
+bool mapview_valid(const Memory& memory, int cell) { return cell >= 0 && cell < memory.cells; }
+
+bool query_known(const Memory& memory, int cell) { return memory.known(cell); }
+bool query_frontier(const Memory& memory, int cell) { return memory.is_frontier(cell); }
+int query_last_seen_round(const Memory& memory, int cell) { return cell >= 0 && cell < memory.cells ? memory.last_seen_round[cell] : -1; }
+bool query_has_pearl(const Memory& memory, int cell) { return cell >= 0 && cell < memory.cells ? memory.pearl[cell] : false; }
+int query_pearl_spawn_round(const Memory& memory, int cell) { return cell >= 0 && cell < memory.cells ? memory.pearl_spawn_round[cell] : std::numeric_limits<int>::max(); }
+bool query_never_spawns(const Memory& memory, int cell) { return cell >= 0 && cell < memory.cells ? memory.never_spawns[cell] : false; }
+bool query_seen(const Memory& memory, int cell) { return cell >= 0 && cell < memory.cells ? memory.seen[cell] : false; }
+bool query_edge_known(const Memory& memory, int cell, int direction) { return cell >= 0 && cell < memory.cells ? memory.edge_known(cell, direction) : false; }
+
 } // namespace bot
