@@ -84,8 +84,8 @@ compare the new run with the previous one.
 Phase 2 adds the offline simulator and its focused tests entirely under
 `tests/bodyguard_sim/`. The simulator is test infrastructure, not bot runtime
 code, and runs without `unswbc`. The initial suite covers movement, portals,
-pearls, collisions, splitting, and death drops; same-round scheduling and sonar
-suites are added as their rules are implemented.
+pearls, collisions, splitting, death drops, and same-round child scheduling;
+the sonar suite is added as its rules are implemented.
 
 After the simulator target is implemented, build and run it with:
 

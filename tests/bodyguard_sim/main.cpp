@@ -6,6 +6,7 @@
 #include <string_view>
 
 using bodyguard_sim::Action;
+using bodyguard_sim::TurnAction;
 using bodyguard_sim::DeathReason;
 using bodyguard_sim::Direction;
 using bodyguard_sim::World;
@@ -107,6 +108,16 @@ void test_splitting_and_death_drops() {
     action.push(Direction::East);
     require(world.move(0, action) == DeathReason::Wall, "death-drop setup");
     require(world.has_pearl(world.cell_at(1, 0)) && world.has_pearl(world.cell_at(3, 0)) && world.has_pearl(world.cell_at(5, 0)), "death drops every second segment");
+
+    world.initialize(8, 2);
+    world.add_dragon(0, body, 6);
+    std::array<TurnAction, bodyguard_sim::MAX_DRAGONS> actions{};
+    actions[0] = TurnAction::split(2);
+    Action child_move;
+    child_move.push(Direction::East);
+    actions[1] = TurnAction::move(child_move);
+    world.run_round(actions);
+    require(world.alive(1) && world.head(1) == world.cell_at(7, 0), "split child should act later in the same round");
 }
 
 } // namespace

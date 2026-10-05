@@ -36,6 +36,17 @@ struct Action {
     }
 };
 
+enum class ActionKind : std::uint8_t { None, Move, Split };
+
+struct TurnAction {
+    ActionKind kind = ActionKind::None;
+    Action movement{};
+    int child_size = 0;
+
+    static TurnAction move(Action action) { return {ActionKind::Move, action, 0}; }
+    static TurnAction split(int size) { return {ActionKind::Split, {}, size}; }
+};
+
 struct Dragon {
     bool alive = false;
     int length = 0;
@@ -203,6 +214,20 @@ class World {
         parent.length -= child_size;
         rebuild_occupancy();
         return true;
+    }
+
+    void run_round(const std::array<TurnAction, MAX_DRAGONS>& actions) {
+        for (int dragon_id = 0; dragon_id < next_id_; ++dragon_id) {
+            if (!dragons_[dragon_id].alive)
+                continue;
+            const TurnAction& action = actions[dragon_id];
+            if (action.kind == ActionKind::Split)
+                split(dragon_id, action.child_size);
+            else if (action.kind == ActionKind::Move)
+                move(dragon_id, action.movement);
+            else
+                kill(dragon_id, DeathReason::NoValidAction);
+        }
     }
 
   private:
