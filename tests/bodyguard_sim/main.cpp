@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string_view>
+#include <vector>
 
 using bodyguard_sim::Action;
 using bodyguard_sim::Cell;
@@ -230,6 +231,58 @@ void test_deterministic_trace_batch() {
     }
 }
 
+int state_trace(int argc, char** argv) {
+    std::uint32_t seed = 0;
+    std::vector<int> initial_pearls;
+    std::vector<std::pair<int, int>> scheduled_pearls;
+    for (int index = 2; index < argc; ++index) {
+        if (std::string_view(argv[index]) == "--seed" && index + 1 < argc)
+            seed = static_cast<std::uint32_t>(std::strtoul(argv[++index], nullptr, 10));
+        else if (std::string_view(argv[index]) == "--pearl" && index + 1 < argc)
+            initial_pearls.push_back(std::atoi(argv[++index]));
+        else if (std::string_view(argv[index]) == "--spawn" && index + 1 < argc) {
+            std::string value = argv[++index];
+            std::size_t separator = value.find(':');
+            if (separator != std::string::npos)
+                scheduled_pearls.emplace_back(std::stoi(value.substr(0, separator)), std::stoi(value.substr(separator + 1)));
+        }
+    }
+    World world;
+    world.initialize(64, 64);
+    std::array<std::array<int, 6>, 6> bodies{{
+        {{13 + 64 * 14, 14 + 64 * 14, 15 + 64 * 14, 16 + 64 * 14, 17 + 64 * 14, 18 + 64 * 14}},
+        {{50 + 64 * 49, 49 + 64 * 49, 48 + 64 * 49, 47 + 64 * 49, 46 + 64 * 49, 45 + 64 * 49}},
+        {{18 + 64 * 17, 19 + 64 * 17, 20 + 64 * 17, 21 + 64 * 17, 22 + 64 * 17, 23 + 64 * 17}},
+        {{45 + 64 * 46, 44 + 64 * 46, 43 + 64 * 46, 42 + 64 * 46, 41 + 64 * 46, 40 + 64 * 46}},
+        {{8 + 64 * 11, 9 + 64 * 11, 10 + 64 * 11, 11 + 64 * 11, 12 + 64 * 11, 13 + 64 * 11}},
+        {{55 + 64 * 52, 54 + 64 * 52, 53 + 64 * 52, 52 + 64 * 52, 51 + 64 * 52, 50 + 64 * 52}},
+    }};
+    for (int dragon_id = 0; dragon_id < 6; ++dragon_id) {
+        std::array<int, bodyguard_sim::MAX_CELLS> body{};
+        for (int index = 0; index < 6; ++index)
+            body[index] = bodies[dragon_id][index];
+        world.add_dragon(dragon_id, body, 6, dragon_id % 2 == 0 ? 'A' : 'B');
+    }
+
+    for (int pearl : initial_pearls)
+        world.set_pearl(pearl);
+    TraceScript script{seed, 24};
+    for (int round = 0; round < script.rounds; ++round) {
+        for (const auto& [spawn_round, pearl] : scheduled_pearls)
+            if (spawn_round == round)
+                world.set_pearl(pearl);
+        std::array<TurnAction, bodyguard_sim::MAX_DRAGONS> actions{};
+        for (int dragon_id = 0; dragon_id < 6; ++dragon_id)
+            actions[dragon_id] = script.action(round, dragon_id);
+        world.run_round(actions);
+        for (int dragon_id = 0; dragon_id < 6; ++dragon_id)
+            std::cout << round << ' ' << dragon_id << ' ' << world.alive(dragon_id) << ' '
+                      << world.head(dragon_id) << ' ' << world.tail(dragon_id) << ' '
+                      << world.length(dragon_id) << '\n';
+    }
+    return 0;
+}
+
 } // namespace
 
 void run_filter(std::string_view filter) {
@@ -250,6 +303,8 @@ void run_filter(std::string_view filter) {
 }
 
 int main(int argc, char** argv) {
+    if (argc >= 2 && std::string_view(argv[1]) == "--state-trace")
+        return state_trace(argc, argv);
     std::string_view filter = "all";
     if (argc == 3 && std::string_view(argv[1]) == "--filter")
         filter = argv[2];

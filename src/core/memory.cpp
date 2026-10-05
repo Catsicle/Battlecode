@@ -52,6 +52,7 @@ void Memory::update(const unswbc::Controller& controller, int round) {
     previous_head = current_head;
     has_previous_head = true;
 
+    my_team = controller.get_team();
     own_body.clear();
     for (auto const& tile : controller.get_tiles()) {
         int cell = index(tile.get_position());

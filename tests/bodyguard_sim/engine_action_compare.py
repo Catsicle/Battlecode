@@ -21,7 +21,7 @@ def compare_replay(path: Path) -> tuple[int, list[tuple[int, int, object, object
     mismatches: list[tuple[int, int, object, object]] = []
     for event in replay["data"]["events"]:
         if event["type"] == "roundStart":
-            round_number = event["round"] - 1
+            round_number = event["round"]
         if event["type"] != "dragonAction" or not event["action"]:
             continue
         steps = event["action"].get("steps", [])

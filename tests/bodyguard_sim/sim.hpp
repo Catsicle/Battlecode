@@ -214,6 +214,7 @@ class World {
     int height() const { return height_; }
     Cell cell_at(int x, int y) const { return cell(x, y); }
     Cell head(int dragon_id) const { return dragons_[dragon_id].body[0]; }
+    Cell tail(int dragon_id) const { return dragons_[dragon_id].body[dragons_[dragon_id].length - 1]; }
     int length(int dragon_id) const { return dragons_[dragon_id].length; }
     bool alive(int dragon_id) const { return dragons_[dragon_id].alive; }
     int next_unused_id() const { return next_id_; }
@@ -329,9 +330,13 @@ class World {
             bool ate = pearls_.test(static_cast<std::size_t>(destination));
             int old_length = dragon.length;
             int new_length = old_length + (ate ? 1 : 0);
-            for (int index = new_length - 1; index > 0; --index)
-                dragon.body[index] = dragon.body[index - 1];
+            // Standard body-shift (tail advances, segments shift).
+            std::array<Cell, MAX_CELLS> old = dragon.body;
             dragon.body[0] = destination;
+            for (int index = 1; index < new_length - 1; ++index)
+                dragon.body[index] = old[index - 1];
+            if (new_length > 1)
+                dragon.body[new_length - 1] = old[new_length - 2];
             dragon.facing = direction;
             if (ate)
                 pearls_.reset(static_cast<std::size_t>(destination));

@@ -17,7 +17,7 @@ unswbc::Direction scripted_direction(int round, int dragon_id, unsigned seed) {
 int main() {
     auto [controller, game] = unswbc::init();
     while (unswbc::update(controller, game)) {
-        int round = game.get_round_num() - 1;
+        int round = game.get_round_num() - 4;
         controller.make_move(scripted_direction(round, controller.get_id(), 0));
         unswbc::end_turn();
     }

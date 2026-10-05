@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.hpp"
+#include "../helper.hpp"
 
 #include <array>
 #include <cstdint>
@@ -38,6 +39,7 @@ struct Memory {
     Vec2 previous_head{};
     bool has_previous_head = false;
     bool previous_move_ate = false;
+    unswbc::Team my_team = unswbc::Team::A;
 
     void initialize(int map_width, int map_height);
     void update(const unswbc::Controller& controller, int round);
