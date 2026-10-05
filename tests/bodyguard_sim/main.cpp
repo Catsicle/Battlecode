@@ -78,6 +78,37 @@ void test_head_to_head() {
     require(!world.alive(0) && !world.alive(1), "head collision kills both");
 }
 
+void test_splitting_and_death_drops() {
+    World world;
+    world.initialize(8, 2);
+    std::array<int, bodyguard_sim::MAX_CELLS> body{};
+    body[0] = world.cell_at(1, 0);
+    body[1] = world.cell_at(2, 0);
+    body[2] = world.cell_at(3, 0);
+    body[3] = world.cell_at(4, 0);
+    body[4] = world.cell_at(5, 0);
+    body[5] = world.cell_at(6, 0);
+    world.add_dragon(0, body, 6);
+    require(world.split(0, 2), "valid split should succeed");
+    require(world.alive(0) && world.alive(1), "split should leave both dragons alive");
+    require(world.length(0) == 4 && world.length(1) == 2, "split lengths");
+    require(world.head(1) == world.cell_at(6, 0), "child starts at old tail");
+    require(world.next_unused_id() == 2, "split child id");
+
+    world.initialize(8, 2);
+    world.add_dragon(0, body, 6);
+    require(!world.split(0, 1), "length-one child split should fail");
+    require(!world.alive(0), "invalid split should kill parent");
+
+    world.initialize(8, 2);
+    world.add_dragon(0, body, 6);
+    world.set_kelp(world.cell_at(1, 0), Direction::East);
+    Action action;
+    action.push(Direction::East);
+    require(world.move(0, action) == DeathReason::Wall, "death-drop setup");
+    require(world.has_pearl(world.cell_at(1, 0)) && world.has_pearl(world.cell_at(3, 0)) && world.has_pearl(world.cell_at(5, 0)), "death drops every second segment");
+}
+
 } // namespace
 
 void run_filter(std::string_view filter) {
@@ -88,6 +119,8 @@ void run_filter(std::string_view filter) {
     }
     if (filter == "all" || filter == "collisions")
         test_head_to_head();
+    if (filter == "all" || filter == "splitting")
+        test_splitting_and_death_drops();
 }
 
 int main(int argc, char** argv) {
@@ -98,11 +131,11 @@ int main(int argc, char** argv) {
         std::cerr << "unknown simulator filter\n";
         return 2;
     }
-    if (filter == "splitting" || filter == "sonar") {
+    if (filter == "sonar") {
         std::cout << "no tests implemented for " << filter << " yet\n";
         return 0;
     }
     run_filter(filter);
-    std::cout << "bodyguard simulator movement tests passed\n";
+    std::cout << "bodyguard simulator tests passed\n";
     return 0;
 }

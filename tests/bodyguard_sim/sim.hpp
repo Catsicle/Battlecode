@@ -5,6 +5,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <utility>
 
 namespace bodyguard_sim {
 
@@ -48,6 +49,7 @@ class World {
     bot::bodyguard::core::FixedBitset<MAX_CELLS> pearls_;
     std::array<int, MAX_CELLS> occupant_{};
     std::array<Dragon, MAX_DRAGONS> dragons_{};
+    int next_id_ = 0;
 
     static std::pair<int, int> offset(Direction direction) {
         switch (direction) {
@@ -101,6 +103,7 @@ class World {
         pearls_.clear();
         occupant_.fill(-1);
         dragons_.fill({});
+        next_id_ = 0;
     }
 
     int width() const { return width_; }
@@ -109,6 +112,7 @@ class World {
     Cell head(int dragon_id) const { return dragons_[dragon_id].body[0]; }
     int length(int dragon_id) const { return dragons_[dragon_id].length; }
     bool alive(int dragon_id) const { return dragons_[dragon_id].alive; }
+    int next_unused_id() const { return next_id_; }
     bool has_pearl(Cell position) const { return pearls_.test(static_cast<std::size_t>(position)); }
     DeathReason last_death = DeathReason::None;
 
@@ -116,6 +120,8 @@ class World {
         dragons_[dragon_id].alive = true;
         dragons_[dragon_id].length = length;
         dragons_[dragon_id].body = body;
+        if (dragon_id >= next_id_)
+            next_id_ = dragon_id + 1;
         rebuild_occupancy();
     }
 
@@ -160,7 +166,7 @@ class World {
                     return kill(dragon_id, DeathReason::Self);
                 bool other_head = dragons_[other_id].body[0] == destination;
                 if (other_head) {
-                    dragons_[other_id].alive = false;
+                    kill(other_id, DeathReason::HeadToHead);
                     return kill(dragon_id, DeathReason::HeadToHead);
                 }
                 return kill(dragon_id, DeathReason::OtherBody);
@@ -181,8 +187,29 @@ class World {
         return last_death;
     }
 
+    bool split(int parent_id, int child_size) {
+        Dragon& parent = dragons_[parent_id];
+        if (!parent.alive || child_size < 2 || parent.length - child_size < 2 || next_id_ >= MAX_DRAGONS) {
+            kill(parent_id, DeathReason::NoValidAction);
+            return false;
+        }
+
+        int child_id = next_id_++;
+        Dragon& child = dragons_[child_id];
+        child.alive = true;
+        child.length = child_size;
+        for (int index = 0; index < child_size; ++index)
+            child.body[index] = parent.body[parent.length - 1 - index];
+        parent.length -= child_size;
+        rebuild_occupancy();
+        return true;
+    }
+
   private:
     DeathReason kill(int dragon_id, DeathReason reason) {
+        const Dragon& dragon = dragons_[dragon_id];
+        for (int index = 0; index < dragon.length; index += 2)
+            pearls_.set(static_cast<std::size_t>(dragon.body[index]));
         dragons_[dragon_id].alive = false;
         last_death = reason;
         rebuild_occupancy();
