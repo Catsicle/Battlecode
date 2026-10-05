@@ -6,6 +6,7 @@
 #include <string_view>
 
 using bodyguard_sim::Action;
+using bodyguard_sim::Cell;
 using bodyguard_sim::TurnAction;
 using bodyguard_sim::DeathReason;
 using bodyguard_sim::Direction;
@@ -66,6 +67,29 @@ void test_pearl_growth_and_paid_step() {
     sprint.push(Direction::East);
     require(world.move(0, sprint) == DeathReason::NoValidAction, "length two cannot pay");
     require(!world.alive(0), "unpaid sprint should kill");
+
+    world.initialize(5, 2);
+    world.add_dragon(0, world.cell_at(0, 0));
+    world.set_pearl_countdown(world.cell_at(1, 0), 1);
+    std::array<TurnAction, bodyguard_sim::MAX_DRAGONS> actions{};
+    Action timed_move;
+    timed_move.push(Direction::East);
+    actions[0] = TurnAction::move(timed_move);
+    world.run_round(actions);
+    require(world.length(0) == 2, "pearl must tick before movement");
+}
+
+void test_portal_traversal() {
+    World world;
+    world.initialize(6, 2);
+    Cell first = world.cell_at(0, 0);
+    Cell second = world.cell_at(3, 0);
+    world.add_dragon(0, first);
+    world.set_portal(first, Direction::East, second, Direction::East);
+    Action action;
+    action.push(Direction::East);
+    require(world.move(0, action) == DeathReason::None, "portal move should survive");
+    require(world.head(0) == world.cell_at(4, 0), "portal should emerge beyond paired edge");
 }
 
 void test_head_to_head() {
@@ -127,6 +151,7 @@ void run_filter(std::string_view filter) {
         test_wraps();
         test_kelp_and_body_collisions();
         test_pearl_growth_and_paid_step();
+        test_portal_traversal();
     }
     if (filter == "all" || filter == "collisions")
         test_head_to_head();

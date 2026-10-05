@@ -53,10 +53,19 @@ struct Dragon {
     std::array<Cell, MAX_CELLS> body{};
 };
 
+struct PortalExit {
+    bool present = false;
+    Cell cell = 0;
+    Direction direction = Direction::North;
+};
+
 class World {
     int width_ = 0;
     int height_ = 0;
     std::array<std::uint8_t, MAX_CELLS> kelp_{};
+    std::array<int, MAX_CELLS> pearl_countdown_{};
+    std::array<int, MAX_CELLS> pearl_reset_{};
+    std::array<PortalExit, MAX_CELLS * 4> portals_{};
     bot::bodyguard::core::FixedBitset<MAX_CELLS> pearls_;
     std::array<int, MAX_CELLS> occupant_{};
     std::array<Dragon, MAX_DRAGONS> dragons_{};
@@ -85,6 +94,10 @@ class World {
         return cell(x + dx, y + dy);
     }
 
+    PortalExit portal(Cell source, Direction direction) const {
+        return portals_[source * 4 + static_cast<int>(direction)];
+    }
+
     std::uint8_t edge_bit(Direction direction) const {
         switch (direction) {
         case Direction::North: return NORTH_EDGE;
@@ -111,6 +124,9 @@ class World {
         width_ = width;
         height_ = height;
         kelp_.fill(0);
+        pearl_countdown_.fill(-1);
+        pearl_reset_.fill(-1);
+        portals_.fill({});
         pearls_.clear();
         occupant_.fill(-1);
         dragons_.fill({});
@@ -156,6 +172,30 @@ class World {
             pearls_.reset(static_cast<std::size_t>(position));
     }
 
+    void set_pearl_countdown(Cell position, int countdown, int reset_countdown = -1) {
+        pearl_countdown_[position] = countdown;
+        pearl_reset_[position] = reset_countdown;
+    }
+
+    void set_portal(Cell first, Direction first_direction, Cell second, Direction second_direction) {
+        portals_[first * 4 + static_cast<int>(first_direction)] = {true, second, second_direction};
+        portals_[second * 4 + static_cast<int>(second_direction)] = {true, first, first_direction};
+    }
+
+    void tick_pearls() {
+        for (Cell position = 0; position < width_ * height_; ++position) {
+            if (pearl_countdown_[position] < 0)
+                continue;
+            if (pearl_countdown_[position] > 0)
+                --pearl_countdown_[position];
+            if (pearl_countdown_[position] != 0)
+                continue;
+            if (occupant_[position] < 0 && !has_pearl(position))
+                set_pearl(position);
+            pearl_countdown_[position] = pearl_reset_[position];
+        }
+    }
+
     DeathReason move(int dragon_id, const Action& action) {
         last_death = DeathReason::None;
         Dragon& dragon = dragons_[dragon_id];
@@ -168,8 +208,12 @@ class World {
             bool paid = static_cast<int>(step) >= free_steps;
             if (paid && dragon.length <= 2)
                 return kill(dragon_id, DeathReason::NoValidAction);
-            Cell destination = next_cell(dragon.body[0], action.steps[step]);
-            if ((kelp_[dragon.body[0]] & edge_bit(action.steps[step])) != 0)
+            Direction direction = action.steps[step];
+            Cell destination = next_cell(dragon.body[0], direction);
+            PortalExit exit = portal(dragon.body[0], direction);
+            if (exit.present)
+                destination = next_cell(exit.cell, exit.direction);
+            if (!exit.present && (kelp_[dragon.body[0]] & edge_bit(direction)) != 0)
                 return kill(dragon_id, DeathReason::Wall);
             int other_id = occupant_[destination];
             if (other_id >= 0) {
@@ -217,6 +261,7 @@ class World {
     }
 
     void run_round(const std::array<TurnAction, MAX_DRAGONS>& actions) {
+        tick_pearls();
         for (int dragon_id = 0; dragon_id < next_id_; ++dragon_id) {
             if (!dragons_[dragon_id].alive)
                 continue;
