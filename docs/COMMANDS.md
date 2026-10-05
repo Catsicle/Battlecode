@@ -113,6 +113,16 @@ The `movement`, `collisions`, `splitting`, `sonar`, and `trace` filters are
 active in the current slice. The `trace` filter runs 50 deterministic offline
 scripts; it does not replace the required simulator-versus-engine comparison.
 
+Run the current engine action-trace probe on the controlled `big_empty` map:
+
+```sh
+uv run python tests/bodyguard_sim/engine_action_compare.py --games 50
+```
+
+This compares 50 engine runs and 850 recorded movement actions against the
+deterministic script. Full simulator-versus-engine position, length, and death
+comparison remains a separate gate.
+
 The simulator is deterministic. A failing trace must include the seed, initial
 world, action script, and first differing state. Engine comparison fixtures are
 kept under `tests/fixtures/` and are not generated in the judge.
