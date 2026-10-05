@@ -79,6 +79,37 @@ compare the new run with the previous one.
 
 ## Testing Commands
 
+### Bodyguard simulator tests
+
+Phase 2 adds the offline simulator under `src/bodyguard/sim/` and its focused
+tests under `tests/bodyguard_sim/`. These tests run without `unswbc` and cover
+movement, portals, pearls, splitting, collisions, deaths, and sonar traces.
+
+After the simulator target is implemented, build and run it with:
+
+```sh
+cmake --build /tmp/battlecode-cmake --target bodyguard-sim-tests -j2
+/tmp/battlecode-cmake/bodyguard-sim-tests
+```
+
+Run the complete repository test suite, including simulator support tests, with:
+
+```sh
+uv run pytest -q
+```
+
+Use the simulator fixtures before engine runs when developing cycle validators:
+
+```sh
+/tmp/battlecode-cmake/bodyguard-sim-tests --filter movement
+/tmp/battlecode-cmake/bodyguard-sim-tests --filter splitting
+/tmp/battlecode-cmake/bodyguard-sim-tests --filter sonar
+```
+
+The simulator is deterministic. A failing trace must include the seed, initial
+world, action script, and first differing state. Engine comparison fixtures are
+kept under `tests/fixtures/` and are not generated in the judge.
+
 ### List available bots
 
 ```powershell
