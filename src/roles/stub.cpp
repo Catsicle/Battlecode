@@ -17,17 +17,16 @@ class StubRole final : public Role {
         (void)memory;
         Action action;
         if (inbox.navigation_target.available) {
-            action.path = nav::search(grid, controller.get_position(), inbox.navigation_target.target,
-                                      true, controller.get_length());
+            action.request.mode = NavMode::Navigate;
+            action.request.has_target = true;
+            action.request.target = inbox.navigation_target.target;
         } else if (NAVIGATION_FIXTURE &&
                    controller.get_position() != Vec2{FIXTURE_TARGET_X, FIXTURE_TARGET_Y}) {
-            action.path = nav::approach_target(
-                grid,
-                controller.get_position(),
-                {FIXTURE_TARGET_X, FIXTURE_TARGET_Y},
-                controller.get_length());
+            action.request.mode = NavMode::Navigate;
+            action.request.has_target = true;
+            action.request.target = {FIXTURE_TARGET_X, FIXTURE_TARGET_Y};
         } else {
-            action.path = nav::wander(grid, controller.get_position(), controller.get_length());
+            action.request.mode = NavMode::Explore;
         }
         return action;
     }
