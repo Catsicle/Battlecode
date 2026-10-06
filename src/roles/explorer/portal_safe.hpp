@@ -1,6 +1,6 @@
 #pragma once
 
-#include "memory.hpp"
+#include "../../core/memory.hpp"
 
 #include <queue>
 #include <vector>
