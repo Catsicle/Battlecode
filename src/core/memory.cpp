@@ -1,4 +1,5 @@
 #include "memory.hpp"
+#include "../config.hpp"
 
 #include <algorithm>
 
@@ -22,9 +23,11 @@ void Memory::initialize(int map_width, int map_height) {
     occupancy.assign(cells, {});
     pearl.assign(cells, false);
     own_body.clear();
+    portal_ends.assign(256, {});
 }
 
 void Memory::update(const unswbc::Controller& controller, int round) {
+    current_round = round;
     Vec2 current_head = controller.get_position();
     if (has_previous_head && current_head != previous_head) {
         int cell = index(current_head);
@@ -61,10 +64,14 @@ void Memory::update(const unswbc::Controller& controller, int round) {
         auto const* part = tile.get_dragon();
         occupancy[cell] = {};
         if (part != nullptr) {
-            occupancy[cell] = {true, part->is_head(), part->get_team().value, part->get_id(), round};
-            if (part->get_id() == controller.get_id())
+            if (part->get_id() == controller.get_id()) {
                 own_body.push_back(tile.get_position());
+            } else {
+                occupancy[cell] = {true, part->is_head(), part->get_team().value,
+                                   part->get_id(), round, -1, -1};
+            }
         }
+
         for (Dir direction : directions()) {
             int d = dir_index(direction);
             known_edges[cell] |= static_cast<std::uint8_t>(1U << d);
@@ -72,9 +79,50 @@ void Memory::update(const unswbc::Controller& controller, int round) {
             if (edge.get_edge_type() == unswbc::EdgeType::KELP)
                 kelp[cell] |= static_cast<std::uint8_t>(1U << d);
             if (edge.get_edge_type() == unswbc::EdgeType::PORTAL)
-                portal_id[cell][d] = static_cast<std::int16_t>(edge.get_portal_id());
+            {
+                int id = edge.get_portal_id();
+                portal_id[cell][d] = static_cast<std::int16_t>(id);
+                if (id >= static_cast<int>(portal_ends.size()))
+                    portal_ends.resize(id + 1, {});
+                PortalEnds& ends = portal_ends[id];
+                if (ends.count == 0 || ends.tile[0] != cell) {
+                    if (ends.count == 0) {
+                        ends.tile[0] = cell;
+                        ends.direction[0] = static_cast<std::uint8_t>(d);
+                        ends.count = 1;
+                    } else if (ends.count == 1 && ends.tile[1] != cell) {
+                        ends.tile[1] = cell;
+                        ends.direction[1] = static_cast<std::uint8_t>(d);
+                        ends.count = 2;
+                    }
+                }
+            }
         }
     }
+
+}
+
+void Memory::apply_move_record(const MoveRecord& record, int length_now, int round) {
+    int eaten = std::max(0, length_now - record.length_before);
+    for (std::size_t i = 0; i < record.traversed.size(); ++i) {
+        int cell = record.traversed[i];
+        if (cell < 0 || cell >= cells)
+            continue;
+        bool pearl = i < record.pearl_known_before.size() && record.pearl_known_before[i];
+        if (pearl && eaten > 0) {
+            eaten_here[cell] = true;
+            this->pearl[cell] = false;
+            --eaten;
+        } else {
+            ++visits_nopearl[cell];
+        }
+        last_visit_round[cell] = round;
+    }
+}
+
+bool Memory::occ_fresh(int cell, int now) const {
+    return cell >= 0 && cell < cells && occupancy[cell].present &&
+           now - occupancy[cell].round <= OCC_STALE_ROUNDS;
 }
 
 bool Memory::known(int cell) const {
