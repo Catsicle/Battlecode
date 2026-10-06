@@ -2,6 +2,8 @@
 
 #include "../../core/memory.hpp"
 #include "../../core/memory/queries.hpp"
+#include "fixed_bitset.hpp"
+#include "constants.hpp"
 
 namespace bot::bodyguard::core {
 
@@ -38,6 +40,12 @@ struct CycleCandidate {
     Cell pocket = -1;
     int door_index = -1;
     int score = 0;
+};
+
+struct PocketRegion {
+    FixedBitset<MAX_CELLS> cells;
+    int size = 0;
+    bool touches_exterior = false;
 };
 
 } // namespace bot::bodyguard::core
