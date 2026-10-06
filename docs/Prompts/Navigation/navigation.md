@@ -1,100 +1,369 @@
+# Navigation system specification
 
- these are the things i want to implement as of now, i want to implement a path planning algorithm that will order a bot to travel from point a to point b efficeintly , its logic is written in detail below , also for a regular bot ,there will be a normal navigation strategy which i also have attached in the file, its goal would just be to move in the area ensuring it doesnt visit those cells which dont have any pearls,its exact logic of creating that are given in the prompt file , the first way of navigation will be triggered only when a bot receives a particluar sonar of that mesage type with that start and end location , as of now just simulate and put its code so that it can be reused in future , for the normal navigation bot ,initially all bots will follow this strategy apart from queen , explorer bots , so basically keep this as the fallback logic as of now,all bots will create a map of the area they have seen till now ,the detailed instructions of creating that map in memeory is given in persistent memory section in the prompt file, create these files as of now , keep rest as placeholder only , tell me exactly what things i need to add file by file , also write a doc file which details the things u have done so that an agent can understand it ,,for the directory structure u have the freedom to choose it considering in mind the discussions we have had for it in the previous chat , detail the dir structure also to me which u will follow
+This document is the implementation specification for the Battlecode AU bot's
+navigation system. It covers two behaviors:
 
-```markdown
-a bit about the sonar message structure(a sonar message can be only 64 bit long)
-in each message 10 bits will be used to record the message id(4 bits) and the rest 6 bits will be used for authentication , i have not decided on the authentication part yet, so just keep a placeholder for it 
-the rest space will be used for diffent types of data for different types of messages 
+- **Navigate:** move efficiently from the current position to a valid target.
+- **Explore:** move through the known map, prefer useful or unexplored cells,
+  and avoid cells that have already been visited without pearls.
 
+The navigation system must be deterministic, safe, and compatible with the
+organizer-provided protocol helper.
+
+## Scope and fixed decisions
+
+- All bot code belongs under `src/`.
+- `src/helper.hpp` is organizer-provided and must not be modified.
+- Sonar payload decoding is out of scope. Keep
+  `comms/msg.hpp::decode_navigation_target` as a placeholder.
+- `NAVIGATION_FIXTURE` and `FIXTURE_TARGET_X/Y` are the only Navigate target
+  source for the first implementation.
+- A valid navigation-target message applies to the receiving bot.
+- `Auto` always selects the `Stub` role.
+- The Stub role is the only implemented role. Other role files remain
+  placeholders.
+- Symmetry-based inference is disabled.
+- A one-time `map_width * map_height` allocation is allowed during
+  initialization. Search loops must reuse persistent storage.
+- Direction ordering is always:
+  `NORTH`, `EAST`, `SOUTH`, `WEST`.
+- Unknown destinations are terminal for Navigate planning.
+- Allies and enemies remain stationary in the planned search tree unless a
+  safety rule explicitly accounts for their reach.
+- The configured maximum-size rule and `SPLIT 2` fallback must be preserved.
+
+## Source layout
+
+```text
+src/
+  main.cpp                 # protocol loop only
+  helper.hpp               # untouched organizer helper
+  bot.toml                 # every source file must be listed
+  config.hpp               # roles, constants, feature flags
+  core/
+    types.hpp              # coordinates, directions, paths
+    memory.hpp/.cpp        # persistent map and observations
+    body_tracker.hpp/.cpp  # ordered own-body prediction
+    log.hpp                # compile-time logging macro
+  comms/
+    msg.hpp                # message types and auth placeholder
+    comms.hpp/.cpp         # inbox/outbox plumbing
+  nav/
+    grid.hpp/.cpp          # map view used by navigation
+    transition.hpp/.cpp    # single movement-transition implementation
+    sim.hpp/.cpp           # reversible body simulation
+    safety.hpp/.cpp        # L1, L3, and L4 validation
+    astar.cpp              # weighted distance-field search
+    bfs.cpp                # reachable-area utilities
+    flee.cpp               # legacy safety utility
+    wander.cpp             # Explore destination selection
+    planner.hpp/.cpp       # PlanRequest to Path
+    executor.hpp/.cpp      # validation, retry, and action emission
+    dial.hpp               # optional queue, disabled initially
+  roles/
+    role.hpp               # role and PlanRequest interfaces
+    registry.cpp            # role selection
+    stub.cpp                # current real role
+    explorer.cpp            # placeholder
+    killer.cpp              # placeholder
+    feeder.cpp              # placeholder
+    bodyguard.cpp           # placeholder
+    queen.cpp               # placeholder
 ```
 
-## 0. Mandatory reading BEFORE coding
-Read local helper.hpp and these pages (https://game.battlecode.au/docs/<page>): overview, map-info, pearls, kelp-and-portals, vision, movement, splitting, sonar, death, execution-order, timeouts, helper, libraries.
-- If this prompt conflicts with the docs, the docs win. Record every conflict in NOTES.md.
-- create a separate file which details each and evry thing u have done which is understandable by a human 
--create a separate file which details each and every thing u have done which is understandabel to  an agent 
+## Runtime flow
 
-#a target coordinate will be delivered to the bot with the help of sonar , as of now just assume that it will come and assuming just implement the naviation file from start point to end point
-## 1. Facts from the docs
-- Grid W,H in [10,64], toroidal (edges wrap). Tile index = y*W+x.
-- Kelp and portals live on EDGES between tiles. Crossing kelp = death. Portals come in pairs sharing an id; entering one emerges from its partner. Vision does NOT pass through portals, so the exit side is usually unseen. A portal can exit straight into kelp.the two connected portals are placed in similar orientation(both either in vertical or in horizontal),entering along right side makes the dragon exit from the left side from the other connected portal,
-- Vision: 7x7 square centred on head (Chebyshev <= 3), wraps. Each tile gives pearl presence, pearl countdown (-1 = never spawns), dragon part (team, id, is_head), 4 edges.
-- Each dragon outputs actions; only the last counts. Moves: make_move(dir) or make_moves(list). Free steps per turn: s = ceil(L/4), L fixed at turn start. Each step beyond s costs 1 segment; if it cannot be paid the dragon dies.
-- Collision is checked at EVERY step before that step's movement. Death if: kelp edge crossed; target tile holds ANY dragon segment (own, ally, enemy; own tail counts even if it would vacate this step); target holds a head (both die).
-- Eating a pearl: tail does not advance that step (L+1).
-- Pearl countdown decrements at round start; a spawn succeeds only on an empty tile; the next gap is random in a hidden [min_gap,max_gap]. Mirrored tiles share countdowns.
-- Maps are symmetric: vertical mirror, horizontal mirror, or 180 deg rotation.
-- Budget: 100M CPU points per dragon per turn (aim for <= 15M worst case). Loads/stores 2, arithmetic 1, call 4, div 3. Every stdout/stderr write costs 2.5M. NO logging in release builds; guard debug output with `#ifdef NAV_DEBUG`. Use flat arrays, no std::map/set/iostream in hot paths. Each dragon is a separate process, so globals persist across turns but are not shared; the only cross-dragon channel is sonar.
+Each turn follows this order:
 
-## 2. Notation
-W,H,N=W*H. Head h. Body B[0..L-1], B[0]=head. e = pearls eaten so far along a candidate path. s = ceil(L/4).
-Path steps t = 1,2,...; turn index of step t: rho(t) = floor((t-1)/s) (rounds elapsed before step t executes).
-Dist(u,v) torus geodesic on the known graph (BFS), not Manhattan.
-All costs are integers, fixed-point x4 (1.0 step = 4 units).
+1. Read the controller state and visible tiles.
+2. Update persistent map, pearl, portal, and enemy-occupancy memory.
+3. Reconcile the ordered own-body tracker with the new observation.
+4. Read the communication inbox.
+5. Ask the selected role for a `PlanRequest`; roles do not return finished
+   paths.
+6. Build a navigation grid over persistent memory.
+7. Run one search from the current head.
+8. Select a Navigate target or an Explore destination from that search field.
+9. Validate candidate prefixes with the shared transition and simulation
+   layers.
+10. Emit the longest safe prefix accepted by the executor.
+11. Apply the emitted `MoveRecord` to pearl and visit memory.
+12. Predict the next ordered body state.
+13. End the turn.
 
-## 3. Persistent map memory (per dragon, flat arrays, updated every turn)
-- kelp[N] : uint8 bitmask of N,E,S,W kelp edges; known_edge[N]: uint8 mask of edges actually observed.
-- portal_id[N][4] : int16, -1 if none. portal_exit_known[...] : whether the partner side has been observed.
-- seen[N] : bool. last_seen_round[N].
-- pearl_spawn_round[N] : absolute round = now + countdown when last observed (INF if -1). never_spawns[N].
-- visits_nopearl[N] (n_v), last_visit_round[N], eaten_here[N] (E_v: a pearl was eaten on this tile at least once).
-- occ[N] : last observed dragon part (team, id, segment index from head, owner length, round seen). Treat entries older than 2 rounds as stale unless in current vision.
-- Optional Phase 2 (behind `ENABLE_SYMMETRY`): keep 3 symmetry hypotheses, eliminate any contradicted by an observed tile/edge pair, and once exactly one remains, mirror kelp/portal/pearl-timer knowledge into the partner tiles (edges swap accordingly). Use the transform from docs/map-files and map-info (VERIFY).
+`main.cpp` should contain only this orchestration and protocol loop. Movement
+rules must not be duplicated in `main.cpp`, roles, or individual search
+algorithms.
 
-## 4. Cost model
-Hard(v,t) = TRUE (forbidden, never merely "expensive") if ANY holds:
- (a) the edge crossed into v has kelp;
- (b) own body: v == B[j] and j <= L + e - t;
- (c) ally/enemy body: v holds segment j of dragon D (length L_D, seen a rounds ago) and rho(t) + a < L_D - j (pessimistic: assume it vacates 1 tile/round);
- (d) rho(t) == 0 and some other dragon's head h' (any team) has Dist(h',v) <= s_D' (it could end its free steps on v);
- (e) portal edge whose exit tile/exit-side edge has not been observed (Navigate mode only; in Explore mode this is Soft, see below).
-Soft cost added to a step into v at step t (units x4):
- step(v) = C_STEP (=4)
-         + C_PORTAL_EXTRA (=2) if the move uses a portal
-         + C_UNKNOWN (=6) if v is unseen (Navigate mode only)
-         + pen(v)  (Explore mode only)
-         + C_PORTAL_UNKNOWN (=40) if portal with unobserved exit (Explore mode only)
-         + danger(v,t)
- danger(v,t) = D0 (=120) / (1+rho(t))^2   if rho(t) >= 1 and some enemy head h' has Dist(h',v) <= (rho(t)+1)*s_D'; else 0.
- Own new body: with strictly positive step costs, shortest paths are simple, so path self-collision cannot occur; assert this in debug builds.
-Revisit penalty (Explore mode):
- pen(v) = 0 if eaten_here[v]
- pen(v) = min(P_MAX (=48), LAMBDA (=8) * visits_nopearl[v] * K / (K + age_v)) otherwise, where age_v = now - last_visit_round[v], K = 150.
- visits_nopearl[v] increments only when the head ENTERS v and no pearl is eaten there. Set eaten_here[v]=true when a pearl is eaten on v.
- Config flag EXEMPT_SPAWNABLE (default false): if true, also exempt tiles with pearl_time >= 0 (they can respawn pearls). Make it easy to toggle for A/B testing.
+## Persistent memory
 
-## 5. Search engine (one routine for both modes)
-Dijkstra with a Dial bucket queue (integer costs, ring of C_MAX+1 buckets) over tiles, on flat arrays with a reusable generation-stamped dist[] to avoid clearing. Neighbour expansion: 4 directions, check kelp edge mask, portal mapping, then Hard(v,t) and the soft cost. Labels carry: cost, steps t, e (pearls eaten on path, from known pearls). Node key = tile, EXCEPT tiles in the own-body set, where key = (tile, min(t, HORIZON_T=48)) so a tile blocked at its earliest arrival can still be entered later. Keep parent pointers and reconstruct paths. No heap allocation in the turn loop.
+`Memory` stores facts learned from the current 7x7 vision window and retains
+them after they leave vision:
 
-## 6. Safety layers (a candidate move prefix M of x steps is accepted only if all pass)
- L1 Exact simulation: replay M step by step on a copy of the body using the collision rules in section 1 (including portals and pearl eating). Any death = reject.
- L2 Time-indexed own-body blocking: already enforced in Hard(b); L1 re-verifies it independently.
- L3 Lookahead survival: Surv(state, K) = exists a move that is L1-safe and Surv(next, K-1), K = 3 (DFS, branching <= 3). Must be true from the post-M state, using only known tiles.
- L4 Trap test: flood fill from the post-M head over known tiles not blocked at post-M occupancy. Accept if (reached tiles >= L + e + 2) OR (the fill reaches any frontier tile = known tile with an unseen neighbour).
-If any layer fails, try in order: (i) shorten M by one step and recheck; (ii) next-best destination/path (re-run the search with the failed first edge forbidden); (iii) safest single move: among L1-safe moves pick max (L3 depth reached, then L4 area); (iv) emergency fallback in section 9.
+- known cells and known directional edges;
+- kelp edges;
+- portal endpoint observations;
+- pearl state, pearl spawn timing, and cells known never to spawn pearls;
+- visit counts and last visit rounds;
+- fresh enemy occupancy;
+- the previous head position and current visible own-body cells.
 
-## 7. Explore mode (no target)
-Run section-5 Dijkstra from the head over KNOWN tiles. For every reachable known tile v with cost D(v) and steps t(v):
- G(v) = B_PEARL (=120) * [pearl present on v]
-      + B_SOON (=80) * 0.7 * [no pearl now, pearl_spawn_round[v] <= now + rho(t(v)) + 1, not never_spawns]
-      + B_FRONT (=30) * [v is frontier]
-      + B_STALE (=20) * min(age_v, 200) / 200
- S(v) = G(v) - D(v).  Choose v* = argmax S. If max S <= 0, choose the reachable frontier tile with the least D; if none, the tile with the largest age_v.
-Dijkstra only supplies path costs; the destination is chosen by S. Tie-break equal S by more pearls on the path, then fewer steps.
-Then take the path to v*, set x = min(s, path length), and run section-6 checks on the first x steps.
+Enemy occupancy is valid only while:
 
-## 8. Navigate mode (start and target known)
-Objective: minimise total step cost from head to target T under Hard constraints and the section-6 safety layers. There are NO pearl, penalty or exploration terms. Unseen tiles are optimistic with cost C_UNKNOWN, but commit only moves through tiles that are currently known and L1-safe; re-plan every turn as vision updates.
-Free sprint: emit x = min(s, safe-committable prefix length) moves in ONE make_moves call per turn. Never use paid steps except in the section-9 emergency. Prefer routes that need fewer turns, turns = ceil(n/s) where n is the step count; tie-break turns, then total cost. The spare free steps in the final turn should be used on the safest tiles, never on riskier shortcuts.
-Death prediction requirement: before emitting ANY move, the section-6 layers must pass for the committed prefix. If the globally cheapest path fails them, the agent must switch to the next-cheapest path that passes. It must never emit a prefix that fails L1, regardless of how short the remaining route is.
+```text
+now - occupancy.round <= OCC_STALE_ROUNDS
+```
 
-## 9. Emergency fallback (every neighbour is Hard / no prefix passes)
-1. Prefer a move that is only soft-risky (uncertain enemy reach) over a certain-death move.
-2. If none, and L >= 2 and docs/splitting permits: SPLIT as a last resort. Intent: the front part (length 2) goes forward, the remaining body splits with its new head facing backwards along the trail, which is free space. when splitting u will always split into lenght 2 and original length-2 legnth of dragons , the small dragon will be the parent and the large dragon which will start its head from where the tail  of dragon was there initially , the child gets a new id , and the small parent which is still moving in the same direction as previously remains with the old id . Splitting shrinks the queen, so never split while any L1-safe move exists.
-3. Otherwise output any legal move.
+Own segments are not treated as enemy occupancy. The own body is represented
+by `BodyTracker`.
 
-## 10. Per-turn pipeline
-read round -> update map memory from the 7x7 window and sonar -> detect eaten pearl / visit counters from last turn's result -> choose mode (Navigate if a target is available, else Explore) -> section 7 or 8 search -> section 6 safety -> emit moves -> (optionally)(dont send any sonar as of now, it will be discussed about but later) send sonar with newly seen kelp/portal data (VERIFY sonar format and cost).
+### Move bookkeeping
 
+Before emitting a candidate path, create a `MoveRecord` containing:
 
+- every traversed cell, in order;
+- whether a pearl was known on each traversed cell before movement;
+- the length before the move.
+
+After the action, compute:
+
+```text
+eaten = length_after - length_before
+```
+
+Mark the first `eaten` pearl-flagged cells as eaten, increment
+`visits_nopearl` for every other traversed cell, and update
+`last_visit_round` for every traversed cell. Do not infer pearl consumption by
+checking the head tile at the start of the next turn.
+
+## Ordered own-body tracking
+
+`BodyTracker::body` is a head-first deque that persists across turns.
+
+After a validated move prefix, the tracker predicts the complete resulting
+body from the simulation state. On the next turn it reconciles:
+
+- predicted head versus observed head;
+- predicted length versus controller length;
+- visible own segments versus the predicted body restricted to vision.
+
+On mismatch caused by pearl growth, damage, spawning, or splitting:
+
+1. rebuild from the visible head and connected own segments;
+2. use the prior prediction to resolve ambiguity;
+3. retain the predicted suffix outside vision, truncated to the actual length;
+4. increment mismatch/rebuild statistics.
+
+After splitting, reset the tracker and do not use the pre-split body.
+
+## Shared movement transition
+
+Every planner and validator call must use:
+
+```cpp
+Step resolve_step(const Memory& memory, int tile, int direction);
+```
+
+The result contains the destination, resulting direction, and one of:
+
+- `Normal`
+- `PortalOK`
+- `PortalUnresolved`
+- `Kelp`
+
+Rules:
+
+- A known kelp edge returns `Kelp`.
+- A normal known edge returns its wrapped neighbor.
+- A portal is resolved only when both endpoints for its portal id are known.
+- The portal exit tile, exit direction, and emergence tile are computed in one
+  named portal-transition function.
+- An unobserved exit edge returns `PortalUnresolved`.
+- A known kelp exit returns `Kelp`.
+- Navigate rejects unresolved portals.
+- Explore may consider an unresolved portal only with
+  `C_PORTAL_UNKNOWN` cost; it must still be rejected by safety validation if
+  the actual destination cannot be established.
+
+Any behavior marked `VERIFY` must be isolated behind one named function or
+constant and documented in `docs/NOTES.md` after checking the official rules
+and `helper.hpp`.
+
+## Reversible simulation
+
+`Sim` models only the controlled dragon and uses stamp arrays for O(1)-style
+occupancy checks:
+
+```text
+L        current simulated length
+counter  number of simulated entries
+head     current head cell
+e        pearls eaten in this simulation
+stamp    entry stamp for each cell
+```
+
+On reset, the ordered body is stamped head-first. A destination is occupied
+by the own body when its segment index is less than `L`; the tail counts as
+occupied before the move. A successful move:
+
+1. resolves the transition;
+2. checks kelp and unresolved portals;
+3. checks own-body occupancy;
+4. checks fresh enemy occupancy;
+5. records undo state;
+6. stamps the destination;
+7. grows for an unconsumed pearl or allows the tail to advance otherwise.
+
+`undo()` must restore the exact prior state, including length, head, counter,
+stamps, and pearl-consumption markers. The implementation must not allocate
+inside recursive validation or the per-turn search loop.
+
+## Safety validation
+
+The executor validates each candidate prefix in this order.
+
+### L1: exact immediate replay
+
+Reject:
+
+1. kelp;
+2. unresolved portal transitions;
+3. own-body collisions;
+4. fresh enemy-body collisions;
+5. head-on collisions using the configured enemy reach;
+6. illegal or unknown destinations.
+
+For known enemy segment metadata, use time-indexed age and segment index. For
+unknown enemy segment metadata, treat the cell as blocked at `rho == 0`.
+
+### L4: trap validation
+
+After replaying a prefix, flood-fill the reachable non-kelp area while
+respecting the simulated body. A candidate is acceptable when the reachable
+area is at least:
+
+```text
+simulated_length + pearls_eaten + TRAP_EXTRA
+```
+
+or when it reaches a valid frontier that can continue exploration.
+
+### L3: recursive survival
+
+For the next `LOOKAHEAD_K` plies, recursively test whether at least one safe
+continuation exists. Every recursive branch must use the same transition,
+simulation, and undo operations as L1.
+
+## Search and destination selection
+
+The search starts once from the current head and fills a reusable weighted
+distance field. `approach_target` and `wander` must not run a separate full
+Dijkstra search for every candidate destination.
+
+### Navigate
+
+- If the target is known, choose the lowest-cost route to it.
+- If it is unknown, select a reachable frontier that minimizes estimated
+  toroidal distance to the target, then route cost, then path length.
+- Re-run target search every turn.
+- Keep the target fixed until reached.
+- Once the target is reached, return to Explore mode.
+
+### Explore
+
+Score reachable cells using:
+
+```text
+S(v) = G(v) - D(v)
+```
+
+where `D(v)` is the distance-field cost and `G(v)` rewards pearls, valid
+frontiers, stale-but-revisitable cells, and other configured exploration
+benefits. Penalize cells according to `visits_nopearl`. Use
+`last_visit_round`, not `last_seen_round`, for visit recency.
+
+The search must preserve deterministic direction ordering and reject unknown
+destinations in Navigate mode.
+
+## Planner and executor
+
+`PlanRequest` contains:
+
+```cpp
+NavMode mode;
+bool has_target;
+Vec2 target;
+```
+
+The Stub role produces Navigate requests for the fixture or a valid inbox
+target, and Explore requests otherwise.
+
+The executor retries in this exact order:
+
+1. shorten the candidate prefix;
+2. replan with the failed first edge forbidden;
+3. choose the safest legal single move;
+4. split only when no L1-safe move exists;
+5. use the final legal fallback move.
+
+The configured maximum-size rule must be respected. The first implementation
+may emit one validated move per turn while exact engine replay behavior is
+being verified; any multi-step emission must be based on the same body replay
+used by validation.
+
+## Configuration
+
+All navigation constants belong in `src/config.hpp`:
+
+```text
+C_MAX=192
+TRAP_EXTRA=2
+MAX_RETRY=4
+OCC_STALE_ROUNDS=3
+DEFAULT_ENEMY_REACH=2
+USE_DIAL=false
+NAV_STATS=false
+```
+
+`USE_DIAL` gates an optional bounded-integer Dial queue. The default weighted
+priority queue remains valid while the Dial implementation is disabled.
+
+## Performance and reliability
+
+- Target worst-case cost: below 15M points per turn on a 64x64 map.
+- The judge limit is 100M points per turn.
+- No stdout or iostream logging in release or hot paths.
+- No per-node heap allocation inside search, recursive validation, or retry
+  loops.
+- Use generation stamps and persistent workspaces.
+- Keep all movement semantics in `resolve_step`.
+- Compile with warnings enabled and treat new warnings as defects.
+- Register every added `.cpp` in `src/bot.toml`.
+
+## Required validation
+
+After each implementation phase:
+
+1. compile the complete source list;
+2. run all native tests;
+3. run the Battlecode smoke match;
+4. inspect the generated report and replay;
+5. update `docs/NOTES.md` for every resolved assumption;
+6. stop and fix failures before starting the next phase.
+
+Tests must cover at least:
+
+- ordered body reconstruction and mismatch handling;
+- pearl growth and `MoveRecord` bookkeeping;
+- apply/undo fuzzing;
+- hairpin and tail collision behavior;
+- fresh and stale enemy occupancy;
+- portal endpoint pairing and unresolved portals;
+- trap rejection;
+- recursive survival;
+- retry ordering;
+- Navigate frontier progress;
+- Explore scoring;
+- split fallback;
+- fixture integration and replay output.
 

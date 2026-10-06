@@ -9,7 +9,11 @@ namespace bot::roles {
 struct Action {
     bool split = false;
     int split_size = 0;
-    Path path;
+    struct PlanRequest {
+        NavMode mode = NavMode::Explore;
+        bool has_target = false;
+        Vec2 target{};
+    } request;
 };
 
 class Role {

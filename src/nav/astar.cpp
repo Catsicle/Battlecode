@@ -39,7 +39,7 @@ Path search(const Grid& grid, Vec2 start_position, Vec2 target_position, bool na
         Vec2 p = grid.memory.position(current.cell);
         for (Dir direction : directions()) {
             int d = dir_index(direction);
-            if (current.cell == start && d == forbidden_first_direction)
+            if (current.cell == start && ((forbidden_first_direction & (1U << d)) != 0))
                 continue;
             if (!grid.passable_edge(current.cell, d))
                 continue;
@@ -47,9 +47,7 @@ Path search(const Grid& grid, Vec2 start_position, Vec2 target_position, bool na
             int next = grid.memory.index(next_position);
             if (!grid.known(next))
                 continue;
-            // The route is committed one step at a time, so no currently
-            // occupied tile is a safe destination, including the own body.
-            if (grid.memory.occupancy[next].present)
+            if (grid.memory.occ_fresh(next, grid.round))
                 continue;
             int step_cost = C_STEP;
             if (!grid.memory.pearl[next] && !grid.memory.eaten_here[next]) {
