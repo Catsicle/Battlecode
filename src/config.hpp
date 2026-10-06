@@ -35,6 +35,6 @@ inline constexpr int B_FRONT = 30;
 inline constexpr int B_STALE = 20;
 
 // Disabled by default. Set to true only for a local fixture/replay test.
-inline constexpr bool NAVIGATION_FIXTURE = true;
+inline constexpr bool NAVIGATION_FIXTURE = false;
 inline constexpr int FIXTURE_TARGET_X = 0;
 inline constexpr int FIXTURE_TARGET_Y = 0;

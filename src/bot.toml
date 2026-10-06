@@ -7,6 +7,8 @@ include = [
     "core/types.hpp",
     "core/memory.hpp",
     "core/memory.cpp",
+    "core/memory/queries.cpp",
+    "core/memory/queries.hpp",
     "core/log.hpp",
     "comms/msg.hpp",
     "comms/comms.hpp",
@@ -21,8 +23,12 @@ include = [
     "roles/explorer.cpp",
     "roles/killer.cpp",
     "roles/feeder.cpp",
-    "roles/bodyguard.cpp",
     "roles/queen.cpp",
     "roles/stub.cpp",
-    "roles/registry.cpp"
+    "roles/registry.cpp",
+    "roles/bodyguard/rect_adapter.hpp",
+    "roles/bodyguard/rect_ring.hpp",
+    "roles/bodyguard/rectangle_gen.cpp"
+    
+    
 ]

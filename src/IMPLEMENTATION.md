@@ -90,6 +90,16 @@ The helper always splits from the tail. Passing `length - 2` therefore leaves th
 
 Each turn produces exactly one `MOVE` or `SPLIT` action and then calls `unswbc::end_turn()`. No logging, sonar, sprinting, or random number generation is used, keeping output and behavior deterministic.
 
+## Adapter / Bodyguard Integration (`rect_adapter.hpp`)
+
+- `fill_snapshot()` reads `Memory` directly via `RECT_D_TO_MEM_BIT` mapping (no direction remapping, no `get_edge()` translation).
+- `Snapshot` (~100 KB) must be `static` (per `rect_ring.hpp` contract) to avoid wasm stack overflow; `main.cpp` uses `static bodyguard::rect::Snapshot snap;`.
+- `query_top_boxes()` returns up to `k` (`<= 64`) best `Box` structs for a pocket; uses fixed-size arrays only.
+
+## Test Bot (`test_bot.cpp`)
+
+Implements `bot::roles::Role` with deterministic random single-step move (`std::mt19937` seed `42`). Uses adapter to print `BEST_BOX` info via `controller.output_log()`.
+
 ## Important implementation assumptions
 
 - A future pearl tile is identified by `get_pearl_time() >= 0` when no live pearl is present. A countdown of `-1` is excluded because that tile never spawns.

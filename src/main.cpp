@@ -2,6 +2,7 @@
 #include "core/memory.hpp"
 #include "comms/comms.hpp"
 #include "roles/role.hpp"
+#include "roles/bodyguard/rect_adapter.hpp"
 
 #include <algorithm>
 #include <vector>
@@ -18,6 +19,24 @@ int main() {
 
     while (unswbc::update(controller, game)) {
         memory.update(controller, game.get_round_num());
+
+        // Print current best box from adapter (static Snapshot to avoid ~100KB wasm stack overflow)
+        static bodyguard::rect::Snapshot snap;
+        bodyguard::rect_adapter::fill_snapshot(memory, game.get_round_num(), snap);
+        int px = controller.get_position().x;
+        int py = controller.get_position().y;
+        bodyguard::rect::Box out_box[1];
+        int found_box = bodyguard::rect_adapter::query_top_boxes(snap, px, py, 24, 1, out_box);
+        controller.output_log("Hi");
+        if (found_box > 0 && out_box[0].w > 0 && out_box[0].h > 0) {
+        
+        controller.output_log("BEST_BOX",
+            (int)out_box[0].x0, (int)out_box[0].y0,
+            (int)out_box[0].w, (int)out_box[0].h,
+            (int)out_box[0].c,
+            "found", found_box);
+        }
+
         bot::comms::Inbox inbox = bot::comms::read_inbox(controller);
         bot::nav::Grid grid{memory, game.get_round_num()};
         bot::roles::Action action = role.act(controller, memory, grid, inbox);
