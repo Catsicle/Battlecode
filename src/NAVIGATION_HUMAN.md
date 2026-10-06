@@ -28,6 +28,7 @@ For a local Navigate-mode replay:
 
 The fixture keeps the coordinate as its objective. If the target is known, it
 uses the weighted route search toward it. If it is unknown or currently
-unreachable, it routes to the nearest reachable frontier tile, updates memory
-from the next vision window, and re-plans. Once the head reaches the target,
-the fixture branch ends and normal Explore/Wander behavior resumes.
+unreachable, it routes to a reachable frontier selected first by its toroidal
+distance to the target, then by route cost and path length. It updates memory
+from the next vision window and re-plans. Once the head reaches the target, the
+fixture branch ends and normal Explore/Wander behavior resumes.

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-
 enum class ForcedRole {
     Auto,
     Explorer,
@@ -34,7 +33,14 @@ inline constexpr int B_SOON = 80;
 inline constexpr int B_FRONT = 30;
 inline constexpr int B_STALE = 20;
 
-// Disabled by default. Set to true only for a local fixture/replay test.
-inline constexpr bool NAVIGATION_FIXTURE = true;
+// Enabled for the local navigation fixture; set false for ordinary exploration.
+inline constexpr bool NAVIGATION_FIXTURE = false;
 inline constexpr int FIXTURE_TARGET_X = 0;
 inline constexpr int FIXTURE_TARGET_Y = 0;
+inline constexpr int C_MAX = 192;
+inline constexpr int TRAP_EXTRA = 2;
+inline constexpr int MAX_RETRY = 4;
+inline constexpr int OCC_STALE_ROUNDS = 3;
+inline constexpr int DEFAULT_ENEMY_REACH = 2;
+inline constexpr bool USE_DIAL = false;
+inline constexpr bool NAV_STATS = false;
