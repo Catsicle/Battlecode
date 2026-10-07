@@ -26,9 +26,16 @@ include = [
     "roles/queen.cpp",
     "roles/stub.cpp",
     "roles/registry.cpp",
+    "roles/bodyguard.cpp",
+    "roles/bodyguard.hpp",
+    "roles/cycle_detector.hpp",
+    "roles/ring_path.hpp",
     "roles/bodyguard/rect_adapter.hpp",
     "roles/bodyguard/rect_ring.hpp",
-    "roles/bodyguard/rectangle_gen.cpp"
+    "roles/bodyguard/rectangle_gen.cpp",
+    "roles/bodyguard/constants.hpp",
+    "roles/queen.hpp",
+    "roles/queen.cpp"
     
     
 ]

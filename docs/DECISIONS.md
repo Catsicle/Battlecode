@@ -36,6 +36,10 @@ changes.
 Existing replays are binary and the matching parser is unavailable. Replay-derived
 fields are therefore null with a reason rather than guessed.
 
+## 2026-10-06: bodyguard / rectangular ring integration
+
+Cycle detection (`CycleDetector`), ring generation (`rect_ring`), and `BodyguardRole` are integrated. Normal role (`StubRole`) runs until a period-2..16 trajectory repeats; then `BodyguardRole` takes over persistently. Direct movement (`NavMode::Direct`) bypasses the planner for predetermined perimeter steps. All new structures are fixed-size and deterministic; the large `rect::Snapshot` has static storage duration.
+
 ## 2026-10-01: bctool and uv
 
 The package is named `bctool` instead of `bc` because `bc` conflicts with the

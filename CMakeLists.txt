@@ -6,8 +6,15 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(bot
 	src/main.cpp
 	src/core/memory.cpp
+	src/core/body_tracker.cpp
+	src/core/memory/queries.cpp
 	src/comms/comms.cpp
 	src/nav/grid.cpp
+	src/nav/planner.cpp
+	src/nav/executor.cpp
+	src/nav/sim.cpp
+	src/nav/safety.cpp
+	src/nav/transition.cpp
 	src/nav/bfs.cpp
 	src/nav/astar.cpp
 	src/nav/flee.cpp

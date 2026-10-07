@@ -2,7 +2,14 @@
 #include "core/memory.hpp"
 #include "comms/comms.hpp"
 #include "roles/role.hpp"
+<<<<<<< Updated upstream
 #include "roles/bodyguard/rect_adapter.hpp"
+=======
+#include "roles/bodyguard.hpp"
+#include "roles/queen.hpp"
+#include "core/body_tracker.hpp"
+#include "nav/executor.hpp"
+>>>>>>> Stashed changes
 
 #include <algorithm>
 #include <vector>
@@ -15,6 +22,7 @@ int main() {
     bot::Memory memory;
     auto [width, height] = game.get_map_size();
     memory.initialize(width, height);
+<<<<<<< Updated upstream
     bot::roles::Role& role = bot::roles::select_role();
 
     while (unswbc::update(controller, game)) {
@@ -36,9 +44,18 @@ int main() {
             (int)out_box[0].c,
             "found", found_box);
         }
+=======
+    static_cast<bot::roles::BodyguardRole&>(bot::roles::bodyguard_role()).reset();
+    bot::BodyTracker tracker;
+
+    while (unswbc::update(controller, game)) {
+        memory.update(controller, game.get_round_num());
+        tracker.reconcile(controller, memory);
+>>>>>>> Stashed changes
 
         bot::comms::Inbox inbox = bot::comms::read_inbox(controller);
         bot::nav::Grid grid{memory, game.get_round_num()};
+        bot::roles::Role& role = (controller.get_id() == 0 || controller.get_id() == 1) ? bot::roles::queen_role() : bot::roles::bodyguard_role();
         bot::roles::Action action = role.act(controller, memory, grid, inbox);
         int free_steps = (controller.get_length() + 3) / 4;
         // Prefix validation is currently one-step exact; multi-step emission

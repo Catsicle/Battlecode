@@ -1,4 +1,6 @@
 #include "role.hpp"
+#include "bodyguard.hpp"
+#include "queen.hpp"
 #include "../config.hpp"
 
 namespace bot::roles {
@@ -8,12 +10,14 @@ Role& select_role() {
     switch (FORCE_ROLE) {
     case ForcedRole::Auto:
     case ForcedRole::Stub:
+        return stub_role();
+    case ForcedRole::Bodyguard:
+        return bodyguard_role();
     case ForcedRole::Explorer:
     case ForcedRole::Killer:
     case ForcedRole::Feeder:
-    case ForcedRole::Bodyguard:
     case ForcedRole::Queen:
-        return stub_role();
+        return queen_role();
     }
     return stub_role();
 }
