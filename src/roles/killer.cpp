@@ -18,14 +18,15 @@ class KillerRole final : public Role {
         Vec2 current_pos = controller.get_position();
 
         // Placeholder: detect QueenLocation message type in inbox
-        bool received_queen_location = false;
-        for (const auto& msg : inbox.messages) {
-            // Placeholder for MessageType::QueenLocation (not yet defined in msg.hpp)
-            if (msg.type == static_cast<bot::comms::MessageType>(4)) {
-                received_queen_location = true;
+        Vec2 queen_location;
+        std::uint64_t round_received = 0;
+        if (inbox.enemy_queen_exists) {
+            for (auto msg : inbox.enemy_queen_messages) {
+                if (msg.round > round_received) {
+                    queen_location = {msg.x, msg.y};
+                    round_received = msg.round;
+                }
             }
-        }
-        if (received_queen_location) {
             state = State::SearchQueen;
         }
 
@@ -104,8 +105,8 @@ class KillerRole final : public Role {
                     case bot::KillAction::NONE:
                         action.request.mode = NavMode::Navigate;
                         action.request.has_target = true;
-                        if (inbox.navigation_target.available) {
-                            action.request.target = inbox.navigation_target.target;
+                        if (queen_location.x != 0 || queen_location.y != 0) {
+                            action.request.target = queen_location;
                         } else {
                             action.request.target = current_pos;
                         }
@@ -127,8 +128,8 @@ class KillerRole final : public Role {
             } else {
                 action.request.mode = NavMode::Navigate;
                 action.request.has_target = true;
-                if (inbox.navigation_target.available) {
-                    action.request.target = inbox.navigation_target.target;
+                if (queen_location.x != 0 || queen_location.y != 0) {
+                    action.request.target = queen_location;
                 } else {
                     // Placeholder: fallback target from sonar/inbox location
                     action.request.target = current_pos;

@@ -30,7 +30,7 @@ int main() {
     while (unswbc::update(controller, game)) {
         memory.update(controller, game.get_round_num());
         tracker.reconcile(controller, memory);
-        bot::comms::Inbox inbox = bot::comms::read_inbox(controller);
+        bot::comms::Inbox inbox = bot::comms::read_inbox(controller,game.get_round_num());
         bot::nav::Grid grid{memory, game.get_round_num()};
         
         bot::roles::Role& active_role = bot::roles::select_role(controller, game.get_round_num());

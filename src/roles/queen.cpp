@@ -31,12 +31,12 @@ class QueenRole final : public Role {
         }
 
         // 2. Target Received via Sonar / Inbox -> Navigate directly to Target
-        if (inbox.navigation_target.available) {
-            action.request.mode = NavMode::Navigate;
-            action.request.has_target = true;
-            action.request.target = inbox.navigation_target.target;
-            return action;
-        }
+        // if (inbox.navigation_target.available) {
+        //     action.request.mode = NavMode::Navigate;
+        //     action.request.has_target = true;
+        //     action.request.target = inbox.navigation_target.target;
+        //     return action;
+        // }
 
         // 3. Fixture override (if navigation testing fixture is enabled)
         if (NAVIGATION_FIXTURE && current_pos != Vec2{FIXTURE_TARGET_X, FIXTURE_TARGET_Y}) {

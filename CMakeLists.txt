@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(bot
 	src/main.cpp
 	src/core/memory.cpp
+	src/core/body_tracker.cpp
 	src/comms/comms.cpp
+	src/comms/comm_function.cpp
 	src/nav/grid.cpp
 	src/nav/bfs.cpp
 	src/nav/astar.cpp
@@ -19,6 +21,7 @@ add_executable(bot
 	src/roles/queen.cpp
 	src/roles/stub.cpp
 	src/roles/registry.cpp
+	src/roles/selector.cpp
 )
 target_include_directories(bot PRIVATE src)
 

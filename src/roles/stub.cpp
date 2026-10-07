@@ -16,11 +16,11 @@ class StubRole final : public Role {
                const nav::Grid& grid, const comms::Inbox& inbox) override {
         (void)memory;
         Action action;
-        if (inbox.navigation_target.available) {
-            action.request.mode = NavMode::Navigate;
-            action.request.has_target = true;
-            action.request.target = inbox.navigation_target.target;
-        } else if (NAVIGATION_FIXTURE &&
+        // if (inbox.navigation_target.available) {
+        //     action.request.mode = NavMode::Navigate;
+        //     action.request.has_target = true;
+        //     action.request.target = inbox.navigation_target.target;
+        if (NAVIGATION_FIXTURE &&
                    controller.get_position() != Vec2{FIXTURE_TARGET_X, FIXTURE_TARGET_Y}) {
             action.request.mode = NavMode::Navigate;
             action.request.has_target = true;
