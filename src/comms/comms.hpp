@@ -11,6 +11,7 @@ namespace bot::comms {
 struct enemy_queen_sonar {
     std::uint8_t x = 0;
     std::uint8_t y = 0;
+    std::uint8_t propagate = 3;
     std::uint64_t round = 0;
 };
 

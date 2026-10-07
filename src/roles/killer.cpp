@@ -11,11 +11,25 @@ class KillerRole final : public Role {
 
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
-               const nav::Grid& grid, const comms::Inbox& inbox) override {
+               const nav::Grid& grid, const comms::Inbox& inbox, const bot::BodyTracker& tracker) override {
         (void)memory;
         (void)grid;
+        (void)tracker;
         Action action;
+
+        if (inbox.suicide_exists) {
+            action.request.mode = NavMode::Suicide;
+            return action;
+        }
+
         Vec2 current_pos = controller.get_position();
+
+        if (inbox.suicide_exists) {
+            std::cout << "DEBUG: Suicide message received - committing suicide" << std::endl;
+            Action suicide_action;
+            suicide_action.request.mode = NavMode::Suicide;
+            return suicide_action;
+        }
 
         // Placeholder: detect QueenLocation message type in inbox
         Vec2 queen_location;
@@ -28,6 +42,38 @@ class KillerRole final : public Role {
                 }
             }
             state = State::SearchQueen;
+        }
+
+        // Emit enemy queen sonar if queen body/head visible
+        Vec2 queen_spot;
+        bool queen_spotted = false;
+        for (const auto& tile : controller.get_vision().get_tiles()) {
+            const auto* dragon = tile.get_dragon();
+            if (dragon != nullptr && dragon->get_team() != controller.get_team()) {
+                queen_spotted = true;
+                queen_spot = tile.get_position();
+                break;
+            }
+        }
+        uint8_t propagate_val = 3;
+        if (inbox.enemy_queen_exists) {
+            uint8_t max_prop = 0;
+            for (auto msg : inbox.enemy_queen_messages) {
+                if (msg.propagate > max_prop) max_prop = msg.propagate;
+            }
+            propagate_val = (max_prop > 0) ? (max_prop - 1) : 0;
+        }
+        if (queen_spotted) {
+            std::uint64_t sonar_val = enemy_queen_sonar(
+                static_cast<std::uint8_t>(queen_spot.x & 0x3F),
+                static_cast<std::uint8_t>(queen_spot.y & 0x3F),
+                propagate_val,
+                action.round_num
+            );
+            action.sonar.North = sonar_val;
+            action.sonar.East = sonar_val;
+            action.sonar.South = sonar_val;
+            action.sonar.West = sonar_val;
         }
 
         // Feeding behavior (default)
@@ -49,9 +95,10 @@ class KillerRole final : public Role {
                 switch (kill_result.action) {
                     case bot::KillAction::NONE: {
                         int length = controller.get_length();
-                        if (length >= 7) {
+                        if (length >= 8) {
+                            std::cout << "Trying to split" << std::endl;
                             action.do_split = true;
-                            action.split_size = length - 5;
+                            action.split_size = length - 6;
                             return action;
                         }
                         action.request.mode = NavMode::Explore;
@@ -73,9 +120,10 @@ class KillerRole final : public Role {
                 }
             } else {
                 int length = controller.get_length();
-                if (length >= 7) {
+                if (length >= 8) {
+                    std::cout << "Trying to split" << std::endl;
                     action.do_split = true;
-                    action.split_size = length - 5;
+                    action.split_size = length - 6;
                     return action;
                 }
                 

@@ -1,4 +1,5 @@
 #include "executor.hpp"
+#include "../roles/selector.hpp"
 
 #include "safety.hpp"
 #include "transition.hpp"
@@ -7,6 +8,10 @@
 #include <algorithm>
 #include <deque>
 #include <vector>
+
+namespace bot::roles {
+extern Role& queen_role();
+} // namespace bot::roles
 
 namespace bot::nav {
 
@@ -60,15 +65,62 @@ static bool is_physically_non_colliding(const Memory& memory, const Grid& grid, 
 }
 
 void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& tracker,
-                  const Grid& grid, const roles::Action::PlanRequest& request) {
-    if (request.mode == NavMode::Direct && !request.path.empty()) {
+                  const Grid& grid, roles::Action& action, const bot::roles::Role* role) {
+    if (action.request.mode == NavMode::Direct && !action.request.path.empty()) {
         std::vector<unswbc::Direction> moves;
-        moves.reserve(request.path.size());
-        for (Dir d : request.path) {
+        moves.reserve(action.request.path.size());
+        for (Dir d : action.request.path) {
             moves.push_back(d);
         }
         controller.make_moves(moves);
         return;
+    }
+
+    if (action.request.mode == NavMode::Suicide) {
+        Dir opposite = controller.get_dir().get_opposite();
+        controller.make_move(opposite);
+        return;
+    }
+
+    // Queen suicide split when blocked by ally body
+    if (role != nullptr && role == &bot::roles::queen_role()) {
+        bool all_blocked = true;
+        Dir first_blocked_dir = Dir::NORTH;
+        bool found_first_ally_blocked = false;
+        for (Dir dir : directions()) {
+            Vec2 current_pos = controller.get_position();
+            bool blocked = !is_physically_non_colliding(memory, grid, current_pos, dir);
+            if (!blocked) {
+                all_blocked = false;
+            }
+            int next_cell = memory.index(add(current_pos, dir, memory.width, memory.height));
+            bool blocked_by_ally = false;
+            if (next_cell >= 0) {
+                const auto& occ = memory.occupancy[next_cell];
+                if (occ.present && occ.team == controller.get_team().value) {
+                    blocked_by_ally = true;
+                }
+            }
+            if (blocked_by_ally && !found_first_ally_blocked) {
+                first_blocked_dir = dir;
+                found_first_ally_blocked = true;
+            }
+        }
+        if (all_blocked && controller.get_length() >= 4) {
+            std::cout << "DEBUG: Queen blocked by ally all directions - split size=" << (controller.get_length() - 2) << std::endl;
+            int child_size = controller.get_length() - 2;
+            if (controller.can_split(child_size)) {
+                uint64_t msg_round = static_cast<std::uint64_t>(grid.round);
+                uint64_t suicide_msg = ::suicide_sonar(msg_round);
+                action.sonar.North = (first_blocked_dir.value == 'N') ? suicide_msg : 0;
+                action.sonar.East = (first_blocked_dir.value == 'E') ? suicide_msg : 0;
+                action.sonar.South = (first_blocked_dir.value == 'S') ? suicide_msg : 0;
+                action.sonar.West = (first_blocked_dir.value == 'W') ? suicide_msg : 0;
+                controller.do_split(child_size);
+                tracker.reset();
+                return;
+            }
+        }
     }
 
     Sim initial = make_sim(memory, tracker, controller);
@@ -76,7 +128,7 @@ void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& t
     int free_steps = 1;
 
     for (int attempt = 0; attempt < MAX_RETRY; ++attempt) {
-        Path path = plan(request, grid, initial, controller.get_position(), forbid);
+        Path path = plan(action.request, grid, initial, controller.get_position(), forbid);
         if (!path.found || path.length == 0)
             break;
         int max_prefix = std::min(free_steps, path.length);

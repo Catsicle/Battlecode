@@ -1,5 +1,6 @@
 #include "role.hpp"
 #include "../config.hpp"
+#include "../core/body_tracker.hpp"
 #include <array>
 #include <utility>
 
@@ -20,9 +21,31 @@ class QueenRole final : public Role {
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
                const nav::Grid& grid, const comms::Inbox& inbox,const bot::BodyTracker& tracker) override {
-        //void(grid);
+        (void)grid;
         Action action;
         Vec2 current_pos = controller.get_position();
+
+        // Emit enemy queen sonar if enemy queen body/head visible
+        Vec2 queen_spot;
+        bool queen_spotted = false;
+        for (const auto& tile : controller.get_vision().get_tiles()) {
+            const auto* dragon = tile.get_dragon();
+            if (dragon != nullptr && dragon->get_team() != controller.get_team()) {
+                queen_spotted = true;
+                queen_spot = tile.get_position();
+                break;
+            }
+        }
+        if (queen_spotted) {
+            std::uint64_t sonar_val = enemy_queen_sonar(
+                static_cast<std::uint8_t>(queen_spot.x & 0x3F),
+                static_cast<std::uint8_t>(queen_spot.y & 0x3F),
+                3, action.round_num);
+            action.sonar.North = sonar_val;
+            action.sonar.East = sonar_val;
+            action.sonar.South = sonar_val;
+            action.sonar.West = sonar_val;
+        }
 
         // 1. Save initial spawn location on first turn
         if (!initialized) {
@@ -31,13 +54,13 @@ class QueenRole final : public Role {
         }
 
         // 2. HIGHEST PRIORITY: NavMode::Navigate Signal from Sonar / Inbox
-        if (inbox.navigation_target.available) {
-            action.request.mode = NavMode::Navigate;
-            action.request.has_target = true;
-            action.request.target = inbox.navigation_target.target;
-            action.do_split = false; // Bypasses splitting when responding to sonar
-            return action;
-        }
+        // if (inbox.navigation_target.available) {
+        //     action.request.mode = NavMode::Navigate;
+        //     action.request.has_target = true;
+        //     action.request.target = inbox.navigation_target.target;
+        //     action.do_split = false; // Bypasses splitting when responding to sonar
+        //     return action;
+        // }
 
         // 3. Fixture override (if navigation testing fixture is enabled)
         if (NAVIGATION_FIXTURE && current_pos != Vec2{FIXTURE_TARGET_X, FIXTURE_TARGET_Y}) {

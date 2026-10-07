@@ -6,6 +6,6 @@
 namespace bot::nav {
 
 void execute_turn(unswbc::Controller&, Memory&, BodyTracker&,
-                  const Grid&, const roles::Action::PlanRequest&);
+                  const Grid&, roles::Action&, const bot::roles::Role*);
 
 } // namespace bot::nav

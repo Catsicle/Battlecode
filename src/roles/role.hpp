@@ -9,10 +9,23 @@
 
 namespace bot::roles {
 
+struct SonarMessage {
+    std::uint64_t North = 0;
+    std::uint64_t East = 0;
+    std::uint64_t South = 0;
+    std::uint64_t West = 0;
+};
+
 struct Action {
+    // Round number for sonar auth
+    std::uint64_t round_num = 0;
+
     // Splitting Command
     bool do_split = false;
     int split_size = 0;
+
+    // Sonar Emission
+    SonarMessage sonar;
 
     // Navigation Request
     struct PlanRequest {

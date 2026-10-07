@@ -23,6 +23,7 @@ Inbox read_inbox(
             enemy_queen_sonar msg{};
             msg.x = static_cast<std::uint8_t>(decoded[1]);
             msg.y = static_cast<std::uint8_t>(decoded[2]);
+            msg.propagate = static_cast<std::uint8_t>(decoded[3]);
             msg.round = round;
             inbox.enemy_queen_messages.push_back(msg);
             inbox.enemy_queen_exists = true;

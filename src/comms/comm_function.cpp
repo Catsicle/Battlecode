@@ -27,6 +27,7 @@ std::uint8_t authenticate(
 std::uint64_t enemy_queen_sonar(
     std::uint8_t x,
     std::uint8_t y,
+    std::uint8_t propagate,
     std::uint64_t round)
 {
     std::uint64_t msg = 0;
@@ -39,10 +40,13 @@ std::uint64_t enemy_queen_sonar(
     // Queen Y: bits 53-48
     msg |= (std::uint64_t)(y & 0x3F) << 48;
 
-    // 42 random bits -> bits 47-6
+    // Propagate count: bits 47-45 (3 bits), decrements on propagation
+    msg |= (std::uint64_t)(propagate & 0x07) << 45;
+
+    // 39 random bits -> bits 44-6
     std::random_device rd;
     std::mt19937_64 gen(rd());
-    std::uint64_t random_bits = gen() & ((1ULL << 42) - 1);
+    std::uint64_t random_bits = gen() & ((1ULL << 39) - 1);
     msg |= random_bits << 6;
 
     // 6-bit authentication -> bits 5-0
@@ -249,6 +253,8 @@ std::vector<std::uint64_t> decode_sonar(
 
         decoded.push_back(x);
         decoded.push_back(y);
+        std::uint8_t propagate = (msg >> 45) & 0x07;
+        decoded.push_back(propagate);
     }
     else if (sonar_id == 0b0010) {
         // Idle

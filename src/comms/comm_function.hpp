@@ -13,6 +13,7 @@ std::uint8_t authenticate(
 std::uint64_t enemy_queen_sonar(
     std::uint8_t x,
     std::uint8_t y,
+    std::uint8_t propagate,
     std::uint64_t round
 );
 

@@ -14,6 +14,7 @@ add_executable(bot
 	src/nav/astar.cpp
 	src/nav/flee.cpp
 	src/nav/wander.cpp
+	src/nav/executor.cpp
 	src/roles/explorer.cpp
 	src/roles/killer.cpp
 	src/roles/killer/kill.cpp

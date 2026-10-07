@@ -1,4 +1,5 @@
 #include "role.hpp"
+#include "killer/kill.hpp"
 
 namespace bot::roles {
 
@@ -12,7 +13,62 @@ class FeederRole final : public Role {
         (void)inbox;
         (void)tracker;
 
+        if (inbox.suicide_exists) {
+            Action suicide_action;
+            suicide_action.request.mode = NavMode::Suicide;
+            return suicide_action;
+        }
+
         Action action;
+
+        // Emit enemy queen sonar if queen body/head visible
+        Vec2 queen_spot;
+        bool queen_spotted = false;
+        for (const auto& tile : controller.get_vision().get_tiles()) {
+            const auto* dragon = tile.get_dragon();
+            if (dragon != nullptr && dragon->get_team() != controller.get_team()) {
+                queen_spotted = true;
+                queen_spot = tile.get_position();
+                break;
+            }
+        }
+        if (queen_spotted) {
+            std::uint64_t sonar_val = enemy_queen_sonar(
+                static_cast<std::uint8_t>(queen_spot.x & 0x3F),
+                static_cast<std::uint8_t>(queen_spot.y & 0x3F),
+                3, action.round_num);
+            action.sonar.North = sonar_val;
+            action.sonar.East = sonar_val;
+            action.sonar.South = sonar_val;
+            action.sonar.West = sonar_val;
+        }
+
+        // Kill enemy queen head if visible
+        bool queen_head_visible = false;
+        unswbc::Position queen_head_pos{};
+        for (const auto& tile : controller.get_vision().get_tiles()) {
+            const auto* dragon = tile.get_dragon();
+            if (dragon != nullptr && dragon->is_head() &&
+                dragon->get_team() != controller.get_team()) {
+                queen_head_visible = true;
+                queen_head_pos = tile.get_position();
+                break;
+            }
+        }
+        if (queen_head_visible) {
+            bot::KillResult kill_result = bot::kill(
+                controller.get_vision(), queen_head_pos, controller.get_length());
+            if (kill_result.action == bot::KillAction::KILL_QUEEN ||
+                kill_result.action == bot::KillAction::KILL_ENEMY_HEAD) {
+                action.request.mode = NavMode::Direct;
+                action.request.path.clear();
+                for (char c : kill_result.path) {
+                    action.request.path.push_back(Dir(c));
+                }
+                return action;
+            }
+        }
+
         // Explores map for resources using wander scoring and safety fallbacks
         action.request.mode = NavMode::Explore;
         return action;

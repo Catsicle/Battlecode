@@ -50,14 +50,39 @@ int main() {
         // }
 
         bot::roles::Action action = active_role.act(controller, memory, grid, inbox,tracker);
-
+        action.round_num = static_cast<std::uint64_t>(game.get_round_num());
+        
         
         if (action.do_split && controller.can_split(action.split_size)) {
             controller.do_split(action.split_size);
             tracker.reset();
         } else {
-            bot::nav::execute_turn(controller, memory, tracker, grid, action.request);
+            bot::nav::execute_turn(controller, memory, tracker, grid, action, &active_role);
         }
+
+        // Emit sonar messages
+        if (action.sonar.North != 0) {
+            std::cout << "DEBUG: Emitting sonar North=" << action.sonar.North << std::endl;
+            controller.send_sonar(unswbc::Direction::NORTH, action.sonar.North);
+        }
+        if (action.sonar.East != 0) {
+            std::cout << "DEBUG: Emitting sonar East=" << action.sonar.East << std::endl;
+            controller.send_sonar(unswbc::Direction::EAST, action.sonar.East);
+        }
+        if (action.sonar.South != 0) {
+            std::cout << "DEBUG: Emitting sonar South=" << action.sonar.South << std::endl;
+            controller.send_sonar(unswbc::Direction::SOUTH, action.sonar.South);
+        }
+        if (action.sonar.West != 0) {
+            std::cout << "DEBUG: Emitting sonar West=" << action.sonar.West << std::endl;
+            controller.send_sonar(unswbc::Direction::WEST, action.sonar.West);
+        }
+        if (action.sonar.East != 0)
+            controller.send_sonar(unswbc::Direction::EAST, action.sonar.East);
+        if (action.sonar.South != 0)
+            controller.send_sonar(unswbc::Direction::SOUTH, action.sonar.South);
+        if (action.sonar.West != 0)
+            controller.send_sonar(unswbc::Direction::WEST, action.sonar.West);
 
         unswbc::end_turn();
     }
