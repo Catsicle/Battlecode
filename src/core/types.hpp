@@ -44,6 +44,7 @@ struct Path {
 enum class NavMode {
     Explore,
     Navigate,
+    Direct,
 };
 
 } // namespace bot

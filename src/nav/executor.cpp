@@ -61,6 +61,16 @@ static bool is_physically_non_colliding(const Memory& memory, const Grid& grid, 
 
 void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& tracker,
                   const Grid& grid, const roles::Action::PlanRequest& request) {
+    if (request.mode == NavMode::Direct && !request.path.empty()) {
+        std::vector<unswbc::Direction> moves;
+        moves.reserve(request.path.size());
+        for (Dir d : request.path) {
+            moves.push_back(d);
+        }
+        controller.make_moves(moves);
+        return;
+    }
+
     Sim initial = make_sim(memory, tracker, controller);
     std::uint8_t forbid = 0;
     int free_steps = 1;

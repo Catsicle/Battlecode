@@ -1,0 +1,233 @@
+[game 1] error: /usr/bin/ld: /tmp/ccMzgSxV.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] main.cpp:(.text+0xd0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccMzgSxV.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] main.cpp:(.text+0x2c0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccMzgSxV.o: in function `suicide_sonar(unsigned long)':
+[game 1] main.cpp:(.text+0x580): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccMzgSxV.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] main.cpp:(.text+0x770): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccMzgSxV.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] main.cpp:(.text+0xae0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccMzgSxV.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] main.cpp:(.text+0xe80): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccbtwtUp.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] executor.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccbtwtUp.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] executor.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccbtwtUp.o: in function `suicide_sonar(unsigned long)':
+[game 1] executor.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccbtwtUp.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] executor.cpp:(.text+0x6a0): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccbtwtUp.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] executor.cpp:(.text+0xa20): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccbtwtUp.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] executor.cpp:(.text+0xc20): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccTyzq4L.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] planner.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccTyzq4L.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] planner.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccTyzq4L.o: in function `suicide_sonar(unsigned long)':
+[game 1] planner.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccTyzq4L.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] planner.cpp:(.text+0x8b0): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccTyzq4L.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] planner.cpp:(.text+0xc30): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccTyzq4L.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] planner.cpp:(.text+0xe30): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccXkpmXS.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] explorer.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccXkpmXS.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] explorer.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccXkpmXS.o: in function `suicide_sonar(unsigned long)':
+[game 1] explorer.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccXkpmXS.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] explorer.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccXkpmXS.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] explorer.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccXkpmXS.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] explorer.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccEaTLZ7.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] feeder.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccEaTLZ7.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] feeder.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccEaTLZ7.o: in function `suicide_sonar(unsigned long)':
+[game 1] feeder.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccEaTLZ7.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] feeder.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccEaTLZ7.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] feeder.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccEaTLZ7.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] feeder.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] killer.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] killer.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `suicide_sonar(unsigned long)':
+[game 1] killer.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] killer.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] killer.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] killer.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYNYCYz.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] queen.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYNYCYz.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] queen.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYNYCYz.o: in function `suicide_sonar(unsigned long)':
+[game 1] queen.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYNYCYz.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] queen.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYNYCYz.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] queen.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYNYCYz.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] queen.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccqD4gom.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] registry.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccqD4gom.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] registry.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccqD4gom.o: in function `suicide_sonar(unsigned long)':
+[game 1] registry.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccqD4gom.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] registry.cpp:(.text+0x6b0): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccqD4gom.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] registry.cpp:(.text+0xa30): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccqD4gom.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] registry.cpp:(.text+0xc30): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYFTv2Y.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 1] stub.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYFTv2Y.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 1] stub.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x1f0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYFTv2Y.o: in function `suicide_sonar(unsigned long)':
+[game 1] stub.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x4b0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYFTv2Y.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 1] stub.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0x6a0): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYFTv2Y.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 1] stub.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xa20): first defined here
+[game 1] /usr/bin/ld: /tmp/ccYFTv2Y.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 1] stub.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccr0DLms.o:comms.cpp:(.text+0xe40): first defined here
+[game 1] /usr/bin/ld: /tmp/ccMzgSxV.o: in function `main':
+[game 1] main.cpp:(.text.startup+0x481): undefined reference to `bot::roles::select_role(unswbc::Controller const&, int)'
+[game 1] /usr/bin/ld: /tmp/ccmsZFFv.o: in function `bot::roles::KillerRole::act(unswbc::Controller const&, bot::Memory const&, bot::nav::Grid const&, bot::comms::Inbox const&)':
+[game 1] killer.cpp:(.text._ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE[_ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE]+0xf0): undefined reference to `bot::kill(unswbc::Vision const&, unswbc::Position, int)'
+[game 1] /usr/bin/ld: killer.cpp:(.text._ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE[_ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE]+0x205): undefined reference to `bot::kill(unswbc::Vision const&, unswbc::Position, int)'
+[game 1] collect2: error: ld returned 1 exit status
+[game 1] 
+[1/2] active vs Pearl2 | ERROR r=-
+[game 2] error: /usr/bin/ld: /tmp/ccgJTmER.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] main.cpp:(.text+0xd0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccgJTmER.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] main.cpp:(.text+0x2c0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccgJTmER.o: in function `suicide_sonar(unsigned long)':
+[game 2] main.cpp:(.text+0x580): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccgJTmER.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] main.cpp:(.text+0x770): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccgJTmER.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] main.cpp:(.text+0xae0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/ccgJTmER.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] main.cpp:(.text+0xe80): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/ccm1cBUs.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] executor.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccm1cBUs.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] executor.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccm1cBUs.o: in function `suicide_sonar(unsigned long)':
+[game 2] executor.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccm1cBUs.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] executor.cpp:(.text+0x6a0): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccm1cBUs.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] executor.cpp:(.text+0xa20): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/ccm1cBUs.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] executor.cpp:(.text+0xc20): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/cceZbjwh.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] planner.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/cceZbjwh.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] planner.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/cceZbjwh.o: in function `suicide_sonar(unsigned long)':
+[game 2] planner.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/cceZbjwh.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] planner.cpp:(.text+0x8b0): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/cceZbjwh.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] planner.cpp:(.text+0xc30): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/cceZbjwh.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] planner.cpp:(.text+0xe30): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/ccuhKd5y.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] explorer.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccuhKd5y.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] explorer.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccuhKd5y.o: in function `suicide_sonar(unsigned long)':
+[game 2] explorer.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccuhKd5y.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] explorer.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccuhKd5y.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] explorer.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/ccuhKd5y.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] explorer.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/ccjMRE8k.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] feeder.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccjMRE8k.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] feeder.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccjMRE8k.o: in function `suicide_sonar(unsigned long)':
+[game 2] feeder.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccjMRE8k.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] feeder.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccjMRE8k.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] feeder.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/ccjMRE8k.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] feeder.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] killer.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] killer.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `suicide_sonar(unsigned long)':
+[game 2] killer.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] killer.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] killer.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] killer.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/cclkcQVg.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] queen.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/cclkcQVg.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] queen.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/cclkcQVg.o: in function `suicide_sonar(unsigned long)':
+[game 2] queen.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/cclkcQVg.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] queen.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/cclkcQVg.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] queen.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/cclkcQVg.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] queen.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/cc8I63jy.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] registry.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc8I63jy.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] registry.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc8I63jy.o: in function `suicide_sonar(unsigned long)':
+[game 2] registry.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc8I63jy.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] registry.cpp:(.text+0x6b0): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc8I63jy.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] registry.cpp:(.text+0xa30): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/cc8I63jy.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] registry.cpp:(.text+0xc30): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/cc0EcmUn.o: in function `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)':
+[game 2] stub.cpp:(.text+0x0): multiple definition of `authenticate(unsigned long, unsigned char, unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc0EcmUn.o: in function `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)':
+[game 2] stub.cpp:(.text+0x1f0): multiple definition of `portal_sonar(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x1f0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc0EcmUn.o: in function `suicide_sonar(unsigned long)':
+[game 2] stub.cpp:(.text+0x4b0): multiple definition of `suicide_sonar(unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x4b0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc0EcmUn.o: in function `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)':
+[game 2] stub.cpp:(.text+0x720): multiple definition of `enemy_queen_sonar(unsigned char, unsigned char, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0x6a0): first defined here
+[game 2] /usr/bin/ld: /tmp/cc0EcmUn.o: in function `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)':
+[game 2] stub.cpp:(.text+0xaa0): multiple definition of `idle_sonar(unsigned char, unsigned char, std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > > const&, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xa20): first defined here
+[game 2] /usr/bin/ld: /tmp/cc0EcmUn.o: in function `decode_sonar(unsigned long, unsigned long)':
+[game 2] stub.cpp:(.text+0xca0): multiple definition of `decode_sonar(unsigned long, unsigned long)'; /tmp/ccBWS8C2.o:comms.cpp:(.text+0xe40): first defined here
+[game 2] /usr/bin/ld: /tmp/ccgJTmER.o: in function `main':
+[game 2] main.cpp:(.text.startup+0x481): undefined reference to `bot::roles::select_role(unswbc::Controller const&, int)'
+[game 2] /usr/bin/ld: /tmp/ccRbRQpD.o: in function `bot::roles::KillerRole::act(unswbc::Controller const&, bot::Memory const&, bot::nav::Grid const&, bot::comms::Inbox const&)':
+[game 2] killer.cpp:(.text._ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE[_ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE]+0xf0): undefined reference to `bot::kill(unswbc::Vision const&, unswbc::Position, int)'
+[game 2] /usr/bin/ld: killer.cpp:(.text._ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE[_ZN3bot5roles10KillerRole3actERKN6unswbc10ControllerERKNS_6MemoryERKNS_3nav4GridERKNS_5comms5InboxE]+0x205): undefined reference to `bot::kill(unswbc::Vision const&, unswbc::Position, int)'
+[game 2] collect2: error: ld returned 1 exit status
+[game 2] 
+[2/2] active vs Pearl2 | ERROR r=-
+Report: /home/catsicle/Battlecode/results/runs/20261007T200626Z-fa78140/report.md

@@ -14,8 +14,8 @@ add_executable(bot
 	src/nav/wander.cpp
 	src/roles/explorer.cpp
 	src/roles/killer.cpp
+	src/roles/killer/kill.cpp
 	src/roles/feeder.cpp
-	src/roles/bodyguard.cpp
 	src/roles/queen.cpp
 	src/roles/stub.cpp
 	src/roles/registry.cpp

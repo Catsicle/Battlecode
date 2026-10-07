@@ -97,3 +97,10 @@ Each turn produces exactly one `MOVE` or `SPLIT` action and then calls `unswbc::
 - An obstacle mask includes visible dragon occupancy and kelp-incident tiles. The direct legality check uses the directional kelp mask and body occupancy because kelp is fundamentally an edge obstacle.
 - Portal destination geometry uses the opposite side of the paired portal edge, matching the documented portal behavior.
 - `BOT_DEBUG` adds replay logs for body reconstruction, raw versus simulated legality, candidate scores, and the selected move; it is disabled by default.
+
+## Killer role (`src/roles/killer.cpp`)
+
+- Default state is `Feeding`.
+- Receives `message_type: QueenLocation` (placeholder value 4) via `inbox.messages` to switch to `SearchQueen`.
+- Feeding: scans the 7x7 vision for any visible enemy head. If visible, calls `bot::kill()` (from `kill.hpp`) with the head position and current length; if a non-empty kill path is returned, navigates to the target. Otherwise falls back to `NavMode::Explore`. Includes split fallback (`length >= 7` -> split `length - 5`).
+- SearchQueen: scans vision for queen head. If visible, uses `bot::kill()` and navigates to the kill/preparation target. Otherwise navigates to the sonar/navigation target from the inbox, with a fallback to the current position.

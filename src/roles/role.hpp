@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../comms/comms.hpp"
 #include "../core/memory.hpp"
 #include "../nav/grid.hpp"
@@ -7,12 +9,13 @@
 namespace bot::roles {
 
 struct Action {
-    bool split = false;
+    bool do_split = false;
     int split_size = 0;
     struct PlanRequest {
         NavMode mode = NavMode::Explore;
         bool has_target = false;
         Vec2 target{};
+        std::vector<Dir> path;  // Vector path for Direct mode
     } request;
 };
 
