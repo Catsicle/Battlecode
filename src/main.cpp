@@ -3,8 +3,11 @@
 #include "comms/comms.hpp"
 #include "roles/role.hpp"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "roles/bodyguard/rect_adapter.hpp"
 =======
+=======
+>>>>>>> Stashed changes
 #include "roles/bodyguard.hpp"
 #include "roles/queen.hpp"
 #include "core/body_tracker.hpp"
@@ -22,6 +25,7 @@ int main() {
     bot::Memory memory;
     auto [width, height] = game.get_map_size();
     memory.initialize(width, height);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     bot::roles::Role& role = bot::roles::select_role();
 
@@ -45,12 +49,17 @@ int main() {
             "found", found_box);
         }
 =======
+=======
+>>>>>>> Stashed changes
     static_cast<bot::roles::BodyguardRole&>(bot::roles::bodyguard_role()).reset();
     bot::BodyTracker tracker;
 
     while (unswbc::update(controller, game)) {
         memory.update(controller, game.get_round_num());
         tracker.reconcile(controller, memory);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
         bot::comms::Inbox inbox = bot::comms::read_inbox(controller);
