@@ -1,200 +1,303 @@
+#include <cstdint>
 #include <iostream>
-#include "comms.hpp"
+#include <vector>
 
-using namespace std;
+#include "comm_function.hpp"
 
 int main()
 {
-    uint64_t round = 100;
+    std::uint64_t round = 100;
 
-    // ---------------- ENEMY QUEEN ----------------
-    uint64_t queen_msg = enemy_queen_sonar(23, 41, round);
+    // =========================================================
+    // 1. ENEMY QUEEN
+    // =========================================================
 
-    vector<uint64_t> queen = decode_sonar(queen_msg, round);
+    std::uint64_t queen_msg = enemy_queen_sonar(23, 41, round);
+    auto queen = decode_sonar(queen_msg, round);
 
-    cout << "Enemy Queen:\n";
+    std::cout << "Test 1 - Enemy Queen: ";
     for (auto x : queen)
-        cout << x << " ";
-    cout << "\n\n";
+        std::cout << x << " ";
+    std::cout << "\n";
 
 
-    // ---------------- IDLE ----------------
-    vector<vector<bool>> pearl_grid(6, vector<bool>(6, false));
+    // =========================================================
+    // 2. ENEMY QUEEN - BOUNDARY COORDINATES
+    // =========================================================
+
+    std::uint64_t queen_boundary =
+        enemy_queen_sonar(0, 63, round);
+
+    auto queen_b = decode_sonar(queen_boundary, round);
+
+    std::cout << "Test 2 - Queen Boundary: ";
+    for (auto x : queen_b)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 3. IDLE - SOME PEARLS
+    // =========================================================
+
+    std::vector<std::vector<bool>> pearl_grid(
+        6, std::vector<bool>(6, false)
+    );
 
     pearl_grid[0][0] = true;
     pearl_grid[2][3] = true;
     pearl_grid[5][5] = true;
 
-    uint64_t idle_msg =
+    std::uint64_t idle_msg =
         idle_sonar(12, 34, pearl_grid, round);
 
-    vector<uint64_t> idle =
-        decode_sonar(idle_msg, round);
+    auto idle = decode_sonar(idle_msg, round);
 
-    cout << "Idle:\n";
+    std::cout << "Test 3 - Idle: ";
     for (auto x : idle)
-        cout << x << " ";
-    cout << "\n\n";
+        std::cout << x << " ";
+    std::cout << "\n";
 
 
-    // ---------------- PORTAL ----------------
-    uint64_t portal_msg = portal_sonar(
-        10, 20, 0,       // start
-        30, 40,          // point 1
-        15, 25, 1,       // point 2
-        50, 60, 2,       // point 3
+    // =========================================================
+    // 4. IDLE - NO PEARLS
+    // =========================================================
+
+    std::vector<std::vector<bool>> empty_grid(
+        6, std::vector<bool>(6, false)
+    );
+
+    std::uint64_t idle_empty_msg =
+        idle_sonar(0, 0, empty_grid, round);
+
+    auto idle_empty =
+        decode_sonar(idle_empty_msg, round);
+
+    std::cout << "Test 4 - Idle No Pearls: ";
+    for (auto x : idle_empty)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 5. IDLE - ALL PEARLS
+    // =========================================================
+
+    std::vector<std::vector<bool>> full_grid(
+        6, std::vector<bool>(6, true)
+    );
+
+    std::uint64_t idle_full_msg =
+        idle_sonar(63, 63, full_grid, round);
+
+    auto idle_full =
+        decode_sonar(idle_full_msg, round);
+
+    std::cout << "Test 5 - Idle All Pearls: ";
+    for (auto x : idle_full)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 6. PORTAL
+    // =========================================================
+
+    std::uint64_t portal_msg = portal_sonar(
+        10, 20, 0,
+        30, 40,
+        15, 25, 1,
+        50, 60, 2,
         round
     );
 
-    vector<uint64_t> portal =
-        decode_sonar(portal_msg, round);
+    auto portal = decode_sonar(portal_msg, round);
 
-    cout << "Portal:\n";
+    std::cout << "Test 6 - Portal: ";
     for (auto x : portal)
-        cout << x << " ";
-    cout << "\n\n";
+        std::cout << x << " ";
+    std::cout << "\n";
 
 
-    // ---------------- SUICIDE ----------------
-    uint64_t suicide_msg = suicide_sonar(round);
+    // =========================================================
+    // 7. PORTAL - BOUNDARY VALUES
+    // =========================================================
 
-    vector<uint64_t> suicide =
+    std::uint64_t portal_boundary_msg = portal_sonar(
+        0, 0, 0,
+        63, 63,
+        0, 63, 1,
+        63, 0, 2,
+        round
+    );
+
+    auto portal_boundary =
+        decode_sonar(portal_boundary_msg, round);
+
+    std::cout << "Test 7 - Portal Boundary: ";
+    for (auto x : portal_boundary)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 8. SUICIDE
+    // =========================================================
+
+    std::uint64_t suicide_msg =
+        suicide_sonar(round);
+
+    auto suicide =
         decode_sonar(suicide_msg, round);
 
-    cout << "Suicide:\n";
+    std::cout << "Test 8 - Suicide: ";
     for (auto x : suicide)
-        cout << x << " ";
-    cout << "\n\n";
+        std::cout << x << " ";
+    std::cout << "\n";
 
 
-    // ---------------- WRONG ROUND TEST ----------------
-    vector<uint64_t> wrong =
+    // =========================================================
+    // 9. QUEEN KILLED
+    // =========================================================
+
+    std::uint64_t killed_msg =
+        queen_killed_sonar(round);
+
+    auto killed =
+        decode_sonar(killed_msg, round);
+
+    std::cout << "Test 9 - Queen Killed: ";
+    for (auto x : killed)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 10. FOOD SIGNAL
+    // =========================================================
+
+    std::uint64_t food_msg =
+        food_signal(23, 41, 150, round);
+
+    auto food =
+        decode_sonar(food_msg, round);
+
+    std::cout << "Test 10 - Food Signal: ";
+    for (auto x : food)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 11. FOOD SIGNAL - MINIMUM VALUES
+    // =========================================================
+
+    std::uint64_t food_min_msg =
+        food_signal(0, 0, 0, round);
+
+    auto food_min =
+        decode_sonar(food_min_msg, round);
+
+    std::cout << "Test 11 - Food Minimum: ";
+    for (auto x : food_min)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 12. FOOD SIGNAL - MAXIMUM VALUES
+    // =========================================================
+
+    std::uint64_t food_max_msg =
+        food_signal(63, 63, 255, round);
+
+    auto food_max =
+        decode_sonar(food_max_msg, round);
+
+    std::cout << "Test 12 - Food Maximum: ";
+    for (auto x : food_max)
+        std::cout << x << " ";
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 13. PREVIOUS ROUND
+    // =========================================================
+
+    std::uint64_t previous_msg =
+        enemy_queen_sonar(25, 30, round - 1);
+
+    auto previous =
+        decode_sonar(previous_msg, round);
+
+    std::cout << "Test 13 - Previous Round: ";
+
+    if (previous.empty())
+        std::cout << "FAILED";
+    else
+        std::cout << "Accepted correctly";
+
+    std::cout << "\n";
+
+
+    // =========================================================
+    // 14. WRONG ROUND
+    // =========================================================
+
+    auto wrong =
         decode_sonar(queen_msg, round + 5);
 
-    cout << "Wrong round:\n";
+    std::cout << "Test 14 - Wrong Round: ";
+
     if (wrong.empty())
-        cout << "Rejected correctly\n";
+        std::cout << "Rejected correctly";
     else
-        cout << "ERROR: accepted\n";
+        std::cout << "FAILED";
 
-    
-    // ---------------- EXTRA TESTS ----------------
-
-// 1. Queen: boundary coordinates
-uint64_t q1 = enemy_queen_sonar(0, 0, round);
-auto d1 = decode_sonar(q1, round);
-
-cout << "Queen (0,0): ";
-for (auto x : d1) cout << x << " ";
-cout << "\n";
+    std::cout << "\n";
 
 
-// 2. Queen: maximum coordinates
-uint64_t q2 = enemy_queen_sonar(63, 63, round);
-auto d2 = decode_sonar(q2, round);
+    // =========================================================
+    // 15. TAMPER AUTHENTICATION
+    // =========================================================
 
-cout << "Queen (63,63): ";
-for (auto x : d2) cout << x << " ";
-cout << "\n";
+    std::uint64_t tampered =
+        queen_msg ^ 1ULL;
 
+    auto tampered_result =
+        decode_sonar(tampered, round);
 
-// 3. Idle: no pearls
-vector<vector<bool>> empty_grid(6, vector<bool>(6, false));
+    std::cout << "Test 15 - Tampered Authentication: ";
 
-uint64_t i1 = idle_sonar(0, 0, empty_grid, round);
-auto di1 = decode_sonar(i1, round);
+    if (tampered_result.empty())
+        std::cout << "Rejected correctly";
+    else
+        std::cout << "FAILED";
 
-cout << "Idle no pearls: ";
-for (auto x : di1) cout << x << " ";
-cout << "\n";
-
-
-// 4. Idle: all pearls
-vector<vector<bool>> full_grid(6, vector<bool>(6, true));
-
-uint64_t i2 = idle_sonar(63, 63, full_grid, round);
-auto di2 = decode_sonar(i2, round);
-
-cout << "Idle all pearls: ";
-for (auto x : di2) cout << x << " ";
-cout << "\n";
+    std::cout << "\n";
 
 
-// 5. Portal: all directions
-uint64_t p1 = portal_sonar(
-    0, 0, 0,
-    63, 63,
-    0, 63, 1,
-    63, 0, 2,
-    round
-);
+    // =========================================================
+    // 16. TAMPER SUICIDE SECRET
+    // =========================================================
 
-auto dp1 = decode_sonar(p1, round);
+    std::uint64_t bad_suicide =
+        suicide_sonar(round);
 
-cout << "Portal boundaries: ";
-for (auto x : dp1) cout << x << " ";
-cout << "\n";
+    bad_suicide ^= (1ULL << 20);
 
+    auto bad_suicide_result =
+        decode_sonar(bad_suicide, round);
 
-// 6. Previous round should be accepted
-uint64_t q3 = enemy_queen_sonar(25, 30, round - 1);
+    std::cout << "Test 16 - Tampered Suicide: ";
 
-auto d3 = decode_sonar(q3, round);
+    if (bad_suicide_result.empty())
+        std::cout << "Rejected correctly";
+    else
+        std::cout << "FAILED";
 
-cout << "Previous round: ";
+    std::cout << "\n";
 
-if (d3.empty())
-    cout << "REJECTED";
-else {
-    for (auto x : d3) cout << x << " ";
-}
-
-cout << "\n";
-
-
-// 7. Tamper with one bit
-uint64_t tampered = q1;
-tampered ^= (1ULL << 40);
-
-auto dt = decode_sonar(tampered, round);
-
-cout << "Tampered message: ";
-
-if (dt.empty())
-    cout << "Rejected correctly";
-else
-    cout << "ERROR: accepted";
-
-cout << "\n";
-
-
-// 8. Wrong round should be rejected
-auto wrong_round = decode_sonar(q1, round + 2);
-
-cout << "Two rounds old/future: ";
-
-if (wrong_round.empty())
-    cout << "Rejected correctly";
-else
-    cout << "ERROR: accepted";
-
-cout << "\n";
-
-
-// 9. Tamper with suicide secret
-uint64_t bad_suicide = suicide_sonar(round);
-bad_suicide ^= (1ULL << 20);
-
-auto ds = decode_sonar(bad_suicide, round);
-
-cout << "Tampered suicide: ";
-
-if (ds.empty())
-    cout << "Rejected correctly";
-else
-    cout << "ERROR: accepted";
-
-cout << "\n";
 
     return 0;
 }
