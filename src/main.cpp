@@ -49,16 +49,16 @@ int main() {
         //     seen_bots.insert(bot_id);
         // }
 
-        bot::roles::Action action = active_role.act(controller, memory, grid, inbox);
+        bot::roles::Action action = active_role.act(controller, memory, grid, inbox,tracker);
 
-        if(action.do_split && controller.can_split(action.split_size)){
+        
+        if (action.do_split && controller.can_split(action.split_size)) {
             controller.do_split(action.split_size);
             tracker.reset();
-        }
-        else{
+        } else {
             bot::nav::execute_turn(controller, memory, tracker, grid, action.request);
         }
-        
+
         unswbc::end_turn();
     }
 }

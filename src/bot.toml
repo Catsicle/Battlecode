@@ -43,7 +43,9 @@ include = [
     "roles/registry.cpp",
     "roles/bodyguard/rect_adapter.hpp",
     "roles/bodyguard/rect_ring.hpp",
-    "roles/bodyguard/rectangle_gen.cpp"
+    "roles/bodyguard/rectangle_gen.cpp",
+    "roles/role/selector.cpp",
+    "roles/role/selector.hpp"
     
     
 ]
