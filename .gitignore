@@ -11,3 +11,5 @@ __pycache__/
 build/
 .venv/
 *.exe
+
+output.txt
