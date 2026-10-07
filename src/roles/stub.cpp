@@ -13,8 +13,8 @@ namespace bot::roles {
 class StubRole final : public Role {
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
-               const nav::Grid& grid, const comms::Inbox& inbox) override {
-        (void)memory;
+               const nav::Grid& grid, const comms::Inbox& inbox,const bot::BodyTracker& tracker) override {
+        (void)memory;(void)tracker;(void)grid;
         Action action;
         if (inbox.navigation_target.available) {
             action.request.mode = NavMode::Navigate;

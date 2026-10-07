@@ -5,11 +5,12 @@ namespace bot::roles {
 class FeederRole final : public Role {
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
-               const nav::Grid& grid, const comms::Inbox& inbox) override {
+               const nav::Grid& grid, const comms::Inbox& inbox,const bot::BodyTracker& tracker) override {
         (void)controller;
         (void)memory;
         (void)grid;
         (void)inbox;
+        (void)tracker;
 
         Action action;
         // Explores map for resources using wander scoring and safety fallbacks

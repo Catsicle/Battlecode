@@ -5,12 +5,13 @@ namespace bot::roles {
 class KillerRole final : public Role {
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
-               const nav::Grid& grid, const comms::Inbox& inbox) override {
+               const nav::Grid& grid, const comms::Inbox& inbox,const bot::BodyTracker& tracker) override {
         (void)controller;
         (void)memory;
         (void)grid;
         (void)inbox;
-
+        (void)tracker;
+        
         Action action;
         // Placeholder: Default exploration mode until strategy is defined
         action.request.mode = NavMode::Explore;
