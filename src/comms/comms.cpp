@@ -1,17 +1,25 @@
 #include "comms.hpp"
+#include "../helper.hpp"
+// Include the project header that provides the full definition of
+// unswbc::Controller before compiling this file. The uploaded comms package
+// does not contain that project header, so its exact path cannot be inferred.
 
 namespace bot::comms {
 
-Inbox read_inbox(const unswbc::Controller& controller) {
+Inbox read_inbox(
+    const unswbc::Controller& controller,
+    std::uint64_t round)
+{
     Inbox inbox;
+
     for (std::uint64_t bits : controller.get_sonar_messages()) {
-        RawMessage message = decode_raw(bits);
-        if (!message.valid)
-            continue;
-        inbox.messages.push_back(message);
-        if (message.type == MessageType::NavigateTarget && !inbox.navigation_target.available)
-            inbox.navigation_target = decode_navigation_target(message);
+        DecodedSonar decoded = decode_sonar(bits, round);
+
+        if (!decoded.empty())
+            if(decoded.size()>0)
+            inbox.messages.push_back(decoded);
     }
+
     return inbox;
 }
 
