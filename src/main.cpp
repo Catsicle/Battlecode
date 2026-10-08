@@ -53,6 +53,8 @@ int main() {
         action.round_num = static_cast<std::uint64_t>(game.get_round_num());
         
         
+
+        std::cout << "Length: " << controller.get_length() << " " << action.do_split << " " << controller.can_split(action.split_size) << "\n";
         if (action.do_split && controller.can_split(action.split_size)) {
             controller.do_split(action.split_size);
             tracker.reset();

@@ -46,6 +46,7 @@ enum class NavMode {
     Navigate,
     Direct,
     Suicide,
+    Scout,
 };
 
 } // namespace bot
