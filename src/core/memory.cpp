@@ -92,9 +92,13 @@ void Memory::update(const unswbc::Controller& controller, int round) {
                         ends.direction[0] = static_cast<std::uint8_t>(d);
                         ends.count = 1;
                     } else if (ends.count == 1 && ends.tile[1] != cell) {
-                        ends.tile[1] = cell;
-                        ends.direction[1] = static_cast<std::uint8_t>(d);
-                        ends.count = 2;
+                        Vec2 first_out = add(position(ends.tile[0]), directions()[ends.direction[0]], width, height);
+                        bool same_edge = index(first_out) == cell && d == (ends.direction[0] + 2) % 4;
+                        if (!same_edge) {
+                            ends.tile[1] = cell;
+                            ends.direction[1] = static_cast<std::uint8_t>(d);
+                            ends.count = 2;
+                        }
                     }
                 }
             }

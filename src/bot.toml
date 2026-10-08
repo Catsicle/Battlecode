@@ -30,6 +30,8 @@ include = [
     "nav/bfs.cpp",
     "nav/astar.cpp",
     "nav/flee.cpp",
+    "nav/scout_nav.cpp",
+    "nav/scout_nav.hpp"
     "nav/wander.cpp",
     "roles/role.hpp",
     "roles/explorer.cpp",

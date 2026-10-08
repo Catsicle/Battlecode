@@ -51,7 +51,7 @@ int main() {
 
         bot::roles::Action action = active_role.act(controller, memory, grid, inbox,tracker);
 
-        
+        std::cout << "Length: " << controller.get_length() << " " << action.do_split << " " << controller.can_split(action.split_size) << "\n";
         if (action.do_split && controller.can_split(action.split_size)) {
             controller.do_split(action.split_size);
             tracker.reset();
