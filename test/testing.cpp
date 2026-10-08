@@ -12,7 +12,7 @@ int main()
     // 1. ENEMY QUEEN
     // =========================================================
 
-    std::uint64_t queen_msg = enemy_queen_sonar(23, 41, round);
+    std::uint64_t queen_msg = enemy_queen_sonar(23, 41, 3, round);
     auto queen = decode_sonar(queen_msg, round);
 
     std::cout << "Test 1 - Enemy Queen: ";
@@ -26,7 +26,7 @@ int main()
     // =========================================================
 
     std::uint64_t queen_boundary =
-        enemy_queen_sonar(0, 63, round);
+        enemy_queen_sonar(0, 63, 3, round);
 
     auto queen_b = decode_sonar(queen_boundary, round);
 
@@ -225,7 +225,7 @@ int main()
     // =========================================================
 
     std::uint64_t previous_msg =
-        enemy_queen_sonar(25, 30, round - 1);
+        enemy_queen_sonar(25, 30, 3, round - 1);
 
     auto previous =
         decode_sonar(previous_msg, round);

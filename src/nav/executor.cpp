@@ -245,9 +245,12 @@ void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& t
         return;
     }
 
-    // Split ONLY when boxed in with zero non-colliding options left
-    if (controller.can_split(controller.get_length() - 2)) {
-        controller.do_split(controller.get_length() - 2);
+    // Split ONLY when boxed in with zero non-colliding options left: child = 2, parent = current - 2
+    int len_now = controller.get_length();
+    std::cout << "DEBUG: executor blocked split len=" << len_now << " can_split(2)=" << (controller.can_split(2) ? 1 : 0) << std::endl;
+    if (controller.can_split(2) && len_now > 2) {
+        std::cout << "DEBUG: executor blocked split doing split child=2 parent=" << (len_now - 2) << std::endl;
+        controller.do_split(2);
         tracker.reset();
     } else {
         controller.make_move(controller.get_dir());

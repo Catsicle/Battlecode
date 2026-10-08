@@ -2,6 +2,7 @@
 #include "../comms/use_sonar.hpp"
 #include "../config.hpp"
 #include "../core/body_tracker.hpp"
+#include "../nav/transition.hpp"
 #include <array>
 #include <utility>
 
@@ -22,7 +23,6 @@ class QueenRole final : public Role {
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
                const nav::Grid& grid, const comms::Inbox& inbox,const bot::BodyTracker& tracker) override {
-        (void)grid;
         Action action;
         Vec2 current_pos = controller.get_position();
 
@@ -67,10 +67,11 @@ class QueenRole final : public Role {
             return action;
         }
 
-        // 4. SPLITTING LOGIC: Split whenever length >= 7 (detaching rest so Queen keeps size 5)
+        // 4. SPLITTING LOGIC: Child always size 2, parent keeps length - 2
         int current_length = controller.get_length();
         if (current_length >= 7) {
-            int split_amount = current_length - 5;
+            int split_amount = 2;
+            std::cout << "DEBUG: queen split len=" << current_length << " child=" << split_amount << " parent=" << (current_length - split_amount) << std::endl;
             if (controller.can_split(split_amount)) {
                 action.do_split = true;
                 action.split_size = split_amount;
@@ -99,6 +100,39 @@ class QueenRole final : public Role {
             waypoint_index = (waypoint_index + 1) % circle_offsets.size();
             auto [next_dx, next_dy] = circle_offsets[waypoint_index];
             target_waypoint = wrap_offset(spawn_position, next_dx, next_dy, memory.width, memory.height);
+        }
+
+        // Check if all directions from current position are generally blocked (kelp, portal, occupancy, own body)
+        bool all_blocked = true;
+        int current_cell = memory.index(current_pos);
+        for (Dir dir : directions()) {
+            bool open = false;
+            int d_idx = dir_index(dir);
+            if (current_cell >= 0 && memory.edge_known(current_cell, d_idx) && (memory.kelp[current_cell] & (1U << d_idx)) == 0) {
+                bot::nav::Step step = bot::nav::resolve_step(memory, current_cell, d_idx);
+                if (step.kind != bot::nav::StepKind::Kelp && step.kind != bot::nav::StepKind::PortalUnresolved && step.dest >= 0) {
+                    int dest_cell = step.dest;
+                    bool occupied = memory.occ_fresh(dest_cell, grid.round);
+                    bool own_hit = false;
+                    for (Vec2 bt : memory.own_body) {
+                        if (memory.index(bt) == dest_cell) {
+                            own_hit = true;
+                            break;
+                        }
+                    }
+                    if (!occupied && !own_hit) {
+                        open = true;
+                    }
+                }
+            }
+            if (open) {
+                all_blocked = false;
+                break;
+            }
+        }
+        if (all_blocked) {
+            action.request.mode = NavMode::Explore;
+            return action;
         }
 
         // Check if target waypoint is reachable/passable
