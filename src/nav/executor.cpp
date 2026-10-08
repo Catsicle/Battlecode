@@ -97,7 +97,7 @@ void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& t
             bool blocked_by_ally = false;
             if (next_cell >= 0) {
                 const auto& occ = memory.occupancy[next_cell];
-                if (occ.present && occ.team == controller.get_team().value) {
+                if (occ.present && occ.team == controller.get_team().value && occ.id != controller.get_id()) {
                     blocked_by_ally = true;
                 }
             }

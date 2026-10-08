@@ -214,6 +214,27 @@ std::uint64_t food_signal(
     return msg;
 }
 
+std::uint64_t queen_beacon_sonar(
+    std::uint8_t x,
+    std::uint8_t y,
+    std::uint64_t round)
+{
+    std::uint64_t msg = 0;
+    msg |= 0b0100ULL << 60;
+    msg |= (std::uint64_t)(x & 0x3F) << 54;
+    msg |= (std::uint64_t)(y & 0x3F) << 48;
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uint64_t random_bits = gen() & ((1ULL << 40) - 1);
+    msg |= random_bits << 8;
+    std::uint8_t auth = authenticate(round, 0b0100, SECRET_K0, SECRET_K1);
+    msg |= (std::uint64_t)(auth & 0x3F);
+    // Debug statement for beacon encoding
+    printf("DEBUG: queen_beacon_sonar encoded x=%d y=%d round=%lu msg=%lu auth=%d\n",
+           (int)x, (int)y, (unsigned long)round, (unsigned long)msg, (int)auth);
+    return msg;
+}
+
 std::vector<std::uint64_t> decode_sonar(
     std::uint64_t msg,
     std::uint64_t round)
@@ -333,6 +354,14 @@ std::vector<std::uint64_t> decode_sonar(
         decoded.push_back(x);
         decoded.push_back(y);
         decoded.push_back(value);
+    }
+    else if (sonar_id == 0b0100) {
+        // Beacon
+        printf("DEBUG: decode_sonar beacon id=0100 msg=%lu\n", (unsigned long)msg);
+        std::uint8_t x = (msg >> 54) & 0x3F;
+        std::uint8_t y = (msg >> 48) & 0x3F;
+        decoded.push_back(x);
+        decoded.push_back(y);
     }
     else {
         return {};

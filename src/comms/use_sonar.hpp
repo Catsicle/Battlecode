@@ -12,4 +12,9 @@ std::uint64_t maybe_emit_enemy_queen_sonar(
     const Inbox& inbox,
     std::uint64_t round_num);
 
+std::uint64_t maybe_emit_queen_beacon_sonar(
+    const unswbc::Controller& controller,
+    const Inbox& inbox,
+    std::uint64_t round_num);
+
 } // namespace bot::comms

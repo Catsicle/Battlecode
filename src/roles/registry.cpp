@@ -3,6 +3,7 @@
 
 namespace bot::roles {
 Role& stub_role();
+Role& bodyguard_role();
 
 Role& select_role() {
     switch (FORCE_ROLE) {
@@ -11,9 +12,10 @@ Role& select_role() {
     case ForcedRole::Explorer:
     case ForcedRole::Killer:
     case ForcedRole::Feeder:
-    case ForcedRole::Bodyguard:
     case ForcedRole::Queen:
         return stub_role();
+    case ForcedRole::Bodyguard:
+        return bodyguard_role();
     }
     return stub_role();
 }

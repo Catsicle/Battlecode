@@ -53,6 +53,13 @@ struct food_signal_sonar {
     std::uint64_t round = 0;
 };
 
+// Placeholder beacon sonar — matches existing sonar message style
+struct queen_beacon_sonar {
+    std::uint8_t x = 0;
+    std::uint8_t y = 0;
+    std::uint64_t round = 0;
+};
+
 struct Inbox {
     std::vector<enemy_queen_sonar> enemy_queen_messages;
     bool enemy_queen_exists = false;
@@ -71,6 +78,9 @@ struct Inbox {
 
     std::vector<food_signal_sonar> food_signal_messages;
     bool food_signal_exists = false;
+
+    std::vector<queen_beacon_sonar> queen_beacon_messages;
+    bool queen_beacon_exists = false;
 };
 
 Inbox read_inbox(

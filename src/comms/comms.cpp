@@ -84,6 +84,18 @@ Inbox read_inbox(
             inbox.food_signal_messages.push_back(msg);
             inbox.food_signal_exists = true;
         }
+        else if (sonar_id == 0b0100) {
+            // Beacon
+            printf("DEBUG: read_inbox beacon id=0100 decoded_size=%zu\n", decoded.size());
+            if (decoded.size() >= 3) {
+                queen_beacon_sonar msg{};
+                msg.x = static_cast<std::uint8_t>(decoded[1]);
+                msg.y = static_cast<std::uint8_t>(decoded[2]);
+                msg.round = round;
+                inbox.queen_beacon_messages.push_back(msg);
+                inbox.queen_beacon_exists = true;
+            }
+        }
     }
 
     // Sort each message vector by round descending
@@ -99,6 +111,8 @@ Inbox read_inbox(
               [](const queen_killed_sonar& a, const queen_killed_sonar& b) { return a.round > b.round; });
     std::sort(inbox.food_signal_messages.begin(), inbox.food_signal_messages.end(),
               [](const food_signal_sonar& a, const food_signal_sonar& b) { return a.round > b.round; });
+    std::sort(inbox.queen_beacon_messages.begin(), inbox.queen_beacon_messages.end(),
+              [](const queen_beacon_sonar& a, const queen_beacon_sonar& b) { return a.round > b.round; });
 
     return inbox;
 }

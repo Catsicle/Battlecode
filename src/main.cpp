@@ -77,12 +77,6 @@ int main() {
             std::cout << "DEBUG: Emitting sonar West=" << action.sonar.West << std::endl;
             controller.send_sonar(unswbc::Direction::WEST, action.sonar.West);
         }
-        if (action.sonar.East != 0)
-            controller.send_sonar(unswbc::Direction::EAST, action.sonar.East);
-        if (action.sonar.South != 0)
-            controller.send_sonar(unswbc::Direction::SOUTH, action.sonar.South);
-        if (action.sonar.West != 0)
-            controller.send_sonar(unswbc::Direction::WEST, action.sonar.West);
 
         unswbc::end_turn();
     }

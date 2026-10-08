@@ -33,6 +33,14 @@ class QueenRole final : public Role {
             action.sonar.East = sonar_val;
             action.sonar.South = sonar_val;
             action.sonar.West = sonar_val;
+        } else {
+            std::uint64_t beacon_val = comms::maybe_emit_queen_beacon_sonar(controller, inbox, action.round_num);
+            if (beacon_val != 0) {
+                action.sonar.North = beacon_val;
+                action.sonar.East = beacon_val;
+                action.sonar.South = beacon_val;
+                action.sonar.West = beacon_val;
+            }
         }
 
 
@@ -72,7 +80,7 @@ class QueenRole final : public Role {
 
         // 5. NAVIGATION STRATEGY
         // PHASE 1: Rounds <= 50 -> Follow Explorer logic
-        if (tracker.stats.splits <= 2 || current_length <= 5) {
+        if (tracker.stats.splits <= 2 || current_length < 4) {
             action.request.mode = NavMode::Explore;
             return action;
         }

@@ -57,3 +57,9 @@ std::uint64_t food_signal(
     std::uint8_t value,
     std::uint64_t round
 );
+
+std::uint64_t queen_beacon_sonar(
+    std::uint8_t x,
+    std::uint8_t y,
+    std::uint64_t round
+);
