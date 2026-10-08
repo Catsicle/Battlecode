@@ -145,13 +145,13 @@ void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& t
     std::uint8_t base_forbid = 0;
     int free_steps = 1;
 
-    const bool scouting = (request.mode == NavMode::Scout);
+    const bool scouting = (action.request.mode == NavMode::Scout);
     const int current_cell = memory.index(controller.get_position());
     if (scouting)
         scout::begin_turn(memory, controller.get_position());   // resolves last turn's crossing
 
     for (int attempt = 0; attempt < MAX_RETRY; ++attempt) {
-        Path path = plan(action.request, grid, initial, controller.get_position(), forbid);
+        Path path = plan(action.request, grid, initial, controller.get_position(), base_forbid);
         if (!path.found || path.length == 0)
             break;
 

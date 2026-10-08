@@ -36,7 +36,7 @@ Role& select_role(const unswbc::Controller& controller, int round) {
 
     // Rule 4: Phase 2 (Rounds >= 350)
     if (mod == 1 || mod == 2) {
-        return bodyguard_role();
+        return feeder_role();
     } else { // mod == 3
         return killer_role();
     }
