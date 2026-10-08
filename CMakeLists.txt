@@ -9,6 +9,7 @@ add_executable(bot
 	src/core/body_tracker.cpp
 	src/comms/comms.cpp
 	src/comms/comm_function.cpp
+	src/comms/use_sonar.cpp
 	src/nav/grid.cpp
 	src/nav/bfs.cpp
 	src/nav/astar.cpp

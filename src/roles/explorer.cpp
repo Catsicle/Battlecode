@@ -1,4 +1,5 @@
 #include "role.hpp"
+#include "../comms/use_sonar.hpp"
 #include "killer/kill.hpp"
 
 namespace bot::roles {
@@ -22,32 +23,20 @@ class ExplorerRole final : public Role {
         Action action;
 
         // Emit enemy queen sonar if queen body/head visible
-        Vec2 queen_spot;
-        bool queen_spotted = false;
-        for (const auto& tile : controller.get_vision().get_tiles()) {
-            const auto* dragon = tile.get_dragon();
-            if (dragon != nullptr && dragon->get_team() != controller.get_team()) {
-                queen_spotted = true;
-                queen_spot = tile.get_position();
-                break;
-            }
-        }
-        if (queen_spotted) {
-            std::uint64_t sonar_val = enemy_queen_sonar(
-                static_cast<std::uint8_t>(queen_spot.x & 0x3F),
-                static_cast<std::uint8_t>(queen_spot.y & 0x3F),
-                3, action.round_num);
+                std::uint64_t sonar_val = comms::maybe_emit_enemy_queen_sonar(controller, inbox, action.round_num);
+        if (sonar_val != 0) {
             action.sonar.North = sonar_val;
             action.sonar.East = sonar_val;
             action.sonar.South = sonar_val;
             action.sonar.West = sonar_val;
         }
 
+
         bool queen_head_visible = false;
         unswbc::Position queen_head_pos{};
         for (const auto& tile : controller.get_vision().get_tiles()) {
             const auto* dragon = tile.get_dragon();
-            if (dragon != nullptr && dragon->is_head() &&
+            if (dragon != nullptr && dragon->is_head() && (dragon->get_id() == 0 || dragon->get_id() == 1) &&
                 dragon->get_team() != controller.get_team()) {
                 queen_head_visible = true;
                 queen_head_pos = tile.get_position();

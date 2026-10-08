@@ -1,0 +1,2 @@
+# Queries module (`src/core/memory/queries`)
+# Functions moved from `bodyguard/core/map_view.hpp` are normal (non-inline) functions in `queries.cpp`/`queries.hpp`: `mapview_width`, `mapview_height`, `mapview_cells`, `mapview_valid`, `query_known`, `query_frontier`, `query_seen`, `query_edge_known`, `query_last_seen_round`, `query_has_pearl`, `query_pearl_spawn_round`, `query_never_spawns`, plus existing `get_cell`/`get_edge`.

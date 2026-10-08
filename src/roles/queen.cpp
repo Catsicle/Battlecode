@@ -1,4 +1,5 @@
 #include "role.hpp"
+#include "../comms/use_sonar.hpp"
 #include "../config.hpp"
 #include "../core/body_tracker.hpp"
 #include <array>
@@ -26,26 +27,14 @@ class QueenRole final : public Role {
         Vec2 current_pos = controller.get_position();
 
         // Emit enemy queen sonar if enemy queen body/head visible
-        Vec2 queen_spot;
-        bool queen_spotted = false;
-        for (const auto& tile : controller.get_vision().get_tiles()) {
-            const auto* dragon = tile.get_dragon();
-            if (dragon != nullptr && dragon->get_team() != controller.get_team()) {
-                queen_spotted = true;
-                queen_spot = tile.get_position();
-                break;
-            }
-        }
-        if (queen_spotted) {
-            std::uint64_t sonar_val = enemy_queen_sonar(
-                static_cast<std::uint8_t>(queen_spot.x & 0x3F),
-                static_cast<std::uint8_t>(queen_spot.y & 0x3F),
-                3, action.round_num);
+                std::uint64_t sonar_val = comms::maybe_emit_enemy_queen_sonar(controller, inbox, action.round_num);
+        if (sonar_val != 0) {
             action.sonar.North = sonar_val;
             action.sonar.East = sonar_val;
             action.sonar.South = sonar_val;
             action.sonar.West = sonar_val;
         }
+
 
         // 1. Save initial spawn location on first turn
         if (!initialized) {
@@ -83,7 +72,7 @@ class QueenRole final : public Role {
 
         // 5. NAVIGATION STRATEGY
         // PHASE 1: Rounds <= 50 -> Follow Explorer logic
-        if (tracker.stats.splits <= 2) {
+        if (tracker.stats.splits <= 2 || current_length <= 5) {
             action.request.mode = NavMode::Explore;
             return action;
         }

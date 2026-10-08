@@ -16,6 +16,8 @@ include = [
     "comms/comms.cpp",
     "comms/siphash.cpp",
     "comms/comm_function.cpp",
+    "comms/use_sonar.hpp",
+    "comms/use_sonar.cpp",
     "nav/grid.hpp",
     "nav/grid.cpp",
     "nav/transition.hpp",
