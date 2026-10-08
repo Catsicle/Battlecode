@@ -20,7 +20,7 @@ class QueenRole final : public Role {
   public:
     Action act(const unswbc::Controller& controller, const Memory& memory,
                const nav::Grid& grid, const comms::Inbox& inbox,const bot::BodyTracker& tracker) override {
-        //void(grid);
+        (void)grid;
         Action action;
         Vec2 current_pos = controller.get_position();
 

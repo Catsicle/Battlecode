@@ -11,10 +11,19 @@ class KillerRole final : public Role {
         (void)grid;
         (void)inbox;
         (void)tracker;
-        
+
         Action action;
         // Placeholder: Default exploration mode until strategy is defined
-        action.request.mode = NavMode::Explore;
+        int current_length = controller.get_length();
+         if (current_length >= 4) {
+            int split_amount = current_length - 2;
+            if (controller.can_split(split_amount)) {
+                action.do_split = true;
+                action.split_size = split_amount;
+                return action;
+            }
+        }
+        action.request.mode = NavMode::Scout;
         return action;
     }
 };
