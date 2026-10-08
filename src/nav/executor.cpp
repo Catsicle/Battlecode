@@ -108,7 +108,7 @@ void execute_turn(unswbc::Controller& controller, Memory& memory, BodyTracker& t
         }
         if (all_blocked && controller.get_length() >= 4) {
             std::cout << "DEBUG: Queen blocked by ally all directions - split size=" << (controller.get_length() - 2) << std::endl;
-            int child_size = controller.get_length() - 2;
+            int child_size = 2;
             if (controller.can_split(child_size)) {
                 uint64_t msg_round = static_cast<std::uint64_t>(grid.round);
                 uint64_t suicide_msg = ::suicide_sonar(msg_round);
