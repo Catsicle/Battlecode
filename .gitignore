@@ -11,5 +11,6 @@ __pycache__/
 build/
 .venv/
 *.exe
-
+*.log
+*.swp
 output.txt
