@@ -13,4 +13,5 @@ build/
 *.exe
 *.log
 *.swp
+*.md
 output.txt
